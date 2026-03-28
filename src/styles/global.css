@@ -1,0 +1,143 @@
+:root {
+  color-scheme: light;
+  font-family: "Segoe UI", sans-serif;
+  background: #f4efe6;
+  color: #18230f;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at top left, rgba(196, 217, 141, 0.45), transparent 32%),
+    linear-gradient(180deg, #f7f3eb 0%, #ebe2d0 100%);
+}
+
+body, button, input {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+.auth-shell {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 2rem;
+}
+
+.auth-panel, .panel {
+  width: min(960px, 100%);
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(14px);
+  border: 1px solid rgba(24, 35, 15, 0.08);
+  border-radius: 24px;
+  box-shadow: 0 20px 60px rgba(24, 35, 15, 0.1);
+}
+
+.auth-panel {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 2rem;
+  padding: 2rem;
+}
+
+.brand-block {
+  padding: 1rem;
+}
+
+.eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 0.78rem;
+  color: #6f8451;
+}
+
+.muted {
+  color: #55624b;
+}
+
+.form-card, .content-card {
+  background: white;
+  border-radius: 20px;
+  padding: 1.5rem;
+  border: 1px solid rgba(24, 35, 15, 0.06);
+}
+
+.form-card form {
+  display: grid;
+  gap: 1rem;
+}
+
+input {
+  width: 100%;
+  padding: 0.9rem 1rem;
+  border-radius: 14px;
+  border: 1px solid #d8ddcf;
+  background: #fcfbf8;
+}
+
+.primary-button {
+  border: none;
+  border-radius: 999px;
+  padding: 0.9rem 1.2rem;
+  background: #18230f;
+  color: white;
+}
+
+.dashboard-shell {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 240px 1fr;
+}
+
+.sidebar {
+  padding: 2rem;
+  background: #18230f;
+  color: white;
+}
+
+.sidebar nav {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.sidebar a {
+  color: #f1f5eb;
+  text-decoration: none;
+}
+
+.dashboard-content {
+  padding: 2rem;
+  display: grid;
+  gap: 1.5rem;
+}
+
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+}
+
+.metric-card {
+  padding: 1.25rem;
+  border-radius: 18px;
+  background: white;
+  border: 1px solid rgba(24, 35, 15, 0.06);
+}
+
+@media (max-width: 860px) {
+  .auth-panel {
+    grid-template-columns: 1fr;
+  }
+
+  .dashboard-shell {
+    grid-template-columns: 1fr;
+  }
+}
