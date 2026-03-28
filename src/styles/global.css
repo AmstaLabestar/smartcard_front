@@ -17,7 +17,7 @@ body {
     linear-gradient(180deg, #f7f3eb 0%, #ebe2d0 100%);
 }
 
-body, button, input {
+body, button, input, select {
   font: inherit;
 }
 
@@ -59,6 +59,10 @@ button {
   color: #6f8451;
 }
 
+.sidebar-eyebrow {
+  color: rgba(255,255,255,0.72);
+}
+
 .muted {
   color: #55624b;
 }
@@ -91,6 +95,40 @@ input {
   color: white;
 }
 
+.sidebar-button {
+  margin-top: auto;
+}
+
+.error-text {
+  color: #b42318;
+  display: inline-block;
+  margin-top: 0.35rem;
+}
+
+.error-banner {
+  margin: 0;
+  padding: 0.85rem 1rem;
+  border-radius: 14px;
+  background: #fdecea;
+  color: #b42318;
+}
+
+.segmented-control {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem;
+}
+
+.segmented-control label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.85rem 1rem;
+  border: 1px solid #d8ddcf;
+  border-radius: 14px;
+  background: #fcfbf8;
+}
+
 .dashboard-shell {
   min-height: 100vh;
   display: grid;
@@ -101,6 +139,12 @@ input {
   padding: 2rem;
   background: #18230f;
   color: white;
+  display: grid;
+  gap: 1.5rem;
+}
+
+.sidebar-user {
+  color: rgba(255,255,255,0.8);
 }
 
 .sidebar nav {
@@ -129,6 +173,30 @@ input {
   padding: 1.25rem;
   border-radius: 18px;
   background: white;
+  border: 1px solid rgba(24, 35, 15, 0.06);
+}
+
+.metric-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.qr-preview {
+  word-break: break-word;
+  font-size: 1rem;
+}
+
+.list-stack {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.list-item {
+  display: grid;
+  gap: 0.25rem;
+  padding: 1rem;
+  border-radius: 16px;
+  background: #fcfbf8;
   border: 1px solid rgba(24, 35, 15, 0.06);
 }
 

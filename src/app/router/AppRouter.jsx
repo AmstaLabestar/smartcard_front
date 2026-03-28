@@ -20,16 +20,47 @@ export function AppRouter() {
         </Route>
 
         <Route
+          path="/dashboard"
           element={
-            <ProtectedRoute>
+            <ProtectedRoute allowedRoles={['USER']}>
               <DashboardLayout />
             </ProtectedRoute>
           }
         >
-          <Route path="/dashboard" element={<UserDashboardPage />} />
-          <Route path="/offers" element={<OffersPage />} />
-          <Route path="/merchant/dashboard" element={<MerchantDashboardPage />} />
-          <Route path="/admin/dashboard" element={<AdminDashboardPage />} />
+          <Route index element={<UserDashboardPage />} />
+        </Route>
+
+        <Route
+          path="/offers"
+          element={
+            <ProtectedRoute allowedRoles={['USER', 'MERCHANT', 'ADMIN']}>
+              <DashboardLayout />
+            </ProtectedRoute>
+          }
+        >
+          <Route index element={<OffersPage />} />
+        </Route>
+
+        <Route
+          path="/merchant/dashboard"
+          element={
+            <ProtectedRoute allowedRoles={['MERCHANT']}>
+              <DashboardLayout />
+            </ProtectedRoute>
+          }
+        >
+          <Route index element={<MerchantDashboardPage />} />
+        </Route>
+
+        <Route
+          path="/admin/dashboard"
+          element={
+            <ProtectedRoute allowedRoles={['ADMIN']}>
+              <DashboardLayout />
+            </ProtectedRoute>
+          }
+        >
+          <Route index element={<AdminDashboardPage />} />
         </Route>
 
         <Route path="*" element={<Navigate to="/login" replace />} />
