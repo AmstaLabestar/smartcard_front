@@ -496,3 +496,35 @@ select {
   letter-spacing: 0.08em;
   color: #6f8451;
 }
+
+.onboarding-card {
+  display: grid;
+  gap: 1rem;
+}
+
+.onboarding-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.purchase-result {
+  padding: 1rem 1.1rem;
+  border-radius: 18px;
+  background: #f6f1e6;
+  border: 1px solid rgba(24, 35, 15, 0.08);
+}
+
+.success-banner {
+  margin: 0;
+  padding: 0.85rem 1rem;
+  border-radius: 14px;
+  background: #e8f7eb;
+  color: #0f7a3a;
+}
+
+@media (max-width: 860px) {
+  .onboarding-grid {
+    grid-template-columns: 1fr;
+  }
+}
