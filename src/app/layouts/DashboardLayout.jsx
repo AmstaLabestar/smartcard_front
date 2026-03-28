@@ -19,7 +19,10 @@ export function DashboardLayout() {
     ],
     ADMIN: [
       { to: '/admin/dashboard', label: 'Back-office' },
-      { to: '/offers', label: 'Offres actives' },
+      { to: '/admin/users', label: 'Users' },
+      { to: '/admin/merchants', label: 'Merchants' },
+      { to: '/admin/cards', label: 'Cards' },
+      { to: '/admin/offers', label: 'Offers' },
     ],
   };
 
