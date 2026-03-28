@@ -1,4 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
+import { Link } from 'react-router-dom';
 
 import { fetchMerchantOffers } from '../../offers/api/offers.api';
 import { fetchMerchantTransactions } from '../../transactions/api/transactions.api';
@@ -19,10 +20,18 @@ export function MerchantDashboardPage() {
 
   return (
     <>
-      <section className="panel content-card">
+      <section className="panel content-card hero-card">
         <p className="eyebrow">Merchant</p>
-        <h1>Dashboard commercant</h1>
-        <p className="muted">Ce dashboard lit deja les offres et transactions du merchant connecte.</p>
+        <h1>Console commercant</h1>
+        <p className="muted">Pilotez vos offres et validez les reductions en boutique.</p>
+        <div className="inline-actions top-actions">
+          <Link className="primary-button link-button" to="/merchant/offers">
+            Gerer les offres
+          </Link>
+          <Link className="primary-button link-button alt-button" to="/merchant/scan">
+            Scanner un client
+          </Link>
+        </div>
       </section>
       <section className="cards-grid">
         <article className="metric-card">
@@ -37,16 +46,16 @@ export function MerchantDashboardPage() {
         </article>
       </section>
       <section className="panel content-card">
-        <h2>Dernieres offres</h2>
-        {offers.length === 0 ? (
-          <p className="muted">Aucune offre creee pour le moment.</p>
+        <h2>Dernieres transactions</h2>
+        {transactions.length === 0 ? (
+          <p className="muted">Aucune transaction pour le moment.</p>
         ) : (
           <div className="list-stack">
-            {offers.slice(0, 5).map((offer) => (
-              <article key={offer.id} className="list-item">
-                <strong>{offer.title}</strong>
-                <span>{offer.discountType} - {offer.discountValue}</span>
-                <span>{offer.status}</span>
+            {transactions.slice(0, 5).map((transaction) => (
+              <article key={transaction.id} className="list-item">
+                <strong>{transaction.offer?.title}</strong>
+                <span>Client: {transaction.user?.firstName} {transaction.user?.lastName}</span>
+                <span>Montant final: {transaction.amount}</span>
               </article>
             ))}
           </div>

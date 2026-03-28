@@ -375,3 +375,77 @@ input {
     justify-items: start;
   }
 }
+
+.merchant-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.15fr;
+  gap: 1rem;
+}
+
+.stack-form {
+  display: grid;
+  gap: 0.85rem;
+}
+
+select {
+  width: 100%;
+  padding: 0.9rem 1rem;
+  border-radius: 14px;
+  border: 1px solid #d8ddcf;
+  background: #fcfbf8;
+}
+
+.inline-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.top-actions {
+  margin-top: 1rem;
+}
+
+.link-button {
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.alt-button {
+  background: #6f8451;
+}
+
+.merchant-offer-item {
+  grid-template-columns: 1.2fr 0.9fr;
+  align-items: center;
+}
+
+.merchant-offer-actions {
+  display: grid;
+  gap: 0.75rem;
+  justify-items: end;
+}
+
+.merchant-offer-actions button {
+  border: 1px solid #d8ddcf;
+  background: white;
+  border-radius: 999px;
+  padding: 0.55rem 0.8rem;
+}
+
+.result-card {
+  display: grid;
+  gap: 1rem;
+}
+
+@media (max-width: 860px) {
+  .merchant-grid,
+  .merchant-offer-item {
+    grid-template-columns: 1fr;
+  }
+
+  .merchant-offer-actions {
+    justify-items: start;
+  }
+}
