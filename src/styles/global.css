@@ -33,7 +33,7 @@ button {
 }
 
 .auth-panel, .panel {
-  width: min(960px, 100%);
+  width: min(1080px, 100%);
   background: rgba(255, 255, 255, 0.82);
   backdrop-filter: blur(14px);
   border: 1px solid rgba(24, 35, 15, 0.08);
@@ -72,6 +72,10 @@ button {
   border-radius: 20px;
   padding: 1.5rem;
   border: 1px solid rgba(24, 35, 15, 0.06);
+}
+
+.hero-card {
+  background: linear-gradient(135deg, #ffffff 0%, #f6f1e6 100%);
 }
 
 .form-card form {
@@ -176,6 +180,10 @@ input {
   border: 1px solid rgba(24, 35, 15, 0.06);
 }
 
+.highlight-card {
+  background: linear-gradient(180deg, #ffffff 0%, #faf7f0 100%);
+}
+
 .metric-value {
   font-size: 1.5rem;
   font-weight: 700;
@@ -200,12 +208,170 @@ input {
   border: 1px solid rgba(24, 35, 15, 0.06);
 }
 
+.transaction-item {
+  grid-template-columns: 1.2fr 1fr;
+  align-items: center;
+}
+
+.transaction-values {
+  display: grid;
+  gap: 0.2rem;
+  justify-items: end;
+}
+
+.state-card {
+  display: grid;
+  gap: 0.75rem;
+  place-items: start;
+}
+
+.state-icon,
+.state-pulse {
+  width: 54px;
+  height: 54px;
+  border-radius: 16px;
+  display: grid;
+  place-items: center;
+  background: #eef2e6;
+  color: #6f8451;
+  font-weight: 700;
+}
+
+.state-pulse {
+  animation: pulse 1.4s infinite ease-in-out;
+}
+
+.smart-card-panel {
+  display: grid;
+  grid-template-columns: 1.3fr 0.7fr;
+  gap: 1rem;
+}
+
+.smart-card-surface {
+  min-height: 250px;
+  padding: 1.5rem;
+  border-radius: 28px;
+  background: linear-gradient(135deg, #18230f 0%, #55624b 100%);
+  color: white;
+  display: grid;
+  gap: 1rem;
+}
+
+.smart-card-meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.smart-card-qr {
+  margin-top: auto;
+  padding: 1rem;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.smart-card-qr code {
+  display: block;
+  margin-top: 0.5rem;
+  word-break: break-word;
+}
+
+.compact-card {
+  height: 100%;
+}
+
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.3rem 0.7rem;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.status-active {
+  background: rgba(107, 255, 160, 0.18);
+  color: #0f7a3a;
+}
+
+.status-inactive {
+  background: rgba(255, 220, 107, 0.2);
+  color: #9a6300;
+}
+
+.offer-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1rem;
+}
+
+.offer-card {
+  padding: 1.25rem;
+  border-radius: 20px;
+  border: 1px solid rgba(24, 35, 15, 0.08);
+  background: linear-gradient(180deg, #ffffff 0%, #faf7f0 100%);
+  display: grid;
+  gap: 0.85rem;
+}
+
+.offer-topline,
+.offer-footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.offer-value {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #18230f;
+}
+
+.offers-page {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.offers-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: end;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 0.5;
+    transform: scale(0.95);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
 @media (max-width: 860px) {
-  .auth-panel {
+  .auth-panel,
+  .smart-card-panel {
     grid-template-columns: 1fr;
   }
 
   .dashboard-shell {
     grid-template-columns: 1fr;
+  }
+
+  .transaction-item,
+  .offers-header,
+  .offer-topline,
+  .offer-footer {
+    grid-template-columns: 1fr;
+    display: grid;
+  }
+
+  .transaction-values {
+    justify-items: start;
   }
 }
