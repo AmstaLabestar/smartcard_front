@@ -14,6 +14,7 @@ import { AdminUsersPage } from '../../features/admin/pages/AdminUsersPage';
 import { AdminMerchantsPage } from '../../features/admin/pages/AdminMerchantsPage';
 import { AdminCardsPage } from '../../features/admin/pages/AdminCardsPage';
 import { AdminOffersPage } from '../../features/admin/pages/AdminOffersPage';
+import { UserTransactionsPage } from '../../features/transactions/pages/UserTransactionsPage';
 import { ProtectedRoute } from '../../shared/components/ProtectedRoute';
 
 export function AppRouter() {
@@ -34,6 +35,17 @@ export function AppRouter() {
           }
         >
           <Route index element={<UserDashboardPage />} />
+        </Route>
+
+        <Route
+          path="/transactions"
+          element={
+            <ProtectedRoute allowedRoles={['USER']}>
+              <DashboardLayout />
+            </ProtectedRoute>
+          }
+        >
+          <Route index element={<UserTransactionsPage />} />
         </Route>
 
         <Route
