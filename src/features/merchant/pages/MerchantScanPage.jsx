@@ -41,10 +41,15 @@ export function MerchantScanPage() {
   };
 
   return (
-    <div className="merchant-grid">
+    <div className="merchant-grid merchant-scan-grid">
       <section className="content-card">
         <p className="eyebrow">Scan client</p>
         <h1>Valider une reduction</h1>
+        <p className="muted">Utilisez une offre active, saisissez le montant initial exact puis laissez le backend appliquer la remise.</p>
+        <div className="scan-tip-card">
+          <strong>Bon a savoir</strong>
+          <p className="muted">Le backend verifie la carte, l'offre et bloque les scans dupliques trop rapproches pour limiter les erreurs de caisse.</p>
+        </div>
         <form className="stack-form" onSubmit={handleSubmit}>
           <input placeholder="QR Code du client" value={form.qrCode} onChange={(e) => setForm({ ...form, qrCode: e.target.value })} />
           <select value={form.offerId} onChange={(e) => setForm({ ...form, offerId: e.target.value })}>
