@@ -3,15 +3,18 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 
-import { loginUser, fetchCurrentUser } from '../api/auth.api';
+import { fetchCurrentUser, loginUser } from '../api/auth.api';
 import { loginSchema } from '../schemas/auth.schemas';
 import { getDefaultRoute, useAuthStore } from '../store/auth.store';
+import { getApiErrorMessage } from '../../../shared/lib/api-error';
+import { useToast } from '../../../shared/components/feedback/ToastProvider';
 
 export function LoginPage() {
   const navigate = useNavigate();
   const location = useLocation();
   const setSession = useAuthStore((state) => state.setSession);
   const [serverError, setServerError] = useState('');
+  const toast = useToast();
   const {
     register,
     handleSubmit,
@@ -38,12 +41,15 @@ export function LoginPage() {
       const user = meResponse.data;
 
       setSession({ token, user });
+      toast.success('Bienvenue dans votre espace SmartCard.', 'Connexion reussie');
 
       const fallbackRoute = getDefaultRoute(user.role);
       const nextRoute = location.state?.from?.pathname || fallbackRoute;
       navigate(nextRoute, { replace: true });
     } catch (error) {
-      setServerError(error.response?.data?.error?.message || 'Connexion impossible');
+      const message = getApiErrorMessage(error, 'Connexion impossible');
+      setServerError(message);
+      toast.error(message, 'Connexion impossible');
     }
   };
 
@@ -71,4 +77,3 @@ export function LoginPage() {
     </section>
   );
 }
-

@@ -6,11 +6,14 @@ import { Link, useNavigate } from 'react-router-dom';
 import { fetchCurrentUser, registerUser } from '../api/auth.api';
 import { registerSchema } from '../schemas/auth.schemas';
 import { getDefaultRoute, useAuthStore } from '../store/auth.store';
+import { getApiErrorMessage } from '../../../shared/lib/api-error';
+import { useToast } from '../../../shared/components/feedback/ToastProvider';
 
 export function RegisterPage() {
   const navigate = useNavigate();
   const setSession = useAuthStore((state) => state.setSession);
   const [serverError, setServerError] = useState('');
+  const toast = useToast();
   const {
     register,
     handleSubmit,
@@ -49,9 +52,12 @@ export function RegisterPage() {
       const user = meResponse.data;
 
       setSession({ token, user });
+      toast.success('Votre compte est pret. Vous pouvez maintenant utiliser la plateforme.', 'Inscription reussie');
       navigate(getDefaultRoute(user.role), { replace: true });
     } catch (error) {
-      setServerError(error.response?.data?.error?.message || 'Inscription impossible');
+      const message = getApiErrorMessage(error, 'Inscription impossible');
+      setServerError(message);
+      toast.error(message, 'Inscription impossible');
     }
   };
 
@@ -101,4 +107,3 @@ export function RegisterPage() {
     </section>
   );
 }
-
