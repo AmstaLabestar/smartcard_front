@@ -8,9 +8,12 @@ import { TransactionPreviewList } from '../components/TransactionPreviewList';
 import { fetchMyCard, fetchMyTransactions } from '../api/me.api';
 import { EmptyState } from '../../../shared/components/states/EmptyState';
 import { LoadingState } from '../../../shared/components/states/LoadingState';
+import { getApiErrorMessage } from '../../../shared/lib/api-error';
+import { useToast } from '../../../shared/components/feedback/ToastProvider';
 
 export function UserDashboardPage() {
   const queryClient = useQueryClient();
+  const toast = useToast();
   const [purchaseError, setPurchaseError] = useState('');
   const [activationError, setActivationError] = useState('');
   const [activationSuccess, setActivationSuccess] = useState(false);
@@ -39,10 +42,13 @@ export function UserDashboardPage() {
     onSuccess: (response) => {
       setPurchaseError('');
       setPurchasedCard(response.data);
+      toast.success('Votre carte a bien ete generee. Activez-la pour afficher votre QR.', 'Carte prete');
       queryClient.invalidateQueries({ queryKey: ['me', 'card'] });
     },
     onError: (error) => {
-      setPurchaseError(error.response?.data?.error?.message || 'Achat impossible');
+      const message = getApiErrorMessage(error, 'Achat impossible');
+      setPurchaseError(message);
+      toast.error(message, 'Achat impossible');
     },
   });
 
@@ -51,14 +57,17 @@ export function UserDashboardPage() {
     onSuccess: async (_response, _code, context) => {
       setActivationError('');
       setActivationSuccess(true);
+      toast.success('Votre carte est maintenant active et prete a etre scannee.', 'Carte activee');
       if (typeof context?.onSuccess === 'function') {
         context.onSuccess();
       }
       await queryClient.invalidateQueries({ queryKey: ['me', 'card'] });
     },
     onError: (error) => {
+      const message = getApiErrorMessage(error, 'Activation impossible');
       setActivationSuccess(false);
-      setActivationError(error.response?.data?.error?.message || 'Activation impossible');
+      setActivationError(message);
+      toast.error(message, 'Activation impossible');
     },
   });
 
@@ -66,7 +75,7 @@ export function UserDashboardPage() {
   const transactions = transactionsResponse?.data || [];
 
   if (isCardLoading) {
-    return <LoadingState title="Chargement de votre espace" />;
+    return <LoadingState title="Chargement de votre espace" description="Nous recuperons votre carte et vos dernieres activites." />;
   }
 
   const hasNoCard = cardError?.response?.status === 404 || (!card && !isCardLoading);

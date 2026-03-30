@@ -4,8 +4,11 @@ import { useState } from 'react';
 import { fetchMerchantOffers } from '../../offers/api/offers.api';
 import { scanMerchantTransaction } from '../api/merchant.api';
 import { ScanResultCard } from '../components/ScanResultCard';
+import { getApiErrorMessage } from '../../../shared/lib/api-error';
+import { useToast } from '../../../shared/components/feedback/ToastProvider';
 
 export function MerchantScanPage() {
+  const toast = useToast();
   const [form, setForm] = useState({
     qrCode: '',
     offerId: '',
@@ -19,6 +22,12 @@ export function MerchantScanPage() {
 
   const mutation = useMutation({
     mutationFn: scanMerchantTransaction,
+    onSuccess: (response) => {
+      toast.success(`Reduction appliquee. Montant final : ${response.data.amount}.`, 'Transaction enregistree');
+    },
+    onError: (error) => {
+      toast.error(getApiErrorMessage(error, 'Scan impossible'), 'Scan impossible');
+    },
   });
 
   const offers = offersResponse?.data || [];
@@ -47,7 +56,7 @@ export function MerchantScanPage() {
             ))}
           </select>
           <input type="number" placeholder="Montant initial" value={form.originalAmount} onChange={(e) => setForm({ ...form, originalAmount: e.target.value })} />
-          {mutation.isError ? <p className="error-banner">{mutation.error.response?.data?.error?.message || 'Scan impossible'}</p> : null}
+          {mutation.isError ? <p className="error-banner">{getApiErrorMessage(mutation.error, 'Scan impossible')}</p> : null}
           <button className="primary-button" type="submit" disabled={mutation.isPending}>
             {mutation.isPending ? 'Validation...' : 'Scanner et appliquer'}
           </button>

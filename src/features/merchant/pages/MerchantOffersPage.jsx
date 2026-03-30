@@ -4,6 +4,8 @@ import { useState } from 'react';
 import { createMerchantOffer, updateMerchantOfferStatus } from '../api/merchant.api';
 import { MerchantOfferList } from '../components/MerchantOfferList';
 import { fetchMerchantOffers } from '../../offers/api/offers.api';
+import { getApiErrorMessage } from '../../../shared/lib/api-error';
+import { useToast } from '../../../shared/components/feedback/ToastProvider';
 
 const initialForm = {
   title: '',
@@ -16,6 +18,7 @@ const initialForm = {
 
 export function MerchantOffersPage() {
   const queryClient = useQueryClient();
+  const toast = useToast();
   const [form, setForm] = useState(initialForm);
   const [feedback, setFeedback] = useState('');
 
@@ -27,21 +30,29 @@ export function MerchantOffersPage() {
   const createMutation = useMutation({
     mutationFn: createMerchantOffer,
     onSuccess: () => {
-      setFeedback('Offre creee avec succes.');
+      const message = 'Votre offre est disponible dans votre catalogue.';
+      setFeedback(message);
       setForm(initialForm);
+      toast.success(message, 'Offre creee');
       queryClient.invalidateQueries({ queryKey: ['merchant', 'offers'] });
       queryClient.invalidateQueries({ queryKey: ['offers', 'active'] });
     },
     onError: (error) => {
-      setFeedback(error.response?.data?.error?.message || 'Creation impossible');
+      const message = getApiErrorMessage(error, 'Creation impossible');
+      setFeedback(message);
+      toast.error(message, 'Creation impossible');
     },
   });
 
   const statusMutation = useMutation({
     mutationFn: updateMerchantOfferStatus,
-    onSuccess: () => {
+    onSuccess: (_response, variables) => {
+      toast.success(`Le statut de l'offre est maintenant ${variables.status}.`, 'Offre mise a jour');
       queryClient.invalidateQueries({ queryKey: ['merchant', 'offers'] });
       queryClient.invalidateQueries({ queryKey: ['offers', 'active'] });
+    },
+    onError: (error) => {
+      toast.error(getApiErrorMessage(error, 'Mise a jour impossible'), 'Action impossible');
     },
   });
 
@@ -74,7 +85,7 @@ export function MerchantOffersPage() {
             <option value="ACTIVE">Active</option>
             <option value="DRAFT">Draft</option>
           </select>
-          {feedback ? <p className="muted">{feedback}</p> : null}
+          {feedback ? <p className={createMutation.isError ? 'error-banner' : 'success-banner'}>{feedback}</p> : null}
           <button className="primary-button" type="submit" disabled={createMutation.isPending}>
             {createMutation.isPending ? 'Creation...' : 'Creer l\'offre'}
           </button>
