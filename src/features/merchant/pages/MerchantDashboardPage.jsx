@@ -26,70 +26,70 @@ export function MerchantDashboardPage() {
     <div className="merchant-dashboard-page">
       <section className="panel content-card hero-card merchant-hero-card">
         <div>
-          <p className="eyebrow">Merchant</p>
-          <h1>Console commercant</h1>
-          <p className="muted">Pilotez vos offres actives, validez les reductions en boutique et suivez l'usage de vos campagnes.</p>
+          <p className="eyebrow">Espace partenaire</p>
+          <h1>Faites rayonner vos offres et suivez leur impact en temps reel</h1>
+          <p className="muted">Activez vos campagnes, validez les reductions en boutique et mesurez instantanement l'engagement de vos clients.</p>
         </div>
         <div className="inline-actions top-actions">
           <Link className="primary-button link-button" to="/merchant/offers">
-            Gerer les offres
+            Gerer mes offres
           </Link>
           <Link className="primary-button link-button alt-button" to="/merchant/scan">
-            Scanner un client
+            Lancer un scan
           </Link>
         </div>
       </section>
 
       <section className="cards-grid">
         <article className="metric-card highlight-card">
-          <h3>Offres actives</h3>
+          <h3>Offres en vitrine</h3>
           <p className="metric-value">{activeOffers}</p>
-          <p className="muted">Offres immediatement disponibles pour les clients.</p>
+          <p className="muted">Les offres actuellement visibles et activables pour vos clients.</p>
         </article>
         <article className="metric-card highlight-card">
-          <h3>Transactions</h3>
+          <h3>Passages en caisse</h3>
           <p className="metric-value">{transactions.length}</p>
-          <p className="muted">Nombre total de scans transformes en reductions.</p>
+          <p className="muted">Nombre total de reductions validees via SmartCard.</p>
         </article>
         <article className="metric-card highlight-card">
-          <h3>Montant final cumule</h3>
+          <h3>Chiffre final genere</h3>
           <p className="metric-value">{totalRevenue.toFixed(2)}</p>
-          <p className="muted">Somme finale payee apres application des reductions.</p>
+          <p className="muted">Montant encaisse apres application des reductions.</p>
         </article>
         <article className="metric-card highlight-card">
-          <h3>Reduction accordee</h3>
+          <h3>Economies accordees</h3>
           <p className="metric-value">{totalDiscount.toFixed(2)}</p>
-          <p className="muted">Valeur totale des remises accordees a vos clients.</p>
+          <p className="muted">Valeur totale offerte a vos clients pour les fideliser durablement.</p>
         </article>
       </section>
 
       <section className="merchant-dashboard-grid">
         <section className="content-card merchant-insight-card">
-          <p className="eyebrow">Actions rapides</p>
-          <h2>Rythme boutique</h2>
+          <p className="eyebrow">En pratique</p>
+          <h2>Les bons reflexes en boutique</h2>
           <div className="list-stack">
             <article className="list-item">
-              <strong>1. Garder des offres actives</strong>
-              <p className="muted">Sans offre active, vos vendeurs ne peuvent pas appliquer de reduction au comptoir.</p>
+              <strong>Gardez une offre active</strong>
+              <p className="muted">Une offre visible, c'est une occasion de plus de convertir un passage en caisse en client fidele.</p>
             </article>
             <article className="list-item">
-              <strong>2. Scanner avec le bon montant initial</strong>
-              <p className="muted">Le backend calcule ensuite automatiquement la remise et bloque les doubles scans trop rapproches.</p>
+              <strong>Saisissez le bon montant</strong>
+              <p className="muted">SmartCard applique automatiquement la bonne reduction et vous aide a eviter les erreurs au comptoir.</p>
             </article>
             <article className="list-item">
-              <strong>3. Verifier les dernieres validations</strong>
-              <p className="muted">Chaque transaction enregistree vous aide a suivre l'usage reel de vos offres.</p>
+              <strong>Suivez vos performances</strong>
+              <p className="muted">Chaque transaction validee vous aide a mesurer l'attractivite reelle de vos offres.</p>
             </article>
           </div>
         </section>
 
         <section className="content-card merchant-insight-card">
-          <p className="eyebrow">Catalogue</p>
-          <h2>Etat de vos offres</h2>
+          <p className="eyebrow">Vos offres</p>
+          <h2>Ce que vos clients peuvent activer aujourd'hui</h2>
           {offers.length === 0 ? (
             <EmptyState
-              title="Aucune offre pour l'instant"
-              description="Creez votre premiere offre pour commencer a distribuer des reductions a vos clients."
+              title="Aucune offre publiee pour le moment"
+              description="Creez votre premiere offre pour attirer l'attention et convertir davantage de clients en boutique."
             />
           ) : (
             <div className="list-stack">
@@ -110,28 +110,28 @@ export function MerchantDashboardPage() {
       <section className="panel content-card">
         <div className="section-heading-row">
           <div>
-            <p className="eyebrow">Dernieres validations</p>
-            <h2>Transactions recentes</h2>
+            <p className="eyebrow">Activite recente</p>
+            <h2>Vos dernieres reductions validees</h2>
           </div>
           <Link className="link-button secondary-link" to="/merchant/scan">
             Nouveau scan
           </Link>
         </div>
         {transactions.length === 0 ? (
-          <p className="muted">Aucune transaction pour le moment.</p>
+          <p className="muted">Vos prochaines validations apparaitront ici des le premier passage client.</p>
         ) : (
           <div className="list-stack">
             {transactions.slice(0, 6).map((transaction) => (
               <article key={transaction.id} className="list-item merchant-transaction-item">
                 <div>
                   <strong>{transaction.offer?.title || 'Offre SmartCard'}</strong>
-                  <p className="muted">Client: {transaction.user?.firstName} {transaction.user?.lastName}</p>
-                  <p className="muted">Ref: {transaction.reference}</p>
+                  <p className="muted">Client : {transaction.user?.firstName} {transaction.user?.lastName}</p>
+                  <p className="muted">Reference : {transaction.reference}</p>
                 </div>
                 <div className="merchant-transaction-values">
-                  <span>Initial: {transaction.originalAmount}</span>
-                  <span>Reduction: {transaction.discountAmount}</span>
-                  <strong>A payer: {transaction.amount}</strong>
+                  <span>Montant initial : {transaction.originalAmount}</span>
+                  <span>Economie client : {transaction.discountAmount}</span>
+                  <strong>Montant final : {transaction.amount}</strong>
                 </div>
               </article>
             ))}

@@ -1,4 +1,4 @@
-import { Link, Outlet } from 'react-router-dom';
+import { NavLink, Outlet } from 'react-router-dom';
 
 import { useAuthStore } from '../../features/auth/store/auth.store';
 
@@ -9,6 +9,7 @@ export function DashboardLayout() {
   const linksByRole = {
     USER: [
       { to: '/dashboard', label: 'Mon espace' },
+      { to: '/card-plans', label: 'Cartes' },
       { to: '/transactions', label: 'Transactions' },
       { to: '/offers', label: 'Offres' },
     ],
@@ -20,6 +21,7 @@ export function DashboardLayout() {
     ],
     ADMIN: [
       { to: '/admin/dashboard', label: 'Back-office' },
+      { to: '/admin/card-plans', label: 'Card Plans' },
       { to: '/admin/users', label: 'Users' },
       { to: '/admin/merchants', label: 'Merchants' },
       { to: '/admin/cards', label: 'Cards' },
@@ -39,9 +41,13 @@ export function DashboardLayout() {
         </div>
         <nav>
           {links.map((link) => (
-            <Link key={link.to} to={link.to}>
+            <NavLink
+              key={link.to}
+              to={link.to}
+              className={({ isActive }) => (isActive ? 'sidebar-link sidebar-link-active' : 'sidebar-link')}
+            >
               {link.label}
-            </Link>
+            </NavLink>
           ))}
         </nav>
         <button className="primary-button sidebar-button" type="button" onClick={logout}>

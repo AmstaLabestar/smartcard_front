@@ -14,22 +14,22 @@ export function OffersPage() {
   const offers = offersResponse?.data || [];
 
   if (isLoading) {
-    return <LoadingState title="Chargement des offres" />;
+    return <LoadingState title="Chargement de vos avantages" description="Nous preparons les offres disponibles avec votre carte." />;
   }
 
   return (
     <section className="panel content-card offers-page">
       <div className="offers-header">
         <div>
-          <p className="eyebrow">Offers</p>
-          <h1>Offres actives disponibles</h1>
+          <p className="eyebrow">Vos avantages</p>
+          <h1>Les meilleures offres accessibles avec votre carte</h1>
         </div>
-        <p className="muted">Catalogue live branche sur l'endpoint backend /api/offers.</p>
+        <p className="muted">Cette selection est personnalisee selon la carte que vous avez activee.</p>
       </div>
       {offers.length === 0 ? (
         <EmptyState
-          title="Aucune offre active"
-          description="Les merchants n'ont pas encore active d'offres visibles pour les users."
+          title="Aucune offre debloquee pour le moment"
+          description="Activez votre carte ou choisissez une autre formule pour acceder a davantage d'avantages partenaires."
         />
       ) : (
         <OfferGrid offers={offers} />

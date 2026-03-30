@@ -4,6 +4,7 @@ import { AuthLayout } from '../layouts/AuthLayout';
 import { DashboardLayout } from '../layouts/DashboardLayout';
 import { LoginPage } from '../../features/auth/pages/LoginPage';
 import { RegisterPage } from '../../features/auth/pages/RegisterPage';
+import { CardPlansPage } from '../../features/card-plans/pages/CardPlansPage';
 import { UserDashboardPage } from '../../features/me/pages/UserDashboardPage';
 import { OffersPage } from '../../features/offers/pages/OffersPage';
 import { MerchantDashboardPage } from '../../features/merchant/pages/MerchantDashboardPage';
@@ -14,6 +15,7 @@ import { AdminUsersPage } from '../../features/admin/pages/AdminUsersPage';
 import { AdminMerchantsPage } from '../../features/admin/pages/AdminMerchantsPage';
 import { AdminCardsPage } from '../../features/admin/pages/AdminCardsPage';
 import { AdminOffersPage } from '../../features/admin/pages/AdminOffersPage';
+import { AdminCardPlansPage } from '../../features/admin/pages/AdminCardPlansPage';
 import { UserTransactionsPage } from '../../features/transactions/pages/UserTransactionsPage';
 import { ProtectedRoute } from '../../shared/components/ProtectedRoute';
 
@@ -35,6 +37,17 @@ export function AppRouter() {
           }
         >
           <Route index element={<UserDashboardPage />} />
+        </Route>
+
+        <Route
+          path="/card-plans"
+          element={
+            <ProtectedRoute allowedRoles={['USER']}>
+              <DashboardLayout />
+            </ProtectedRoute>
+          }
+        >
+          <Route index element={<CardPlansPage />} />
         </Route>
 
         <Route
@@ -145,6 +158,17 @@ export function AppRouter() {
           }
         >
           <Route index element={<AdminOffersPage />} />
+        </Route>
+
+        <Route
+          path="/admin/card-plans"
+          element={
+            <ProtectedRoute allowedRoles={['ADMIN']}>
+              <DashboardLayout />
+            </ProtectedRoute>
+          }
+        >
+          <Route index element={<AdminCardPlansPage />} />
         </Route>
 
         <Route path="*" element={<Navigate to="/login" replace />} />

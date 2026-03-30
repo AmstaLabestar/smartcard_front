@@ -41,7 +41,7 @@ export function LoginPage() {
       const user = meResponse.data;
 
       setSession({ token, user });
-      toast.success('Bienvenue dans votre espace SmartCard.', 'Connexion reussie');
+      toast.success('Heureux de vous retrouver sur SmartCard.', 'Connexion reussie');
 
       const fallbackRoute = getDefaultRoute(user.role);
       const nextRoute = location.state?.from?.pathname || fallbackRoute;
@@ -56,7 +56,7 @@ export function LoginPage() {
   return (
     <section className="form-card">
       <h2>Connexion</h2>
-      <p className="muted">Connecte ton compte utilisateur, commercant ou admin.</p>
+      <p className="muted">Accedez a votre espace SmartCard pour retrouver vos avantages, vos offres et vos transactions.</p>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div>
           <input type="text" placeholder="Email ou numero" {...register('identifier')} />
@@ -68,11 +68,11 @@ export function LoginPage() {
         </div>
         {serverError ? <p className="error-banner">{serverError}</p> : null}
         <button className="primary-button" type="submit" disabled={isSubmitting}>
-          {isSubmitting ? 'Connexion...' : 'Se connecter'}
+          {isSubmitting ? 'Connexion en cours...' : 'Acceder a mon espace'}
         </button>
       </form>
       <p>
-        Pas encore de compte ? <Link to="/register">Creer un compte</Link>
+        Nouveau sur SmartCard ? <Link to="/register">Creer mon compte</Link>
       </p>
     </section>
   );
