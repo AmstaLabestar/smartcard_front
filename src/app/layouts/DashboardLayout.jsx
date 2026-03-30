@@ -9,6 +9,7 @@ export function DashboardLayout() {
   const linksByRole = {
     USER: [
       { to: '/dashboard', label: 'Mon espace' },
+      { to: '/card-plans', label: 'Cartes' },
       { to: '/transactions', label: 'Transactions' },
       { to: '/offers', label: 'Offres' },
     ],

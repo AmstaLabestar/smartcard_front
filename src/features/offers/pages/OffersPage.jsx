@@ -22,14 +22,14 @@ export function OffersPage() {
       <div className="offers-header">
         <div>
           <p className="eyebrow">Offers</p>
-          <h1>Offres actives disponibles</h1>
+          <h1>Vos avantages disponibles</h1>
         </div>
-        <p className="muted">Catalogue live branche sur l'endpoint backend /api/offers.</p>
+        <p className="muted">Cette liste est maintenant filtree selon la carte que vous avez achetee.</p>
       </div>
       {offers.length === 0 ? (
         <EmptyState
-          title="Aucune offre active"
-          description="Les merchants n'ont pas encore active d'offres visibles pour les users."
+          title="Aucune offre disponible pour votre carte"
+          description="Activez une carte ou choisissez un autre plan pour debloquer plus d'avantages."
         />
       ) : (
         <OfferGrid offers={offers} />

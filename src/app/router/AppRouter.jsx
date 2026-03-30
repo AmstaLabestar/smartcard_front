@@ -4,6 +4,7 @@ import { AuthLayout } from '../layouts/AuthLayout';
 import { DashboardLayout } from '../layouts/DashboardLayout';
 import { LoginPage } from '../../features/auth/pages/LoginPage';
 import { RegisterPage } from '../../features/auth/pages/RegisterPage';
+import { CardPlansPage } from '../../features/card-plans/pages/CardPlansPage';
 import { UserDashboardPage } from '../../features/me/pages/UserDashboardPage';
 import { OffersPage } from '../../features/offers/pages/OffersPage';
 import { MerchantDashboardPage } from '../../features/merchant/pages/MerchantDashboardPage';
@@ -35,6 +36,17 @@ export function AppRouter() {
           }
         >
           <Route index element={<UserDashboardPage />} />
+        </Route>
+
+        <Route
+          path="/card-plans"
+          element={
+            <ProtectedRoute allowedRoles={['USER']}>
+              <DashboardLayout />
+            </ProtectedRoute>
+          }
+        >
+          <Route index element={<CardPlansPage />} />
         </Route>
 
         <Route

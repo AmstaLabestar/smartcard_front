@@ -1,12 +1,9 @@
 import { apiClient } from '../../../shared/lib/api-client';
 
-export async function purchaseCard(payload = {}) {
-  const body = {
-    title: payload.title || 'SmartCard Reduction',
-    ...(payload.description ? { description: payload.description } : {}),
-  };
-
-  const { data } = await apiClient.post('/cards/purchase', body);
+export async function purchaseCard(payload) {
+  const { data } = await apiClient.post('/cards/purchase', {
+    cardPlanId: payload.cardPlanId,
+  });
   return data;
 }
 

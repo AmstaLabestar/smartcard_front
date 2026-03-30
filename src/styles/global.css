@@ -758,3 +758,37 @@ button:disabled {
     justify-items: start;
   }
 }
+
+.card-plan-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1rem;
+}
+
+.card-plan-card {
+  text-align: left;
+  border: 1px solid rgba(24, 35, 15, 0.08);
+  border-radius: 20px;
+  background: linear-gradient(180deg, #ffffff 0%, #faf7f0 100%);
+  padding: 1.25rem;
+  display: grid;
+  gap: 0.85rem;
+}
+
+.card-plan-card-active {
+  border-color: #18230f;
+  box-shadow: 0 12px 28px rgba(24, 35, 15, 0.12);
+}
+
+.card-plan-topline {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: center;
+}
+
+.card-plan-highlights {
+  margin: 0;
+  color: #18230f;
+  font-weight: 600;
+}
