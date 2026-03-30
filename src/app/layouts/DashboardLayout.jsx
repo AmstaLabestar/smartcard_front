@@ -21,6 +21,7 @@ export function DashboardLayout() {
     ],
     ADMIN: [
       { to: '/admin/dashboard', label: 'Back-office' },
+      { to: '/admin/card-plans', label: 'Card Plans' },
       { to: '/admin/users', label: 'Users' },
       { to: '/admin/merchants', label: 'Merchants' },
       { to: '/admin/cards', label: 'Cards' },

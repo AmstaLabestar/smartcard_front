@@ -15,6 +15,7 @@ import { AdminUsersPage } from '../../features/admin/pages/AdminUsersPage';
 import { AdminMerchantsPage } from '../../features/admin/pages/AdminMerchantsPage';
 import { AdminCardsPage } from '../../features/admin/pages/AdminCardsPage';
 import { AdminOffersPage } from '../../features/admin/pages/AdminOffersPage';
+import { AdminCardPlansPage } from '../../features/admin/pages/AdminCardPlansPage';
 import { UserTransactionsPage } from '../../features/transactions/pages/UserTransactionsPage';
 import { ProtectedRoute } from '../../shared/components/ProtectedRoute';
 
@@ -157,6 +158,17 @@ export function AppRouter() {
           }
         >
           <Route index element={<AdminOffersPage />} />
+        </Route>
+
+        <Route
+          path="/admin/card-plans"
+          element={
+            <ProtectedRoute allowedRoles={['ADMIN']}>
+              <DashboardLayout />
+            </ProtectedRoute>
+          }
+        >
+          <Route index element={<AdminCardPlansPage />} />
         </Route>
 
         <Route path="*" element={<Navigate to="/login" replace />} />

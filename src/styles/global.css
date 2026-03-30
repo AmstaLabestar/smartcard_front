@@ -792,3 +792,44 @@ button:disabled {
   color: #18230f;
   font-weight: 600;
 }
+
+.admin-card-plan-grid {
+  align-items: start;
+}
+
+.admin-card-plan-item {
+  display: grid;
+  grid-template-columns: 1.2fr 0.9fr;
+  gap: 1rem;
+  align-items: center;
+}
+
+.admin-card-plan-offers-card {
+  display: grid;
+  gap: 1rem;
+}
+
+.offer-selector-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 0.75rem;
+}
+
+.selector-card {
+  display: grid;
+  gap: 0.35rem;
+  padding: 0.9rem 1rem;
+  border-radius: 16px;
+  border: 1px solid rgba(24, 35, 15, 0.08);
+  background: #fcfbf8;
+}
+
+.selector-card input {
+  width: auto;
+}
+
+@media (max-width: 860px) {
+  .admin-card-plan-item {
+    grid-template-columns: 1fr;
+  }
+}

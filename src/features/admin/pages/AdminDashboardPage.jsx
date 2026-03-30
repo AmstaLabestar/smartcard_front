@@ -1,7 +1,13 @@
 import { useQueries } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
 
-import { fetchAdminCards, fetchAdminMerchants, fetchAdminOffers, fetchAdminUsers } from '../api/admin.api';
+import {
+  fetchAdminCardPlans,
+  fetchAdminCards,
+  fetchAdminMerchants,
+  fetchAdminOffers,
+  fetchAdminUsers,
+} from '../api/admin.api';
 
 export function AdminDashboardPage() {
   const results = useQueries({
@@ -10,6 +16,7 @@ export function AdminDashboardPage() {
       { queryKey: ['admin', 'merchants'], queryFn: fetchAdminMerchants },
       { queryKey: ['admin', 'cards'], queryFn: fetchAdminCards },
       { queryKey: ['admin', 'offers'], queryFn: fetchAdminOffers },
+      { queryKey: ['admin', 'card-plans'], queryFn: fetchAdminCardPlans },
     ],
   });
 
@@ -17,19 +24,20 @@ export function AdminDashboardPage() {
   const merchants = results[1].data?.data || [];
   const cards = results[2].data?.data || [];
   const offers = results[3].data?.data || [];
+  const cardPlans = results[4].data?.data || [];
 
   return (
     <>
       <section className="panel content-card hero-card">
         <p className="eyebrow">Admin</p>
         <h1>Back-office SmartCard</h1>
-        <p className="muted">Vue globale simple pour superviser la V1 avant d'ajouter du reporting avance.</p>
+        <p className="muted">Vue globale simple pour superviser la V1 et piloter les cartes commerciales.</p>
         <div className="inline-actions top-actions">
           <Link className="primary-button link-button" to="/admin/users">
             Utilisateurs
           </Link>
-          <Link className="primary-button link-button alt-button" to="/admin/cards">
-            Cartes
+          <Link className="primary-button link-button alt-button" to="/admin/card-plans">
+            Card Plans
           </Link>
           <Link className="primary-button link-button alt-button" to="/admin/offers">
             Offres
@@ -52,6 +60,10 @@ export function AdminDashboardPage() {
         <article className="metric-card highlight-card">
           <h3>Offers</h3>
           <p className="metric-value">{offers.length}</p>
+        </article>
+        <article className="metric-card highlight-card">
+          <h3>Card Plans</h3>
+          <p className="metric-value">{cardPlans.length}</p>
         </article>
       </section>
     </>
