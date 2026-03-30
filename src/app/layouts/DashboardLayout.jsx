@@ -13,6 +13,8 @@ export function DashboardLayout() {
     ],
     MERCHANT: [
       { to: '/merchant/dashboard', label: 'Dashboard' },
+      { to: '/merchant/offers', label: 'Mes offres' },
+      { to: '/merchant/scan', label: 'Scan client' },
       { to: '/offers', label: 'Catalogue' },
     ],
     ADMIN: [
