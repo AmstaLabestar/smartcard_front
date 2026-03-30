@@ -1,14 +1,25 @@
 import { useQuery } from '@tanstack/react-query';
 
+import { UserCardPanel } from '../components/UserCardPanel';
+import { TransactionPreviewList } from '../components/TransactionPreviewList';
 import { fetchMyCard, fetchMyTransactions } from '../api/me.api';
+import { EmptyState } from '../../../shared/components/states/EmptyState';
+import { LoadingState } from '../../../shared/components/states/LoadingState';
 
 export function UserDashboardPage() {
-  const { data: cardResponse } = useQuery({
+  const {
+    data: cardResponse,
+    isLoading: isCardLoading,
+    error: cardError,
+  } = useQuery({
     queryKey: ['me', 'card'],
     queryFn: fetchMyCard,
   });
 
-  const { data: transactionsResponse } = useQuery({
+  const {
+    data: transactionsResponse,
+    isLoading: isTransactionsLoading,
+  } = useQuery({
     queryKey: ['me', 'transactions'],
     queryFn: fetchMyTransactions,
   });
@@ -16,44 +27,53 @@ export function UserDashboardPage() {
   const card = cardResponse?.data;
   const transactions = transactionsResponse?.data || [];
 
+  if (isCardLoading) {
+    return <LoadingState title="Chargement de votre espace" />;
+  }
+
   return (
     <>
-      <section className="panel content-card">
+      <section className="panel content-card hero-card">
         <p className="eyebrow">User Dashboard</p>
-        <h1>Mon espace carte de reduction</h1>
-        <p className="muted">Ce dashboard consomme deja le backend via /me/card et /me/transactions.</p>
+        <h1>Bienvenue dans votre espace SmartCard</h1>
+        <p className="muted">Retrouvez votre carte, votre QR code et vos dernieres reductions sans changer d'ecran.</p>
       </section>
+
+      {card ? (
+        <UserCardPanel card={card} />
+      ) : (
+        <EmptyState
+          title="Aucune carte liee a ce compte"
+          description={cardError?.response?.data?.error?.message || 'Achetez puis activez votre carte pour commencer a profiter des reductions.'}
+        />
+      )}
+
       <section className="cards-grid">
-        <article className="metric-card">
-          <h3>Carte</h3>
-          <p className="metric-value">{card?.status || 'Aucune carte'}</p>
-          <p className="muted">{card?.cardNumber || 'Achetez une carte pour commencer.'}</p>
+        <article className="metric-card highlight-card">
+          <h3>Statut de la carte</h3>
+          <p className="metric-value">{card?.status || 'Aucune'}</p>
+          <p className="muted">Un user doit avoir une carte active pour etre scanne chez un merchant.</p>
         </article>
-        <article className="metric-card">
-          <h3>QR Code</h3>
-          <p className="metric-value qr-preview">{card?.qrCode || 'Indisponible'}</p>
-          <p className="muted">Visible uniquement pour le user connecte.</p>
-        </article>
-        <article className="metric-card">
-          <h3>Transactions</h3>
+        <article className="metric-card highlight-card">
+          <h3>Total transactions</h3>
           <p className="metric-value">{transactions.length}</p>
-          <p className="muted">Nombre total de transactions enregistrees.</p>
+          <p className="muted">Toutes vos utilisations confirmees chez les commerçants.</p>
+        </article>
+        <article className="metric-card highlight-card">
+          <h3>Derniere reduction</h3>
+          <p className="metric-value">{transactions[0]?.discountAmount || '0'}</p>
+          <p className="muted">Montant economise sur la transaction la plus recente.</p>
         </article>
       </section>
+
       <section className="panel content-card">
         <h2>Dernieres transactions</h2>
-        {transactions.length === 0 ? (
+        {isTransactionsLoading ? (
+          <p className="muted">Chargement des transactions...</p>
+        ) : transactions.length === 0 ? (
           <p className="muted">Aucune transaction pour le moment.</p>
         ) : (
-          <div className="list-stack">
-            {transactions.slice(0, 5).map((transaction) => (
-              <article key={transaction.id} className="list-item">
-                <strong>{transaction.offer?.title || 'Offre'}</strong>
-                <span>Montant final: {transaction.amount}</span>
-                <span>Reduction: {transaction.discountAmount}</span>
-              </article>
-            ))}
-          </div>
+          <TransactionPreviewList transactions={transactions.slice(0, 5)} />
         )}
       </section>
     </>
