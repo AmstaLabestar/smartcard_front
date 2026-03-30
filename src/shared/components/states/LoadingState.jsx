@@ -1,4 +1,4 @@
-export function LoadingState({ title = 'Chargement...', description = 'Les donnees sont en train d\'arriver depuis le backend.' }) {
+export function LoadingState({ title = 'Chargement...', description = 'Nous preparons votre experience SmartCard.' }) {
   return (
     <section className="content-card state-card">
       <div className="state-pulse" />

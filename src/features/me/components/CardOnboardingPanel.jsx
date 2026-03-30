@@ -58,9 +58,9 @@ export function CardOnboardingPanel({
 
   return (
     <section className="content-card onboarding-card">
-      <p className="eyebrow">Carte requise</p>
-      <h2>Choisissez, achetez puis activez votre carte</h2>
-      <p className="muted">Chaque carte donne acces a un ensemble d'avantages different. Sans carte active, le commercant ne peut pas scanner votre reduction.</p>
+      <p className="eyebrow">Votre parcours</p>
+      <h2>Choisissez votre carte et activez vos avantages</h2>
+      <p className="muted">Chaque carte donne acces a une selection d'offres exclusives. Une fois activee, elle devient votre passeport reduction chez nos partenaires.</p>
 
       <div>
         <h3>1. Choisir votre carte</h3>
@@ -69,11 +69,11 @@ export function CardOnboardingPanel({
 
       <div className="onboarding-grid">
         <article className="metric-card">
-          <h3>2. Acheter la carte</h3>
+          <h3>2. Finaliser votre achat</h3>
           <p className="muted">
             {selectedCardPlan
-              ? `Vous allez acheter ${selectedCardPlan.name} pour ${selectedCardPlan.price}.`
-              : 'Selectionnez une carte commerciale pour continuer.'}
+              ? `Vous allez activer ${selectedCardPlan.name} et profiter de ses avantages pour ${selectedCardPlan.price}.`
+              : 'Selectionnez une carte pour decouvrir ses avantages et finaliser votre achat.'}
           </p>
           <button
             className="primary-button"
@@ -81,12 +81,12 @@ export function CardOnboardingPanel({
             onClick={() => onPurchase(selectedCardPlanId)}
             disabled={purchaseState.isPending || !selectedCardPlanId}
           >
-            {purchaseState.isPending ? 'Generation...' : 'Acheter cette carte'}
+            {purchaseState.isPending ? 'Preparation de votre carte...' : 'Acheter cette carte'}
           </button>
         </article>
         <article className="metric-card">
-          <h3>3. Activer la carte</h3>
-          <p className="muted">Collez votre code d'activation puis activez la carte pour afficher le QR.</p>
+          <h3>3. Activer votre carte</h3>
+          <p className="muted">Saisissez votre code d'activation pour debloquer votre QR code et commencer a profiter de vos reductions.</p>
           <form className="stack-form" onSubmit={handleActivate}>
             <input
               type="text"
@@ -95,7 +95,7 @@ export function CardOnboardingPanel({
               onChange={(event) => setActivationCode(event.target.value)}
             />
             <button className="primary-button" type="submit" disabled={activationState.isPending || !activationCode}>
-              {activationState.isPending ? 'Activation...' : 'Activer ma carte'}
+              {activationState.isPending ? 'Activation en cours...' : 'Activer ma carte'}
             </button>
           </form>
         </article>
@@ -103,22 +103,22 @@ export function CardOnboardingPanel({
 
       {selectedCardPlan ? (
         <div className="purchase-result">
-          <p><strong>Carte choisie :</strong> {selectedCardPlan.name}</p>
+          <p><strong>Carte selectionnee :</strong> {selectedCardPlan.name}</p>
           <p><strong>Prix :</strong> {selectedCardPlan.price}</p>
-          <p><strong>Avantages :</strong> {selectedCardPlan.offers?.length || 0} offres incluses</p>
+          <p><strong>Avantages inclus :</strong> {selectedCardPlan.offers?.length || 0} offres partenaires</p>
         </div>
       ) : null}
 
       {purchasedCard ? (
         <div className="purchase-result">
-          <p><strong>Carte generee :</strong> {purchasedCard.cardNumber}</p>
-          <p><strong>Code activation :</strong> {purchasedCard.activationCode}</p>
-          <p><strong>Reference achat :</strong> {purchasedCard.purchaseReference}</p>
+          <p><strong>Votre carte est prete :</strong> {purchasedCard.cardNumber}</p>
+          <p><strong>Code d'activation :</strong> {purchasedCard.activationCode}</p>
+          <p><strong>Reference :</strong> {purchasedCard.purchaseReference}</p>
         </div>
       ) : null}
       {purchaseState.error ? <p className="error-banner">{purchaseState.error}</p> : null}
       {activationState.error ? <p className="error-banner">{activationState.error}</p> : null}
-      {activationState.success ? <p className="success-banner">Carte activee avec succes.</p> : null}
+      {activationState.success ? <p className="success-banner">Votre carte est active. Vous pouvez maintenant profiter de vos avantages.</p> : null}
     </section>
   );
 }

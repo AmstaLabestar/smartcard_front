@@ -52,7 +52,7 @@ export function RegisterPage() {
       const user = meResponse.data;
 
       setSession({ token, user });
-      toast.success('Votre compte est pret. Vous pouvez maintenant utiliser la plateforme.', 'Inscription reussie');
+      toast.success('Votre compte est pret. Vous pouvez commencer a profiter de SmartCard.', 'Bienvenue');
       navigate(getDefaultRoute(user.role), { replace: true });
     } catch (error) {
       const message = getApiErrorMessage(error, 'Inscription impossible');
@@ -63,17 +63,17 @@ export function RegisterPage() {
 
   return (
     <section className="form-card">
-      <h2>Inscription</h2>
-      <p className="muted">Choisis un role simple pour demarrer la V1.</p>
+      <h2>Creer un compte</h2>
+      <p className="muted">Rejoignez SmartCard et accedez rapidement a des reductions reservees a votre profil.</p>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="segmented-control">
           <label>
             <input type="radio" value="USER" {...register('role')} />
-            <span>User</span>
+            <span>Client</span>
           </label>
           <label>
             <input type="radio" value="MERCHANT" {...register('role')} />
-            <span>Merchant</span>
+            <span>Partenaire</span>
           </label>
         </div>
         <div>
@@ -89,7 +89,7 @@ export function RegisterPage() {
           {errors.email ? <small className="error-text">{errors.email.message}</small> : null}
         </div>
         <div>
-          <input type="text" placeholder={selectedRole === 'MERCHANT' ? 'Numero pro ou mobile' : 'Numero de telephone'} {...register('phoneNumber')} />
+          <input type="text" placeholder={selectedRole === 'MERCHANT' ? 'Numero professionnel ou mobile' : 'Numero de telephone'} {...register('phoneNumber')} />
           {errors.phoneNumber ? <small className="error-text">{errors.phoneNumber.message}</small> : null}
         </div>
         <div>
@@ -98,11 +98,11 @@ export function RegisterPage() {
         </div>
         {serverError ? <p className="error-banner">{serverError}</p> : null}
         <button className="primary-button" type="submit" disabled={isSubmitting}>
-          {isSubmitting ? 'Creation...' : 'Creer mon compte'}
+          {isSubmitting ? 'Creation du compte...' : 'Commencer avec SmartCard'}
         </button>
       </form>
       <p>
-        Deja un compte ? <Link to="/login">Se connecter</Link>
+        Vous avez deja un compte ? <Link to="/login">Se connecter</Link>
       </p>
     </section>
   );
