@@ -662,3 +662,99 @@ button:disabled {
     display: grid;
   }
 }
+
+.merchant-dashboard-page {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.merchant-hero-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  gap: 1rem;
+}
+
+.merchant-dashboard-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.merchant-insight-card {
+  display: grid;
+  gap: 1rem;
+}
+
+.merchant-offer-summary {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  gap: 1rem;
+}
+
+.section-heading-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.secondary-link {
+  color: #18230f;
+  font-weight: 600;
+}
+
+.merchant-transaction-item {
+  display: grid;
+  grid-template-columns: 1.2fr 0.9fr;
+  gap: 1rem;
+  align-items: center;
+}
+
+.merchant-transaction-values {
+  display: grid;
+  gap: 0.3rem;
+  justify-items: end;
+}
+
+.merchant-scan-grid {
+  align-items: start;
+}
+
+.scan-tip-card {
+  margin: 1rem 0;
+  padding: 1rem 1.1rem;
+  border-radius: 18px;
+  background: #f6f1e6;
+  border: 1px solid rgba(24, 35, 15, 0.08);
+}
+
+.scan-tip-card p {
+  margin-bottom: 0;
+}
+
+.scan-placeholder-card {
+  min-height: 100%;
+  align-content: start;
+}
+
+.scan-success-card {
+  align-content: start;
+}
+
+@media (max-width: 860px) {
+  .merchant-hero-card,
+  .merchant-dashboard-grid,
+  .merchant-transaction-item,
+  .section-heading-row,
+  .merchant-offer-summary {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .merchant-transaction-values {
+    justify-items: start;
+  }
+}

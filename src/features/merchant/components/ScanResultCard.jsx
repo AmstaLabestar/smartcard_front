@@ -1,8 +1,16 @@
 export function ScanResultCard({ transaction }) {
-  if (!transaction) return null;
+  if (!transaction) {
+    return (
+      <section className="content-card result-card scan-placeholder-card">
+        <p className="eyebrow">Resultat scan</p>
+        <h2>En attente de validation</h2>
+        <p className="muted">Saisissez un QR code, choisissez une offre puis confirmez le montant initial pour voir la transaction ici.</p>
+      </section>
+    );
+  }
 
   return (
-    <section className="content-card result-card">
+    <section className="content-card result-card scan-success-card">
       <p className="eyebrow">Transaction creee</p>
       <h2>{transaction.offer?.title}</h2>
       <div className="cards-grid">
@@ -19,7 +27,11 @@ export function ScanResultCard({ transaction }) {
           <p className="metric-value">{transaction.amount}</p>
         </article>
       </div>
-      <p className="muted">Ref transaction : {transaction.reference}</p>
+      <div className="purchase-result">
+        <p><strong>Transaction :</strong> {transaction.reference}</p>
+        <p><strong>Client :</strong> {transaction.user?.firstName} {transaction.user?.lastName}</p>
+        <p><strong>Carte :</strong> {transaction.card?.cardNumber}</p>
+      </div>
     </section>
   );
 }
