@@ -1,4 +1,4 @@
-import { Link, Outlet } from 'react-router-dom';
+import { NavLink, Outlet } from 'react-router-dom';
 
 import { useAuthStore } from '../../features/auth/store/auth.store';
 
@@ -41,9 +41,13 @@ export function DashboardLayout() {
         </div>
         <nav>
           {links.map((link) => (
-            <Link key={link.to} to={link.to}>
+            <NavLink
+              key={link.to}
+              to={link.to}
+              className={({ isActive }) => (isActive ? 'sidebar-link sidebar-link-active' : 'sidebar-link')}
+            >
               {link.label}
-            </Link>
+            </NavLink>
           ))}
         </nav>
         <button className="primary-button sidebar-button" type="button" onClick={logout}>
