@@ -10,6 +10,10 @@ import { MerchantDashboardPage } from '../../features/merchant/pages/MerchantDas
 import { MerchantOffersPage } from '../../features/merchant/pages/MerchantOffersPage';
 import { MerchantScanPage } from '../../features/merchant/pages/MerchantScanPage';
 import { AdminDashboardPage } from '../../features/admin/pages/AdminDashboardPage';
+import { AdminUsersPage } from '../../features/admin/pages/AdminUsersPage';
+import { AdminMerchantsPage } from '../../features/admin/pages/AdminMerchantsPage';
+import { AdminCardsPage } from '../../features/admin/pages/AdminCardsPage';
+import { AdminOffersPage } from '../../features/admin/pages/AdminOffersPage';
 import { ProtectedRoute } from '../../shared/components/ProtectedRoute';
 
 export function AppRouter() {
@@ -85,6 +89,50 @@ export function AppRouter() {
           }
         >
           <Route index element={<AdminDashboardPage />} />
+        </Route>
+
+        <Route
+          path="/admin/users"
+          element={
+            <ProtectedRoute allowedRoles={['ADMIN']}>
+              <DashboardLayout />
+            </ProtectedRoute>
+          }
+        >
+          <Route index element={<AdminUsersPage />} />
+        </Route>
+
+        <Route
+          path="/admin/merchants"
+          element={
+            <ProtectedRoute allowedRoles={['ADMIN']}>
+              <DashboardLayout />
+            </ProtectedRoute>
+          }
+        >
+          <Route index element={<AdminMerchantsPage />} />
+        </Route>
+
+        <Route
+          path="/admin/cards"
+          element={
+            <ProtectedRoute allowedRoles={['ADMIN']}>
+              <DashboardLayout />
+            </ProtectedRoute>
+          }
+        >
+          <Route index element={<AdminCardsPage />} />
+        </Route>
+
+        <Route
+          path="/admin/offers"
+          element={
+            <ProtectedRoute allowedRoles={['ADMIN']}>
+              <DashboardLayout />
+            </ProtectedRoute>
+          }
+        >
+          <Route index element={<AdminOffersPage />} />
         </Route>
 
         <Route path="*" element={<Navigate to="/login" replace />} />
