@@ -588,3 +588,77 @@ button:disabled {
     width: auto;
   }
 }
+
+.transactions-page {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.transactions-toolbar-card {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: end;
+}
+
+.filter-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.filter-chip {
+  border: 1px solid #d8ddcf;
+  background: white;
+  color: #18230f;
+  padding: 0.7rem 1rem;
+  border-radius: 999px;
+}
+
+.filter-chip-active {
+  background: #18230f;
+  color: white;
+}
+
+.transaction-history-list {
+  gap: 1rem;
+}
+
+.transaction-history-item {
+  gap: 1rem;
+}
+
+.transaction-main {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: start;
+}
+
+.transaction-meta-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 0.75rem;
+}
+
+.transaction-meta-grid > div {
+  display: grid;
+  gap: 0.25rem;
+  padding: 0.85rem 0.9rem;
+  border-radius: 14px;
+  background: #fcfbf8;
+}
+
+.meta-label {
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #6f8451;
+}
+
+@media (max-width: 860px) {
+  .transactions-toolbar-card,
+  .transaction-main {
+    display: grid;
+  }
+}
