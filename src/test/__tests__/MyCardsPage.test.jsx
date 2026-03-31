@@ -92,9 +92,9 @@ describe('MyCardsPage', () => {
 
     renderWithProviders(<MyCardsPage />);
 
-    expect(await screen.findByText('Une carte active, le reste a portee de main.')).toBeInTheDocument();
-    expect(screen.getByText('Votre portefeuille')).toBeInTheDocument();
-    expect(screen.getByText('Toutes vos cartes')).toBeInTheDocument();
+    expect(await screen.findByText('Presentez-la, ou activez-en une autre en un geste.')).toBeInTheDocument();
+    expect(screen.getByText('Votre carte active, prete en caisse')).toBeInTheDocument();
+    expect(screen.getByText('Autres cartes')).toBeInTheDocument();
     expect(screen.getByText('Carte Premium')).toBeInTheDocument();
 
     await userEvent.click(screen.getByRole('button', { name: 'Activer' }));

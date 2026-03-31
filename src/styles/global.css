@@ -2018,3 +2018,51 @@ body {
     grid-template-columns: 1fr;
   }
 }
+
+.wallet-page-focused {
+  gap: 1.25rem;
+}
+
+.wallet-hero-card {
+  align-items: start;
+}
+
+.wallet-hero-aside {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.wallet-active-card-panel {
+  align-items: stretch;
+}
+
+.wallet-active-card-surface {
+  min-height: 100%;
+}
+
+.wallet-active-card-aside {
+  justify-content: center;
+}
+
+.wallet-grid-section {
+  gap: 1rem;
+}
+
+.owned-card-grid-compact {
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+
+.owned-card-item-compact {
+  gap: 0.85rem;
+}
+
+.owned-card-meta-grid-compact {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+@media (max-width: 860px) {
+  .owned-card-grid-compact,
+  .owned-card-meta-grid-compact {
+    grid-template-columns: 1fr;
+  }
+}
