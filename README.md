@@ -34,3 +34,16 @@ Points importants :
 - le frontend est servi par `nginx`
 - l URL backend est injectee au build via `VITE_API_URL`
 - la configuration SPA redirige toutes les routes vers `index.html`
+<<<<<<< HEAD
+=======
+
+## CI
+
+Une GitHub Action `Frontend CI` verifie automatiquement :
+
+- l installation des dependances
+- les tests Vitest
+- le build de production
+
+Le workflow est lance sur `main`, sur les branches `feature/*` et sur les pull requests.
+>>>>>>> feature/github-actions-ci
