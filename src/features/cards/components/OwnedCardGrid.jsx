@@ -1,3 +1,5 @@
+import { QRCodeDisplay } from '../../../shared/components/qr/QRCodeDisplay';
+
 export function OwnedCardGrid({ cards, onActivate, activatingCardId }) {
   return (
     <div className="owned-card-grid">
@@ -34,9 +36,9 @@ export function OwnedCardGrid({ cards, onActivate, activatingCardId }) {
               </div>
             </div>
             {isActive ? (
-              <div className="owned-card-qr-preview">
+              <div className="owned-card-qr-preview owned-card-qr-preview-visual">
                 <span className="meta-label">QR de la carte active</span>
-                <code>{card.qrCode}</code>
+                <QRCodeDisplay value={card.qrCode} title={`QR ${card.cardNumber}`} size={140} showValue={false} className="owned-card-qr-display" />
               </div>
             ) : null}
             <button

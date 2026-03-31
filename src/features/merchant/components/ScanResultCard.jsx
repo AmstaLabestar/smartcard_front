@@ -50,6 +50,7 @@ export function ScanResultCard({ preview, transaction }) {
           <p><strong>Client :</strong> {preview.customer?.firstName} {preview.customer?.lastName}</p>
           <p><strong>Formule :</strong> {preview.card?.cardPlan?.name || 'Carte SmartCard'}</p>
           <p><strong>Avantages disponibles ici :</strong> {preview.eligibleOffers?.length || 0}</p>
+          {preview.card?.qrCode ? <p><strong>QR scanne :</strong> {preview.card.qrCode}</p> : null}
         </div>
       </section>
     );

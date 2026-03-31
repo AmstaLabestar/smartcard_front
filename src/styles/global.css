@@ -1302,3 +1302,123 @@ select {
     padding-bottom: 0.25rem;
   }
 }
+.qr-display {
+  display: grid;
+  gap: 0.75rem;
+  justify-items: center;
+}
+
+.qr-display-frame {
+  width: fit-content;
+  padding: 0.85rem;
+  border-radius: 24px;
+  background: #ffffff;
+  box-shadow: 0 18px 40px rgba(24, 35, 15, 0.14);
+}
+
+.qr-display-value {
+  width: 100%;
+  text-align: center;
+  word-break: break-word;
+  font-size: 0.82rem;
+}
+
+.smart-card-surface-premium {
+  position: relative;
+}
+
+.smart-card-helper {
+  color: rgba(255, 255, 255, 0.8);
+  margin-bottom: 0;
+}
+
+.smart-card-qr-visual {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 1rem;
+}
+
+.smart-card-qr-display .qr-display-frame {
+  padding: 1rem;
+  border-radius: 28px;
+}
+
+.smart-card-inline-qr {
+  margin-top: 0.5rem;
+}
+
+.smart-card-inline-qr .qr-display-frame {
+  padding: 0.65rem;
+  border-radius: 20px;
+}
+
+.owned-card-qr-preview-visual {
+  align-items: center;
+}
+
+.owned-card-qr-display .qr-display-frame {
+  padding: 0.75rem;
+}
+
+.scan-mode-toggle {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.scan-camera-card {
+  display: grid;
+  gap: 1rem;
+}
+
+.camera-scanner-shell {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.camera-scanner-view {
+  overflow: hidden;
+  border-radius: 28px;
+  border: 1px solid rgba(24, 35, 15, 0.08);
+  background: #10170c;
+  min-height: 320px;
+}
+
+.camera-scanner-view video {
+  width: 100% !important;
+  height: auto !important;
+  object-fit: cover;
+}
+
+.camera-scanner-view section {
+  border: none !important;
+}
+
+.camera-scanner-view button {
+  min-height: 44px;
+  border-radius: 999px;
+  border: none;
+  padding: 0.75rem 1rem;
+  background: linear-gradient(135deg, #18230f 0%, #2d3d1f 100%);
+  color: white;
+}
+
+.camera-scanner-view select {
+  min-height: 44px;
+}
+
+.camera-scanner-status {
+  margin-bottom: 0;
+}
+
+@media (max-width: 860px) {
+  .smart-card-qr-visual {
+    grid-template-columns: 1fr;
+  }
+
+  .camera-scanner-view {
+    min-height: 280px;
+  }
+}

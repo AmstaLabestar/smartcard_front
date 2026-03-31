@@ -2,6 +2,7 @@ import { useMutation } from '@tanstack/react-query';
 import { useEffect, useMemo, useState } from 'react';
 
 import { previewMerchantScan, scanMerchantTransaction } from '../api/merchant.api';
+import { CameraScanner } from '../components/CameraScanner';
 import { ScanResultCard } from '../components/ScanResultCard';
 import { getApiErrorMessage } from '../../../shared/lib/api-error';
 import { useToast } from '../../../shared/components/feedback/ToastProvider';
@@ -10,6 +11,8 @@ const DEFAULT_MAX_ALLOWED_AMOUNT = Number(import.meta.env.VITE_MAX_TRANSACTION_A
 
 export function MerchantScanPage() {
   const toast = useToast();
+  const [scanMode, setScanMode] = useState('camera');
+  const [cameraStatus, setCameraStatus] = useState('');
   const [form, setForm] = useState({
     qrCode: '',
     offerId: '',
@@ -70,12 +73,23 @@ export function MerchantScanPage() {
     ? `Le montant saisi depasse la limite autorisee de ${maxAllowedAmount}.`
     : '';
 
-  const handlePreview = (event) => {
-    event.preventDefault();
+  const launchPreview = async (qrCodeValue) => {
+    const normalizedValue = qrCodeValue.trim();
+    if (!normalizedValue) {
+      return;
+    }
 
-    previewMutation.mutate({
-      qrCode: form.qrCode,
-    });
+    setForm((current) => ({ ...current, qrCode: normalizedValue }));
+    previewMutation.mutate({ qrCode: normalizedValue });
+  };
+
+  const handlePreview = async (event) => {
+    event.preventDefault();
+    await launchPreview(form.qrCode);
+  };
+
+  const handleDetected = async (decodedText) => {
+    await launchPreview(decodedText);
   };
 
   const handleConfirm = (event) => {
@@ -92,25 +106,58 @@ export function MerchantScanPage() {
     <div className="merchant-grid merchant-scan-grid">
       <section className="content-card">
         <p className="eyebrow">Scan client</p>
-        <h1>Verifier la carte puis appliquer la bonne reduction</h1>
-        <p className="muted">Commencez par scanner la carte du client. Nous vous montrerons ensuite uniquement les avantages compatibles avec cette formule dans votre commerce.</p>
+        <h1>Scannez une vraie carte QR depuis le mobile du client</h1>
+        <p className="muted">Ouvrez la camera pour lire la carte du client en quelques secondes. Si besoin, vous pouvez toujours saisir le code manuellement.</p>
 
-        <div className="scan-tip-card">
-          <strong>Etape 1</strong>
-          <p className="muted">Scannez le QR code pour verifier la carte et charger les reductions autorisees.</p>
+        <div className="scan-mode-toggle" role="tablist" aria-label="Mode de scan">
+          <button
+            className={scanMode === 'camera' ? 'filter-chip filter-chip-active' : 'filter-chip'}
+            type="button"
+            onClick={() => setScanMode('camera')}
+          >
+            Scanner avec la camera
+          </button>
+          <button
+            className={scanMode === 'manual' ? 'filter-chip filter-chip-active' : 'filter-chip'}
+            type="button"
+            onClick={() => setScanMode('manual')}
+          >
+            Saisie manuelle
+          </button>
         </div>
 
-        <form className="stack-form" onSubmit={handlePreview}>
-          <input
-            placeholder="QR Code du client"
-            value={form.qrCode}
-            onChange={(e) => setForm({ ...form, qrCode: e.target.value })}
-          />
-          {previewError ? <p className="error-banner">{previewError}</p> : null}
-          <button className="primary-button" type="submit" disabled={previewMutation.isPending || !form.qrCode.trim()}>
-            {previewMutation.isPending ? 'Verification...' : 'Verifier la carte'}
-          </button>
-        </form>
+        {scanMode === 'camera' ? (
+          <div className="scan-camera-card">
+            <div className="scan-tip-card">
+              <strong>Etape 1</strong>
+              <p className="muted">Cadrez le QR code affiche sur le telephone du client. La verification sera lancee automatiquement.</p>
+            </div>
+            <CameraScanner active onDetected={handleDetected} onStatusChange={setCameraStatus} />
+            {cameraStatus ? <p className="muted">{cameraStatus}</p> : null}
+            <button className="primary-button alt-button" type="button" onClick={() => setScanMode('manual')}>
+              Basculer en saisie manuelle
+            </button>
+          </div>
+        ) : (
+          <>
+            <div className="scan-tip-card">
+              <strong>Etape 1</strong>
+              <p className="muted">Collez ou saisissez le code de la carte si la camera n est pas disponible.</p>
+            </div>
+
+            <form className="stack-form" onSubmit={handlePreview}>
+              <input
+                placeholder="QR Code du client"
+                value={form.qrCode}
+                onChange={(e) => setForm({ ...form, qrCode: e.target.value })}
+              />
+              {previewError ? <p className="error-banner">{previewError}</p> : null}
+              <button className="primary-button" type="submit" disabled={previewMutation.isPending || !form.qrCode.trim()}>
+                {previewMutation.isPending ? 'Verification...' : 'Verifier la carte'}
+              </button>
+            </form>
+          </>
+        )}
 
         {previewData ? (
           <>
