@@ -1,0 +1,43 @@
+name: Frontend Deploy
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+concurrency:
+  group: frontend-deploy
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy to VPS
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USERNAME }}
+          key: ${{ secrets.VPS_SSH_PRIVATE_KEY }}
+          passphrase: ${{ secrets.VPS_SSH_PASSPHRASE }}
+          script_stop: true
+          script: |
+            set -e
+            APP_DIR="${{ secrets.DEPLOY_PATH }}"
+            if [ -z "$APP_DIR" ]; then
+              APP_DIR="/home/tanga/apps/smartcard/frontend"
+            fi
+
+            cd "$APP_DIR"
+            git fetch origin
+            git checkout main
+            git pull origin main
+
+            cat > deploy/.env <<'EOF'
+            ${{ secrets.FRONTEND_ENV_FILE }}
+            EOF
+
+            echo "${{ secrets.VPS_SUDO_PASSWORD }}" | sudo -S docker compose --env-file deploy/.env -f deploy/docker-compose.frontend.yml up -d --build
+            curl -fsSI http://127.0.0.1:4173
