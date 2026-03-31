@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 
 import { fetchUserTransactions } from '../api/transactions.api';
@@ -6,11 +7,12 @@ import { TransactionHistoryList } from '../components/TransactionHistoryList';
 import { TransactionSummaryCards } from '../components/TransactionSummaryCards';
 import { EmptyState } from '../../../shared/components/states/EmptyState';
 import { LoadingState } from '../../../shared/components/states/LoadingState';
+import { PageIntro } from '../../../shared/ui/PageIntro';
 
 const FILTERS = {
   ALL: 'Toutes',
-  SAVINGS: 'Avec reduction',
-  HIGH_VALUE: 'Montant >= 100',
+  SAVINGS: 'Economies',
+  HIGH_VALUE: '100+',
 };
 
 export function UserTransactionsPage() {
@@ -36,23 +38,31 @@ export function UserTransactionsPage() {
   }, [filter, transactions]);
 
   if (isLoading) {
-    return <LoadingState title="Chargement de vos transactions" description="Nous recuperons votre historique SmartCard." />;
+    return <LoadingState title="Historique" description="Nous recuperons vos passages." />;
   }
 
   return (
-    <div className="transactions-page">
-      <section className="panel content-card hero-card">
-        <p className="eyebrow">Transactions</p>
-        <h1>Historique complet de vos reductions</h1>
-        <p className="muted">Suivez vos passages en boutique, le montant initial, la reduction appliquee et le total vraiment paye.</p>
+    <div className="transactions-page premium-page-stack">
+      <section className="panel content-card premium-hero-card premium-hero-card-soft">
+        <PageIntro
+          kicker="Historique"
+          title="Vos derniers passages"
+          description="Retrouvez vos paiements et vos economies en un coup d oeil."
+          actions={(
+            <>
+              <Link className="primary-button link-button premium-inline-button" to="/offers">Avantages</Link>
+              <Link className="primary-button alt-button link-button premium-inline-button" to="/my-cards">Mes cartes</Link>
+            </>
+          )}
+        />
       </section>
 
       <TransactionSummaryCards transactions={transactions} />
 
-      <section className="content-card transactions-toolbar-card">
+      <section className="content-card transactions-toolbar-card premium-support-card">
         <div>
-          <p className="eyebrow">Filtrer</p>
-          <h2>Afficher ce qui vous interesse</h2>
+          <p className="eyebrow">Filtres</p>
+          <h2>Affichage rapide</h2>
         </div>
         <div className="filter-chips" role="tablist" aria-label="Filtres transactions">
           {Object.entries(FILTERS).map(([value, label]) => (
@@ -70,12 +80,17 @@ export function UserTransactionsPage() {
 
       {filteredTransactions.length === 0 ? (
         <EmptyState
-          title="Aucune transaction pour ce filtre"
-          description="Essayez un autre filtre ou utilisez votre carte chez un commercant pour commencer a voir de l'activite."
+          title="Aucune transaction"
+          description="Changez de filtre ou utilisez votre carte pour commencer."
         />
       ) : (
-        <section className="content-card">
-          <h2>Historique</h2>
+        <section className="content-card premium-support-card">
+          <div className="section-heading-row premium-section-heading-row">
+            <div>
+              <p className="eyebrow">Historique</p>
+              <h2>Toutes vos transactions</h2>
+            </div>
+          </div>
           <TransactionHistoryList transactions={filteredTransactions} />
         </section>
       )}

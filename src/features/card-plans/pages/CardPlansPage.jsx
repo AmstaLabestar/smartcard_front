@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 import { purchaseCard } from '../../cards/api/cards.api';
@@ -8,6 +9,7 @@ import { EmptyState } from '../../../shared/components/states/EmptyState';
 import { LoadingState } from '../../../shared/components/states/LoadingState';
 import { getApiErrorMessage } from '../../../shared/lib/api-error';
 import { useToast } from '../../../shared/components/feedback/ToastProvider';
+import { PageIntro } from '../../../shared/ui/PageIntro';
 
 export function CardPlansPage() {
   const queryClient = useQueryClient();
@@ -26,7 +28,7 @@ export function CardPlansPage() {
   const purchaseMutation = useMutation({
     mutationFn: purchaseCard,
     onSuccess: async (response) => {
-      toast.success(`Votre nouvelle carte ${response.data.cardPlan?.name || ''} a bien ete ajoutee a votre portefeuille.`, 'Carte achetee');
+      toast.success(`Votre carte ${response.data.cardPlan?.name || ''} est ajoutee.`, 'Carte achetee');
       await Promise.all([
         queryClient.invalidateQueries({ queryKey: ['me', 'cards'] }),
         queryClient.invalidateQueries({ queryKey: ['me', 'cards', 'active'] }),
@@ -40,50 +42,67 @@ export function CardPlansPage() {
   const cardPlans = cardPlansResponse?.data || [];
   const myCards = myCardsResponse?.data || [];
   const ownedPlanIds = new Set(myCards.map((card) => card.cardPlan?.id).filter(Boolean));
+  const availableCount = cardPlans.filter((cardPlan) => !ownedPlanIds.has(cardPlan.id)).length;
 
   if (isPlansLoading || isCardsLoading) {
-    return <LoadingState title="Decouverte des cartes" description="Nous chargeons les cartes disponibles et les formules deja presentes dans votre portefeuille." />;
+    return <LoadingState title="Catalogue" description="Nous chargeons les cartes disponibles." />;
   }
 
   return (
-    <section className="panel content-card offers-page">
-      <div className="offers-header">
-        <div>
-          <p className="eyebrow">Nos cartes</p>
-          <h1>Trouvez la carte qui vous ouvre le plus d'avantages</h1>
-        </div>
-        <p className="muted">Composez votre portefeuille librement : chaque carte donne acces a un reseau d avantages different.</p>
-      </div>
-      {cardPlans.length === 0 ? (
-        <EmptyState
-          title="Aucune carte disponible pour le moment"
-          description="Nous preparons de nouvelles cartes avec encore plus d'avantages partenaires."
-        />
-      ) : (
-        <CardPlanGrid
-          cardPlans={cardPlans}
-          selectedCardPlanId={null}
-          onSelect={() => {}}
-          ownedPlanIds={ownedPlanIds}
-          selectionEnabled={false}
-          actionRenderer={(cardPlan, { isOwned }) => (
-            isOwned ? (
-              <span className="status-pill status-active">Deja possedee</span>
-            ) : (
-              <button
-                className="primary-button"
-                type="button"
-                disabled={purchaseMutation.isPending}
-                onClick={() => purchaseMutation.mutate({ cardPlanId: cardPlan.id })}
-              >
-                {purchaseMutation.isPending && purchaseMutation.variables?.cardPlanId === cardPlan.id
-                  ? 'Achat en cours...'
-                  : 'Acheter cette carte'}
-              </button>
-            )
+    <div className="premium-page-stack">
+      <section className="panel content-card premium-hero-card premium-hero-card-soft">
+        <PageIntro
+          kicker="Catalogue"
+          title="Choisissez votre prochaine carte"
+          description="Chaque carte ouvre un reseau d avantages different."
+          actions={(
+            <>
+              <Link className="primary-button link-button premium-inline-button" to="/my-cards">Mes cartes</Link>
+              <Link className="primary-button alt-button link-button premium-inline-button" to="/offers">Avantages</Link>
+            </>
+          )}
+          aside={(
+            <div className="premium-spotlight-card premium-spotlight-card-soft">
+              <span className="meta-label">Disponibles</span>
+              <strong>{availableCount}</strong>
+              <p className="muted">Cartes a ajouter.</p>
+            </div>
           )}
         />
-      )}
-    </section>
+      </section>
+
+      <section className="panel content-card premium-support-card">
+        {cardPlans.length === 0 ? (
+          <EmptyState
+            title="Aucune carte disponible"
+            description="De nouvelles cartes arrivent bientot."
+          />
+        ) : (
+          <CardPlanGrid
+            cardPlans={cardPlans}
+            selectedCardPlanId={null}
+            onSelect={() => {}}
+            ownedPlanIds={ownedPlanIds}
+            selectionEnabled={false}
+            actionRenderer={(cardPlan, { isOwned }) => (
+              isOwned ? (
+                <span className="status-pill status-active">Deja ajoutee</span>
+              ) : (
+                <button
+                  className="primary-button"
+                  type="button"
+                  disabled={purchaseMutation.isPending}
+                  onClick={() => purchaseMutation.mutate({ cardPlanId: cardPlan.id })}
+                >
+                  {purchaseMutation.isPending && purchaseMutation.variables?.cardPlanId === cardPlan.id
+                    ? 'Achat...'
+                    : 'Ajouter'}
+                </button>
+              )
+            )}
+          />
+        )}
+      </section>
+    </div>
   );
 }
