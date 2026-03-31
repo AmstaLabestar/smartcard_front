@@ -1926,3 +1926,61 @@ body {
     font-size: 0.8rem;
   }
 }
+
+.merchant-summary-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.merchant-hero-aside {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.merchant-scan-layout {
+  align-items: start;
+}
+
+.merchant-scan-main-card {
+  display: grid;
+  gap: 1rem;
+  align-content: start;
+}
+
+.merchant-secondary-button {
+  justify-self: start;
+}
+
+.merchant-offers-layout {
+  align-items: start;
+}
+
+.premium-merchant-offer-item {
+  border-radius: 20px;
+  background: linear-gradient(180deg, rgba(255, 253, 249, 0.98) 0%, rgba(248, 242, 232, 0.98) 100%);
+}
+
+.premium-inline-actions-compact {
+  gap: 0.5rem;
+}
+
+.premium-inline-actions-compact button {
+  min-height: 40px;
+}
+
+.premium-history-item {
+  border-radius: 22px;
+}
+
+.premium-transaction-meta-grid > div {
+  border-radius: 16px;
+}
+
+@media (max-width: 860px) {
+  .merchant-summary-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .merchant-secondary-button {
+    justify-self: stretch;
+  }
+}

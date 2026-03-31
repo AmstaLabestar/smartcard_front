@@ -6,6 +6,7 @@ import { MerchantOfferList } from '../components/MerchantOfferList';
 import { fetchMerchantOffers } from '../../offers/api/offers.api';
 import { getApiErrorMessage } from '../../../shared/lib/api-error';
 import { useToast } from '../../../shared/components/feedback/ToastProvider';
+import { PageIntro } from '../../../shared/ui/PageIntro';
 
 const initialForm = {
   title: '',
@@ -69,10 +70,17 @@ export function MerchantOffersPage() {
 
   return (
     <div className="merchant-grid premium-page-stack merchant-offers-layout">
+      <section className="panel content-card premium-hero-card premium-hero-card-soft">
+        <PageIntro
+          kicker="Offres"
+          title="Creez et pilotez vos offres"
+          description="Des offres claires, activables et faciles a suivre."
+        />
+      </section>
+
       <section className="content-card premium-support-card">
-        <p className="eyebrow">Offres</p>
-        <h1>Creer une offre</h1>
-        <p className="muted">Rapide, claire, activable.</p>
+        <p className="eyebrow">Creation</p>
+        <h2>Nouvelle offre</h2>
         <form className="stack-form" onSubmit={handleSubmit}>
           <input placeholder="Titre" value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} />
           <input placeholder="Description courte" value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} />
