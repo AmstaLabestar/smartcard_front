@@ -34,8 +34,25 @@ Points importants :
 - le frontend est servi par `nginx`
 - l URL backend est injectee au build via `VITE_API_URL`
 - la configuration SPA redirige toutes les routes vers `index.html`
-<<<<<<< HEAD
-=======
+
+## VPS
+
+Fichiers utiles pour le deploiement :
+
+- `deploy/docker-compose.frontend.yml`
+- `deploy/frontend.env.example`
+- `nginx.conf`
+
+Exemple de lancement sur le serveur :
+
+```bash
+cd deploy
+cp frontend.env.example .env
+# adapter VITE_API_URL
+docker compose --env-file .env -f docker-compose.frontend.yml up -d --build
+```
+
+Le conteneur frontend est expose localement sur `127.0.0.1:3000` et doit ensuite etre servi par un reverse proxy public.
 
 ## CI
 
@@ -46,4 +63,3 @@ Une GitHub Action `Frontend CI` verifie automatiquement :
 - le build de production
 
 Le workflow est lance sur `main`, sur les branches `feature/*` et sur les pull requests.
->>>>>>> feature/github-actions-ci
