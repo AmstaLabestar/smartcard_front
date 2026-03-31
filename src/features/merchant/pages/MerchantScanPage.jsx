@@ -6,7 +6,7 @@ import { ScanResultCard } from '../components/ScanResultCard';
 import { getApiErrorMessage } from '../../../shared/lib/api-error';
 import { useToast } from '../../../shared/components/feedback/ToastProvider';
 
-const MAX_ALLOWED_AMOUNT = 100000;
+const DEFAULT_MAX_ALLOWED_AMOUNT = Number(import.meta.env.VITE_MAX_TRANSACTION_AMOUNT || 1000000);
 
 export function MerchantScanPage() {
   const toast = useToast();
@@ -27,7 +27,12 @@ export function MerchantScanPage() {
         ...current,
         offerId: response.data.eligibleOffers?.[0]?.id || '',
       }));
-      toast.success('Carte verifiee. Selectionnez maintenant une reduction compatible.', 'Carte validee');
+
+      if ((response.data.eligibleOffers?.length || 0) > 0) {
+        toast.success('Carte verifiee. Selectionnez maintenant une reduction compatible.', 'Carte validee');
+      } else {
+        toast.info('Carte verifiee, mais aucune reduction active n est disponible dans votre commerce pour cette formule.', 'Aucune reduction disponible');
+      }
     },
     onError: (error) => {
       const message = getApiErrorMessage(error, 'Verification impossible');
@@ -60,8 +65,9 @@ export function MerchantScanPage() {
     [eligibleOffers, form.offerId],
   );
 
-  const amountWarning = Number(form.originalAmount) > MAX_ALLOWED_AMOUNT
-    ? 'Le montant saisi depasse la limite autorisee de 100000.'
+  const maxAllowedAmount = Number(previewData?.limits?.maxTransactionAmount || DEFAULT_MAX_ALLOWED_AMOUNT);
+  const amountWarning = Number(form.originalAmount) > maxAllowedAmount
+    ? `Le montant saisi depasse la limite autorisee de ${maxAllowedAmount}.`
     : '';
 
   const handlePreview = (event) => {
@@ -134,17 +140,18 @@ export function MerchantScanPage() {
                 <input
                   type="number"
                   min="0"
-                  max={MAX_ALLOWED_AMOUNT}
+                  max={maxAllowedAmount}
                   placeholder="Montant initial"
                   value={form.originalAmount}
                   onChange={(e) => setForm({ ...form, originalAmount: e.target.value })}
                 />
+                <p className="muted">Montant maximum autorise pour une transaction : {maxAllowedAmount}.</p>
                 {amountWarning ? <p className="error-banner">{amountWarning}</p> : null}
                 {confirmMutation.isError ? <p className="error-banner">{getApiErrorMessage(confirmMutation.error, 'Validation impossible')}</p> : null}
                 <button
                   className="primary-button"
                   type="submit"
-                  disabled={confirmMutation.isPending || !form.offerId || Number(form.originalAmount) > MAX_ALLOWED_AMOUNT}
+                  disabled={confirmMutation.isPending || !form.offerId || Number(form.originalAmount) > maxAllowedAmount}
                 >
                   {confirmMutation.isPending ? 'Validation...' : 'Appliquer la reduction'}
                 </button>
