@@ -1,9 +1,11 @@
-export function AdminDataTable({ title, columns, rows, emptyMessage }) {
+import { PageIntro } from '../../../shared/ui/PageIntro';
+
+export function AdminDataTable({ title, columns, rows, emptyMessage, eyebrow = 'Admin' }) {
   return (
-    <section className="content-card admin-table-card">
-      <div className="admin-table-header">
+    <section className="content-card admin-table-card premium-support-card">
+      <div className="admin-table-header admin-table-header-polished">
         <div>
-          <p className="eyebrow">Admin</p>
+          <p className="eyebrow">{eyebrow}</p>
           <h2>{title}</h2>
         </div>
         <span className="admin-table-count">{rows.length}</span>
