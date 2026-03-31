@@ -1117,3 +1117,188 @@ select {
 .card-plan-actions .primary-button {
   width: 100%;
 }
+.mobile-header-card {
+  display: none;
+}
+
+.mobile-bottom-nav {
+  display: none;
+}
+
+@media (max-width: 860px) {
+  html,
+  body {
+    overflow-x: hidden;
+  }
+
+  .dashboard-shell-mobile {
+    min-height: 100vh;
+    display: block;
+  }
+
+  .dashboard-content-mobile {
+    padding: 1rem 1rem 6.75rem;
+    gap: 1rem;
+  }
+
+  .dashboard-content-mobile > * {
+    width: 100%;
+  }
+
+  .mobile-header-card {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1rem 1rem 0.95rem;
+    border-radius: 24px;
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(24, 35, 15, 0.06);
+    box-shadow: 0 14px 30px rgba(24, 35, 15, 0.08);
+  }
+
+  .mobile-header-user {
+    margin-bottom: 0;
+  }
+
+  .mobile-header-button {
+    min-height: 44px;
+    padding-inline: 1rem;
+    font-size: 0.92rem;
+    white-space: nowrap;
+  }
+
+  .mobile-bottom-nav {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 100;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
+    gap: 0.65rem;
+    padding: 0.8rem 1rem calc(0.8rem + env(safe-area-inset-bottom));
+    background: rgba(24, 35, 15, 0.96);
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 -12px 28px rgba(24, 35, 15, 0.2);
+    backdrop-filter: blur(16px);
+  }
+
+  .mobile-bottom-link {
+    min-height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    text-decoration: none;
+    color: rgba(255, 255, 255, 0.76);
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid transparent;
+    padding: 0.75rem 0.5rem;
+  }
+
+  .mobile-bottom-link-active {
+    color: white;
+    background: linear-gradient(135deg, rgba(196, 217, 141, 0.24), rgba(255, 255, 255, 0.1));
+    border-color: rgba(196, 217, 141, 0.24);
+  }
+
+  .mobile-bottom-link-label {
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+  }
+
+  .cards-grid,
+  .offer-grid,
+  .card-plan-grid,
+  .owned-card-grid,
+  .merchant-dashboard-grid,
+  .merchant-grid,
+  .smart-card-panel,
+  .onboarding-grid,
+  .admin-card-plan-item,
+  .merchant-offer-item {
+    grid-template-columns: 1fr;
+  }
+
+  .cards-grid,
+  .offer-grid,
+  .card-plan-grid,
+  .owned-card-grid,
+  .merchant-dashboard-grid,
+  .merchant-grid,
+  .smart-card-panel,
+  .wallet-page,
+  .offers-page,
+  .transactions-page,
+  .merchant-dashboard-page {
+    gap: 0.9rem;
+  }
+
+  .content-card,
+  .form-card,
+  .metric-card,
+  .card-plan-card,
+  .offer-card,
+  .owned-card-item {
+    padding: 1.1rem;
+    border-radius: 22px;
+  }
+
+  .primary-button,
+  .alt-button,
+  .merchant-offer-actions button,
+  .filter-chip,
+  .sidebar-link,
+  .mobile-bottom-link {
+    min-height: 44px;
+  }
+
+  .inline-actions,
+  .card-plan-actions {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .smart-card-surface {
+    min-height: auto;
+    padding: 1.2rem;
+    border-radius: 28px;
+  }
+
+  .smart-card-meta,
+  .transaction-main,
+  .merchant-hero-card,
+  .section-heading-row,
+  .merchant-offer-summary,
+  .admin-table-header,
+  .transactions-toolbar-card,
+  .offers-header,
+  .card-plan-topline,
+  .owned-card-item-topline,
+  .offer-topline,
+  .offer-footer {
+    display: grid;
+    grid-template-columns: 1fr;
+    align-items: start;
+  }
+
+  .transaction-values,
+  .merchant-transaction-values,
+  .merchant-offer-actions {
+    justify-items: start;
+  }
+
+  .owned-card-meta-grid,
+  .transaction-meta-grid,
+  .offer-selector-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-table-wrapper {
+    margin-inline: -0.15rem;
+    padding-bottom: 0.25rem;
+  }
+}
