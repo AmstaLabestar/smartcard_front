@@ -1782,3 +1782,147 @@ body {
 
 
 
+
+/* UI foundation */
+.ui-page-shell {
+  width: 100%;
+}
+
+.ui-shell-card {
+  border: 1px solid var(--color-line);
+  box-shadow: var(--shadow-premium);
+}
+
+.ui-page-intro {
+  display: grid;
+  gap: 1rem;
+  align-content: start;
+}
+
+.ui-page-intro-copy {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.ui-page-intro-aside {
+  display: grid;
+  gap: 0.75rem;
+  align-content: start;
+}
+
+.ui-page-kicker {
+  margin-bottom: 0;
+}
+
+.ui-page-title {
+  margin-bottom: 0;
+  max-width: 12ch;
+}
+
+.ui-page-copy {
+  max-width: 42rem;
+  margin-bottom: 0;
+}
+
+.ui-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.ui-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 36px;
+  padding: 0.55rem 0.9rem;
+  border-radius: 999px;
+  background: rgba(23, 54, 44, 0.08);
+  color: var(--color-accent);
+  border: 1px solid rgba(23, 54, 44, 0.08);
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.ui-state-card {
+  justify-items: start;
+  align-content: start;
+}
+
+.ui-state-copy {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.ui-auth-shell {
+  padding: 1.5rem;
+}
+
+.ui-auth-panel {
+  padding: 1.35rem;
+  gap: 1.35rem;
+}
+
+.ui-auth-brand-block {
+  display: grid;
+  align-content: stretch;
+}
+
+.ui-page-intro-auth {
+  height: 100%;
+  padding: 1.25rem;
+  border-radius: 28px;
+  background:
+    radial-gradient(circle at top right, rgba(215, 204, 177, 0.38), transparent 26%),
+    linear-gradient(145deg, rgba(255, 252, 247, 0.96) 0%, rgba(244, 236, 223, 0.96) 100%);
+  border: 1px solid rgba(23, 54, 44, 0.08);
+  box-shadow: var(--shadow-premium);
+}
+
+.ui-auth-badge-cluster {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+}
+
+.ui-sidebar-shell {
+  box-shadow: inset -1px 0 0 rgba(255, 255, 255, 0.04);
+}
+
+.ui-sidebar-brand-block {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.ui-mobile-header-card {
+  padding: 1rem 1rem 0.95rem;
+}
+
+@media (max-width: 860px) {
+  .ui-auth-shell {
+    padding: 1rem;
+  }
+
+  .ui-auth-panel {
+    padding: 1rem;
+  }
+
+  .ui-page-intro-auth {
+    padding: 1rem;
+    border-radius: 24px;
+  }
+
+  .ui-page-title {
+    max-width: none;
+  }
+
+  .ui-actions {
+    gap: 0.65rem;
+  }
+
+  .ui-chip {
+    min-height: 34px;
+    font-size: 0.8rem;
+  }
+}
