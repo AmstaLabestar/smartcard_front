@@ -2,14 +2,14 @@ import { QRCodeDisplay } from '../../../shared/components/qr/QRCodeDisplay';
 
 export function OwnedCardGrid({ cards, onActivate, activatingCardId }) {
   return (
-    <div className="owned-card-grid">
+    <div className="owned-card-grid owned-card-grid-compact">
       {cards.map((card) => {
         const isActive = card.status === 'ACTIVE';
         const isActivating = activatingCardId === card.id;
         const eligibleOffersCount = card.eligibleOffers?.length || card.cardPlan?.offers?.length || 0;
 
         return (
-          <article key={card.id} className={isActive ? 'owned-card-item owned-card-item-active' : 'owned-card-item'}>
+          <article key={card.id} className={isActive ? 'owned-card-item owned-card-item-active owned-card-item-compact' : 'owned-card-item owned-card-item-compact'}>
             <div className="owned-card-item-topline">
               <p className="eyebrow">{isActive ? 'Active' : 'Disponible'}</p>
               <span className={`status-pill status-${card.status?.toLowerCase()}`}>{card.status}</span>
@@ -27,8 +27,8 @@ export function OwnedCardGrid({ cards, onActivate, activatingCardId }) {
             </div>
             {isActive ? (
               <div className="owned-card-qr-preview owned-card-qr-preview-visual owned-card-qr-preview-inline">
-                <span className="meta-label">QR</span>
-                <QRCodeDisplay value={card.qrCode} title={`QR ${card.cardNumber}`} size={132} showValue={false} className="owned-card-qr-display" />
+                <span className="meta-label">QR actif</span>
+                <QRCodeDisplay value={card.qrCode} title={`QR ${card.cardNumber}`} size={120} showValue={false} className="owned-card-qr-display" />
               </div>
             ) : null}
             <button
@@ -37,7 +37,7 @@ export function OwnedCardGrid({ cards, onActivate, activatingCardId }) {
               disabled={isActive || isActivating}
               onClick={() => onActivate(card.id)}
             >
-              {isActive ? 'Active' : isActivating ? 'Activation...' : 'Activer'}
+              {isActive ? 'Utilisee maintenant' : isActivating ? 'Activation...' : 'Activer'}
             </button>
           </article>
         );
