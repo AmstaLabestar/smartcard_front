@@ -49,7 +49,7 @@ Exemple de lancement sur le serveur :
 cd deploy
 cp frontend.env.example .env
 # adapter VITE_API_URL
-docker compose --env-file .env -f docker-compose.frontend.yml up -d --build
+docker compose --env-file .env -f deploy/docker-compose.frontend.yml up -d --build
 ```
 
 Le conteneur frontend est expose localement sur `127.0.0.1:4173` et doit ensuite etre servi par un reverse proxy public.
@@ -75,5 +75,5 @@ Secrets attendus :
 - `VPS_SSH_PRIVATE_KEY`
 - `VPS_SSH_PASSPHRASE`
 - `VPS_SUDO_PASSWORD`
-- `FRONTEND_ENV_FILE`
+- `FRONTEND_ENV_FILE_BASE64`
 - `DEPLOY_PATH` optionnel, sinon `/home/tanga/apps/smartcard/frontend`

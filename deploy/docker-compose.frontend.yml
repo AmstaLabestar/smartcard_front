@@ -1,3 +1,5 @@
+name: smartcard-frontend
+
 services:
   smartcard-front:
     build:
@@ -9,4 +11,3 @@ services:
     restart: unless-stopped
     ports:
       - "127.0.0.1:4173:80"
-
