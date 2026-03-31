@@ -40,5 +40,14 @@ jobs:
             ${{ secrets.FRONTEND_ENV_FILE }}
             EOF
 
-            echo "${{ secrets.VPS_SUDO_PASSWORD }}" | sudo -S docker compose --env-file deploy/.env -f deploy/docker-compose.frontend.yml up -d --build
-            curl -fsSI http://127.0.0.1:4173
+            echo "${{ secrets.VPS_SUDO_PASSWORD }}" | sudo -S docker compose --env-file deploy/.env -f deploy/docker-compose.frontend.yml up -d --build --remove-orphans
+
+            for attempt in 1 2 3 4 5 6 7 8 9 10; do
+              if curl -fsSI http://127.0.0.1:4173; then
+                exit 0
+              fi
+              sleep 3
+            done
+
+            echo "Frontend health check failed after waiting for startup."
+            exit 1
