@@ -38,7 +38,7 @@ export function DashboardLayout() {
           <header className="mobile-header-card">
             <div>
               <p className="eyebrow">SmartCard</p>
-              <h2>{user?.role || 'Workspace'}</h2>
+              <h2>SmartCard</h2>
               <p className="muted mobile-header-user">{user?.firstName} {user?.lastName}</p>
             </div>
             <button className="primary-button mobile-header-button" type="button" onClick={logout}>
@@ -57,7 +57,7 @@ export function DashboardLayout() {
       <aside className="sidebar">
         <div>
           <p className="eyebrow sidebar-eyebrow">SmartCard</p>
-          <h2>{user?.role || 'Workspace'}</h2>
+          <h2>SmartCard</h2>
           <p className="sidebar-user">{user?.firstName} {user?.lastName}</p>
         </div>
         <nav>
@@ -81,3 +81,4 @@ export function DashboardLayout() {
     </div>
   );
 }
+

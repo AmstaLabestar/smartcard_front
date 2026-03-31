@@ -1,4 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
+import { Link } from 'react-router-dom';
 
 import { fetchActiveOffers } from '../api/offers.api';
 import { OfferGrid } from '../components/OfferGrid';
@@ -14,26 +15,40 @@ export function OffersPage() {
   const offers = offersResponse?.data || [];
 
   if (isLoading) {
-    return <LoadingState title="Chargement de vos avantages" description="Nous preparons les offres disponibles avec votre carte active." />;
+    return <LoadingState title="Chargement de vos avantages" description="Nous preparons votre selection." />;
   }
 
   return (
-    <section className="panel content-card offers-page">
-      <div className="offers-header">
-        <div>
-          <p className="eyebrow">Vos avantages</p>
-          <h1>Les meilleures offres debloquees avec votre carte active</h1>
+    <div className="premium-page-stack">
+      <section className="panel content-card premium-hero-card premium-hero-card-soft">
+        <div className="premium-hero-copy premium-hero-copy-wide">
+          <p className="eyebrow">Avantages</p>
+          <h1>Disponibles maintenant</h1>
+          <p className="muted premium-hero-lead">Seulement ce que votre carte active debloque.</p>
+          <div className="inline-actions premium-hero-actions premium-hero-actions-compact">
+            <Link className="primary-button link-button premium-inline-button" to="/my-cards">Mes cartes</Link>
+            <Link className="primary-button alt-button link-button premium-inline-button" to="/card-plans">Nouvelle carte</Link>
+          </div>
         </div>
-        <p className="muted">Cette selection suit la carte actuellement active dans votre portefeuille SmartCard.</p>
-      </div>
-      {offers.length === 0 ? (
-        <EmptyState
-          title="Aucune offre debloquee pour le moment"
-          description="Activez la carte la plus adaptee a votre besoin ou choisissez une nouvelle formule pour acceder a davantage d avantages partenaires."
-        />
-      ) : (
-        <OfferGrid offers={offers} />
-      )}
-    </section>
+      </section>
+
+      <section className="panel content-card offers-page premium-support-card">
+        <div className="section-heading-row premium-section-heading-row">
+          <div>
+            <p className="eyebrow">Selection</p>
+            <h2>Vos avantages</h2>
+          </div>
+          <p className="muted">Actifs sur votre carte.</p>
+        </div>
+        {offers.length === 0 ? (
+          <EmptyState
+            title="Aucun avantage pour le moment"
+            description="Activez une autre carte ou ajoutez-en une nouvelle."
+          />
+        ) : (
+          <OfferGrid offers={offers} />
+        )}
+      </section>
+    </div>
   );
 }

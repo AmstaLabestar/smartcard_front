@@ -11,13 +11,11 @@ export function OwnedCardGrid({ cards, onActivate, activatingCardId }) {
         return (
           <article key={card.id} className={isActive ? 'owned-card-item owned-card-item-active' : 'owned-card-item'}>
             <div className="owned-card-item-topline">
-              <p className="eyebrow">{isActive ? 'Carte active' : 'Carte disponible'}</p>
+              <p className="eyebrow">{isActive ? 'Active' : 'Disponible'}</p>
               <span className={`status-pill status-${card.status?.toLowerCase()}`}>{card.status}</span>
             </div>
             <h3>{card.cardPlan?.name || card.title}</h3>
-            <p className="muted">{card.cardPlan?.description || card.description || 'Carte SmartCard prete a etre utilisee chez vos partenaires favoris.'}</p>
-            {card.cardPlan?.marketingHighlights ? <p className="card-plan-highlights">{card.cardPlan.marketingHighlights}</p> : null}
-            <div className="owned-card-meta-grid">
+            <div className="owned-card-meta-grid owned-card-meta-grid-compact">
               <div>
                 <span className="meta-label">Numero</span>
                 <strong>{card.cardNumber}</strong>
@@ -26,19 +24,11 @@ export function OwnedCardGrid({ cards, onActivate, activatingCardId }) {
                 <span className="meta-label">Avantages</span>
                 <strong>{eligibleOffersCount}</strong>
               </div>
-              <div>
-                <span className="meta-label">Prix</span>
-                <strong>{card.price}</strong>
-              </div>
-              <div>
-                <span className="meta-label">Activation</span>
-                <strong>{card.activatedAt ? new Date(card.activatedAt).toLocaleDateString() : 'En attente'}</strong>
-              </div>
             </div>
             {isActive ? (
-              <div className="owned-card-qr-preview owned-card-qr-preview-visual">
-                <span className="meta-label">QR de la carte active</span>
-                <QRCodeDisplay value={card.qrCode} title={`QR ${card.cardNumber}`} size={140} showValue={false} className="owned-card-qr-display" />
+              <div className="owned-card-qr-preview owned-card-qr-preview-visual owned-card-qr-preview-inline">
+                <span className="meta-label">QR</span>
+                <QRCodeDisplay value={card.qrCode} title={`QR ${card.cardNumber}`} size={132} showValue={false} className="owned-card-qr-display" />
               </div>
             ) : null}
             <button
@@ -47,7 +37,7 @@ export function OwnedCardGrid({ cards, onActivate, activatingCardId }) {
               disabled={isActive || isActivating}
               onClick={() => onActivate(card.id)}
             >
-              {isActive ? 'Carte active actuellement' : isActivating ? 'Activation...' : 'Activer cette carte'}
+              {isActive ? 'Active' : isActivating ? 'Activation...' : 'Activer'}
             </button>
           </article>
         );

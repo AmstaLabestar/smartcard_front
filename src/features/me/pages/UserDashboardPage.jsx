@@ -60,7 +60,7 @@ export function UserDashboardPage() {
     onSuccess: (response) => {
       setPurchaseError('');
       setPurchasedCard(response.data);
-      toast.success('Votre nouvelle carte est prete. Activez-la depuis votre portefeuille pour debloquer ses avantages.', 'Carte ajoutee');
+      toast.success('Votre nouvelle carte est prete.', 'Carte ajoutee');
       queryClient.invalidateQueries({ queryKey: ['me', 'cards'] });
       queryClient.invalidateQueries({ queryKey: ['me', 'cards', 'active'] });
       queryClient.invalidateQueries({ queryKey: ['me', 'card'] });
@@ -77,7 +77,7 @@ export function UserDashboardPage() {
     onSuccess: async (_response, _code, context) => {
       setActivationError('');
       setActivationSuccess(true);
-      toast.success('Votre carte est active. Vos avantages sont maintenant disponibles.', 'Activation reussie');
+      toast.success('Votre carte est active.', 'Activation reussie');
       if (typeof context?.onSuccess === 'function') {
         context.onSuccess();
       }
@@ -102,9 +102,10 @@ export function UserDashboardPage() {
   const cardPlans = cardPlansResponse?.data || [];
   const ownedPlanIds = new Set(cards.map((card) => card.cardPlan?.id).filter(Boolean));
   const availablePlanCount = cardPlans.filter((cardPlan) => !ownedPlanIds.has(cardPlan.id)).length;
+  const latestTransaction = transactions[0] || null;
 
   if (isActiveCardLoading || isCardsLoading || isCardPlansLoading) {
-    return <LoadingState title="Bienvenue chez SmartCard" description="Nous preparons votre portefeuille, votre carte active et vos dernieres activites." />;
+    return <LoadingState title="Bienvenue chez SmartCard" description="Nous preparons votre espace." />;
   }
 
   const hasWallet = cards.length > 0;
@@ -112,14 +113,34 @@ export function UserDashboardPage() {
   const shouldShowWalletAction = hasWallet && !activeCard && (activeCardError?.response?.status === 404 || (!activeCard && !isActiveCardLoading));
 
   return (
-    <>
-      <section className="panel content-card hero-card">
-        <p className="eyebrow">Votre espace</p>
-        <h1>Retrouvez la carte active qui ouvre vos meilleurs avantages</h1>
-        <p className="muted">Activez la formule qui vous correspond, gardez votre portefeuille sous la main et profitez d offres exclusives chez nos partenaires.</p>
-        <div className="inline-actions top-actions">
-          <Link className="primary-button link-button" to="/card-plans">Acheter une nouvelle carte</Link>
-          {hasWallet ? <Link className="primary-button alt-button link-button" to="/my-cards">Gerer mes cartes</Link> : null}
+    <div className="premium-page-stack">
+      <section className="panel content-card premium-hero-card premium-hero-card-user">
+        <div className="premium-hero-copy">
+          <p className="eyebrow">Accueil</p>
+          <h1>{activeCard ? 'Prete a scanner' : 'Choisissez votre carte'}</h1>
+          <p className="muted premium-hero-lead">
+            {activeCard ? 'Votre carte active suffit en caisse.' : 'Activez une formule et profitez de vos avantages.'}
+          </p>
+          <div className="inline-actions premium-hero-actions premium-hero-actions-compact">
+            <Link className="primary-button link-button premium-inline-button" to={activeCard ? '/my-cards' : '/card-plans'}>
+              {activeCard ? 'Mes cartes' : 'Nos cartes'}
+            </Link>
+            <Link className="primary-button alt-button link-button premium-inline-button" to={activeCard ? '/offers' : '/card-plans'}>
+              {activeCard ? 'Avantages' : 'Comparer'}
+            </Link>
+          </div>
+        </div>
+        <div className="premium-hero-aside">
+          <div className="premium-spotlight-card">
+            <span className="meta-label">Active</span>
+            <strong>{activeCard?.cardPlan?.name || 'Aucune'}</strong>
+            <p className="muted">Changez-la en un geste.</p>
+          </div>
+          <div className="premium-spotlight-card premium-spotlight-card-soft">
+            <span className="meta-label">Avantages</span>
+            <strong>{activeCard?.eligibleOffers?.length || activeCard?.cardPlan?.offers?.length || 0}</strong>
+            <p className="muted">{availablePlanCount > 0 ? `${availablePlanCount} cartes a decouvrir.` : 'Catalogue ouvert.'}</p>
+          </div>
         </div>
       </section>
 
@@ -146,70 +167,83 @@ export function UserDashboardPage() {
       ) : activeCard ? (
         <UserCardPanel card={activeCard} />
       ) : shouldShowWalletAction ? (
-        <section className="content-card wallet-empty-card">
+        <section className="content-card wallet-empty-card premium-support-card">
           <EmptyState
-            title="Aucune carte active pour le moment"
-            description="Vous avez deja des cartes dans votre portefeuille. Activez celle de votre choix pour debloquer les offres correspondantes."
+            title="Activez une carte"
+            description="Choisissez celle a utiliser maintenant."
           />
-          <div className="inline-actions">
-            <Link className="primary-button link-button" to="/my-cards">
-              Gerer mes cartes
+          <div className="inline-actions premium-hero-actions premium-hero-actions-compact">
+            <Link className="primary-button link-button premium-inline-button" to="/my-cards">
+              Mes cartes
             </Link>
-            <Link className="primary-button alt-button link-button" to="/card-plans">
-              Acheter une nouvelle carte
+            <Link className="primary-button alt-button link-button premium-inline-button" to="/card-plans">
+              Nouvelle carte
             </Link>
           </div>
         </section>
       ) : null}
 
-      <section className="cards-grid">
-        <article className="metric-card highlight-card">
-          <h3>Cartes dans votre portefeuille</h3>
+      <section className="premium-summary-grid">
+        <article className="metric-card premium-stat-card premium-stat-card-dark">
+          <span className="meta-label">Cartes</span>
           <p className="metric-value">{cards.length}</p>
-          <p className="muted">Gardez plusieurs formules a portee de main et activez celle qui correspond a votre prochain achat.</p>
+          <p className="muted">Dans votre portefeuille.</p>
         </article>
-        <article className="metric-card highlight-card">
-          <h3>Votre formule active</h3>
-          <p className="metric-value">{activeCard?.cardPlan?.name || 'Aucune'}</p>
-          <p className="muted">C est elle qui determine les offres visibles et utilisables en ce moment.</p>
+        <article className="metric-card premium-stat-card">
+          <span className="meta-label">Dernier gain</span>
+          <p className="metric-value">{latestTransaction?.discountAmount || '0'}</p>
+          <p className="muted">Votre derniere economie.</p>
         </article>
-        <article className="metric-card highlight-card">
-          <h3>Autres cartes disponibles</h3>
+        <article className="metric-card premium-stat-card">
+          <span className="meta-label">A decouvrir</span>
           <p className="metric-value">{availablePlanCount}</p>
-          <p className="muted">Explorez d autres formules pour acceder a de nouveaux reseaux de partenaires et enrichir votre portefeuille.</p>
-        </article>
-        <article className="metric-card highlight-card">
-          <h3>Derniere economie</h3>
-          <p className="metric-value">{transactions[0]?.discountAmount || '0'}</p>
-          <p className="muted">Le montant economise lors de votre derniere utilisation de carte.</p>
+          <p className="muted">Cartes disponibles.</p>
         </article>
       </section>
 
-      <section className="panel content-card dashboard-wallet-summary">
-        <div className="section-heading-row">
-          <div>
-            <p className="eyebrow">Portefeuille</p>
-            <h2>Votre collection SmartCard</h2>
+      <section className="premium-dual-grid">
+        <article className="panel content-card premium-support-card">
+          <div className="section-heading-row premium-section-heading-row">
+            <div>
+              <p className="eyebrow">Portefeuille</p>
+              <h2>Vos cartes</h2>
+            </div>
           </div>
-          <Link className="secondary-link" to="/my-cards">Voir toutes mes cartes</Link>
-        </div>
-        <p className="muted">
-          {hasWallet
-            ? 'Ajoutez une nouvelle carte quand vous voulez acceder a d autres avantages partenaires, puis activez celle qui correspond a votre prochain besoin.'
-            : 'Commencez par choisir votre premiere carte pour ouvrir votre portefeuille SmartCard.'}
-        </p>
+          <p className="muted">Activez la bonne carte.</p>
+          <div className="premium-link-stack">
+            <Link className="secondary-link" to="/my-cards">Voir mes cartes</Link>
+            <Link className="secondary-link" to="/card-plans">Acheter une carte</Link>
+          </div>
+        </article>
+
+        <article className="panel content-card premium-support-card premium-support-card-accent">
+          <div className="section-heading-row premium-section-heading-row">
+            <div>
+              <p className="eyebrow">Avantages</p>
+              <h2>Utilisables maintenant</h2>
+            </div>
+          </div>
+          <p className="muted">Seulement l essentiel.</p>
+          <Link className="secondary-link" to="/offers">Voir mes avantages</Link>
+        </article>
       </section>
 
-      <section className="panel content-card">
-        <h2>Vos dernieres transactions</h2>
+      <section className="panel content-card premium-transaction-section">
+        <div className="section-heading-row premium-section-heading-row">
+          <div>
+            <p className="eyebrow">Historique</p>
+            <h2>Derniers passages</h2>
+          </div>
+          <Link className="secondary-link" to="/transactions">Tout voir</Link>
+        </div>
         {isTransactionsLoading ? (
-          <p className="muted">Nous recuperons vos dernieres transactions...</p>
+          <p className="muted">Chargement...</p>
         ) : transactions.length === 0 ? (
-          <p className="muted">Vos prochaines economies apparaitront ici des votre premiere utilisation.</p>
+          <p className="muted">Vos passages apparaitront ici.</p>
         ) : (
-          <TransactionPreviewList transactions={transactions.slice(0, 5)} />
+          <TransactionPreviewList transactions={transactions.slice(0, 4)} />
         )}
       </section>
-    </>
+    </div>
   );
 }
