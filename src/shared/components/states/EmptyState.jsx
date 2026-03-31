@@ -1,9 +1,9 @@
-export function EmptyState({ title, description }) {
+import { StateCard } from '../../ui/StateCard';
+
+export function EmptyState({ title, description, children = null }) {
   return (
-    <section className="content-card state-card">
-      <div className="state-icon">--</div>
-      <h2>{title}</h2>
-      <p className="muted">{description}</p>
-    </section>
+    <StateCard title={title} description={description}>
+      {children}
+    </StateCard>
   );
 }

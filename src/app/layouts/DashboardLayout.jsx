@@ -17,10 +17,10 @@ const linksByRole = {
     { to: '/merchant/scan', label: 'Scan' },
   ],
   ADMIN: [
-    { to: '/admin/dashboard', label: 'Dashboard' },
+    { to: '/admin/dashboard', label: 'Accueil' },
     { to: '/admin/card-plans', label: 'Plans' },
     { to: '/admin/users', label: 'Users' },
-    { to: '/admin/offers', label: 'Offers' },
+    { to: '/admin/offers', label: 'Offres' },
   ],
 };
 
@@ -35,9 +35,9 @@ export function DashboardLayout() {
     return (
       <div className="dashboard-shell dashboard-shell-mobile">
         <main className="dashboard-content dashboard-content-mobile">
-          <header className="mobile-header-card">
+          <header className="mobile-header-card ui-shell-card ui-mobile-header-card">
             <div>
-              <p className="eyebrow">SmartCard</p>
+              <p className="eyebrow ui-page-kicker">SmartCard</p>
               <h2>SmartCard</h2>
               <p className="muted mobile-header-user">{user?.firstName} {user?.lastName}</p>
             </div>
@@ -54,9 +54,9 @@ export function DashboardLayout() {
 
   return (
     <div className="dashboard-shell">
-      <aside className="sidebar">
-        <div>
-          <p className="eyebrow sidebar-eyebrow">SmartCard</p>
+      <aside className="sidebar ui-shell-card ui-sidebar-shell">
+        <div className="ui-sidebar-brand-block">
+          <p className="eyebrow sidebar-eyebrow ui-page-kicker">SmartCard</p>
           <h2>SmartCard</h2>
           <p className="sidebar-user">{user?.firstName} {user?.lastName}</p>
         </div>
@@ -75,10 +75,9 @@ export function DashboardLayout() {
           Deconnexion
         </button>
       </aside>
-      <main className="dashboard-content">
+      <main className="dashboard-content ui-page-shell">
         <Outlet />
       </main>
     </div>
   );
 }
-
