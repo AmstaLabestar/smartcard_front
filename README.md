@@ -52,7 +52,7 @@ cp frontend.env.example .env
 docker compose --env-file .env -f docker-compose.frontend.yml up -d --build
 ```
 
-Le conteneur frontend est expose localement sur `127.0.0.1:3000` et doit ensuite etre servi par un reverse proxy public.
+Le conteneur frontend est expose localement sur `127.0.0.1:4173` et doit ensuite etre servi par un reverse proxy public.
 
 ## CI
 
@@ -63,3 +63,17 @@ Une GitHub Action `Frontend CI` verifie automatiquement :
 - le build de production
 
 Le workflow est lance sur `main`, sur les branches `feature/*` et sur les pull requests.
+
+## Deploy
+
+Une GitHub Action `Frontend Deploy` peut deployer automatiquement sur le VPS a chaque push sur `main` ou manuellement.
+
+Secrets attendus :
+
+- `VPS_HOST`
+- `VPS_USERNAME`
+- `VPS_SSH_PRIVATE_KEY`
+- `VPS_SSH_PASSPHRASE`
+- `VPS_SUDO_PASSWORD`
+- `FRONTEND_ENV_FILE`
+- `DEPLOY_PATH` optionnel, sinon `/home/tanga/apps/smartcard/frontend`
