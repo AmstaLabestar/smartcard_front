@@ -86,7 +86,7 @@ describe('MerchantScanPage', () => {
     await userEvent.clear(amountInput);
     await userEvent.type(amountInput, '200');
 
-    await userEvent.click(screen.getByRole('button', { name: 'Appliquer la reduction' }));
+    await userEvent.click(screen.getByRole('button', { name: 'Valider' }));
 
     await waitFor(() => {
       expect(scanMerchantTransaction).toHaveBeenCalled();
@@ -103,3 +103,4 @@ describe('MerchantScanPage', () => {
     });
   });
 });
+

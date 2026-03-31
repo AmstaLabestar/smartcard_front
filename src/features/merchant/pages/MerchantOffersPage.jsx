@@ -30,7 +30,7 @@ export function MerchantOffersPage() {
   const createMutation = useMutation({
     mutationFn: createMerchantOffer,
     onSuccess: () => {
-      const message = 'Votre offre est disponible dans votre catalogue.';
+      const message = 'Votre offre est prete.';
       setFeedback(message);
       setForm(initialForm);
       toast.success(message, 'Offre creee');
@@ -47,7 +47,7 @@ export function MerchantOffersPage() {
   const statusMutation = useMutation({
     mutationFn: updateMerchantOfferStatus,
     onSuccess: (_response, variables) => {
-      toast.success(`Le statut de l'offre est maintenant ${variables.status}.`, 'Offre mise a jour');
+      toast.success(`Statut : ${variables.status}.`, 'Offre mise a jour');
       queryClient.invalidateQueries({ queryKey: ['merchant', 'offers'] });
       queryClient.invalidateQueries({ queryKey: ['offers', 'active'] });
     },
@@ -68,34 +68,35 @@ export function MerchantOffersPage() {
   };
 
   return (
-    <div className="merchant-grid">
-      <section className="content-card">
-        <p className="eyebrow">Merchant Offers</p>
+    <div className="merchant-grid premium-page-stack merchant-offers-layout">
+      <section className="content-card premium-support-card">
+        <p className="eyebrow">Offres</p>
         <h1>Creer une offre</h1>
+        <p className="muted">Rapide, claire, activable.</p>
         <form className="stack-form" onSubmit={handleSubmit}>
           <input placeholder="Titre" value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} />
-          <input placeholder="Description" value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} />
+          <input placeholder="Description courte" value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} />
           <select value={form.discountType} onChange={(e) => setForm({ ...form, discountType: e.target.value })}>
             <option value="PERCENTAGE">Pourcentage</option>
             <option value="FIXED">Montant fixe</option>
           </select>
-          <input type="number" placeholder="Valeur reduction" value={form.discountValue} onChange={(e) => setForm({ ...form, discountValue: e.target.value })} />
+          <input type="number" placeholder="Valeur" value={form.discountValue} onChange={(e) => setForm({ ...form, discountValue: e.target.value })} />
           <input placeholder="Conditions" value={form.terms} onChange={(e) => setForm({ ...form, terms: e.target.value })} />
           <select value={form.status} onChange={(e) => setForm({ ...form, status: e.target.value })}>
             <option value="ACTIVE">Active</option>
-            <option value="DRAFT">Draft</option>
+            <option value="DRAFT">Brouillon</option>
           </select>
           {feedback ? <p className={createMutation.isError ? 'error-banner' : 'success-banner'}>{feedback}</p> : null}
           <button className="primary-button" type="submit" disabled={createMutation.isPending}>
-            {createMutation.isPending ? 'Creation...' : 'Creer l\'offre'}
+            {createMutation.isPending ? 'Creation...' : 'Creer'}
           </button>
         </form>
       </section>
-      <section className="content-card">
-        <p className="eyebrow">Mes offres</p>
-        <h2>Catalogue merchant</h2>
+      <section className="content-card premium-support-card premium-support-card-accent">
+        <p className="eyebrow">Catalogue</p>
+        <h2>Mes offres</h2>
         {isLoading ? (
-          <p className="muted">Chargement des offres...</p>
+          <p className="muted">Chargement...</p>
         ) : offers.length === 0 ? (
           <p className="muted">Aucune offre pour le moment.</p>
         ) : (
