@@ -20,13 +20,12 @@ export function CardPlanGrid({
         const content = (
           <>
             <div className="card-plan-topline">
-              <p className="eyebrow">{isOwned ? 'Deja dans votre portefeuille' : cardPlan.status}</p>
+              <p className="eyebrow">{isOwned ? 'Dans vos cartes' : cardPlan.status}</p>
               <strong>{cardPlan.price}</strong>
             </div>
             <h3>{cardPlan.name}</h3>
-            <p className="muted">{cardPlan.description || 'Carte commerciale SmartCard.'}</p>
-            {cardPlan.marketingHighlights ? <p className="card-plan-highlights">{cardPlan.marketingHighlights}</p> : null}
-            <p className="muted">{cardPlan.offers?.length || 0} avantages inclus</p>
+            <p className="muted">{cardPlan.marketingHighlights || cardPlan.description || 'Carte SmartCard.'}</p>
+            <p className="meta-label">{cardPlan.offers?.length || 0} avantages</p>
             {actionRenderer ? <div className="card-plan-actions">{actionRenderer(cardPlan, { isOwned, isSelected })}</div> : null}
           </>
         );

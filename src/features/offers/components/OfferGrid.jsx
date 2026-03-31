@@ -9,10 +9,10 @@ export function OfferGrid({ offers }) {
           </div>
           <h3>{offer.title}</h3>
           <p className="offer-value">{offer.discountValue}{offer.discountType === 'PERCENTAGE' ? '%' : ''}</p>
-          <p className="muted">{offer.description || 'Un avantage partenaire a activer directement en boutique.'}</p>
+          <p className="muted">{offer.description || 'Disponible avec votre carte active.'}</p>
           <div className="offer-footer">
             <span className="offer-partner">{offer.creator?.firstName} {offer.creator?.lastName}</span>
-            <small>{offer.terms || 'Voir conditions en caisse'}</small>
+            <small>{offer.terms || 'Conditions en caisse'}</small>
           </div>
         </article>
       ))}
