@@ -28,7 +28,7 @@ export function MyCardsPage() {
   const activateMutation = useMutation({
     mutationFn: activateOwnedCard,
     onSuccess: async () => {
-      toast.success('Votre carte active a ete mise a jour. Vos avantages visibles suivent maintenant cette formule.', 'Carte active mise a jour');
+      toast.success('Votre carte active a ete mise a jour.', 'Carte active');
       await Promise.all([
         queryClient.invalidateQueries({ queryKey: ['me', 'cards'] }),
         queryClient.invalidateQueries({ queryKey: ['me', 'cards', 'active'] }),
@@ -45,51 +45,61 @@ export function MyCardsPage() {
   const activeCard = activeCardResponse?.data || cards.find((card) => card.status === 'ACTIVE') || null;
 
   if (isCardsLoading || isActiveCardLoading) {
-    return <LoadingState title="Chargement de votre portefeuille" description="Nous recuperons vos cartes, votre formule active et vos avantages disponibles." />;
+    return <LoadingState title="Chargement de votre portefeuille" description="Nous recuperons vos cartes." />;
   }
 
   if (cards.length === 0) {
     return (
       <EmptyState
-        title="Votre portefeuille est encore vide"
-        description="Choisissez une carte dans le catalogue pour commencer a debloquer vos avantages SmartCard."
+        title="Votre portefeuille est vide"
+        description="Choisissez une carte pour commencer."
       />
     );
   }
 
   return (
-    <div className="wallet-page">
-      <section className="panel content-card hero-card">
-        <p className="eyebrow">Mes cartes</p>
-        <h1>Gardez la bonne carte active au bon moment</h1>
-        <p className="muted">Votre portefeuille SmartCard vous permet de passer d une formule a une autre en quelques secondes pour afficher les avantages qui vous interessent vraiment.</p>
-        <div className="inline-actions top-actions">
-          <Link className="primary-button link-button" to="/card-plans">Acheter une autre carte</Link>
+    <div className="wallet-page premium-page-stack">
+      <section className="panel content-card premium-hero-card premium-hero-card-user">
+        <div className="premium-hero-copy">
+          <p className="eyebrow">Mes cartes</p>
+          <h1>Votre portefeuille</h1>
+          <p className="muted premium-hero-lead">Une carte active, le reste a portee de main.</p>
+          <div className="inline-actions premium-hero-actions premium-hero-actions-compact">
+            <Link className="primary-button link-button premium-inline-button" to="/card-plans">Nouvelle carte</Link>
+            <Link className="primary-button alt-button link-button premium-inline-button" to="/offers">Avantages</Link>
+          </div>
+        </div>
+        <div className="premium-hero-aside">
+          <div className="premium-spotlight-card">
+            <span className="meta-label">Active</span>
+            <strong>{activeCard?.cardPlan?.name || 'Aucune'}</strong>
+            <p className="muted">Vos avantages suivent celle-ci.</p>
+          </div>
         </div>
       </section>
 
       {activeCard ? <UserCardPanel card={activeCard} /> : null}
 
-      <section className="cards-grid">
-        <article className="metric-card highlight-card">
-          <h3>Cartes dans votre portefeuille</h3>
+      <section className="premium-summary-grid premium-summary-grid-compact">
+        <article className="metric-card premium-stat-card premium-stat-card-dark">
+          <span className="meta-label">Cartes</span>
           <p className="metric-value">{cards.length}</p>
-          <p className="muted">Retrouvez ici toutes vos cartes disponibles et choisissez celle qui doit piloter vos avantages visibles.</p>
+          <p className="muted">Dans votre portefeuille.</p>
         </article>
-        <article className="metric-card highlight-card">
-          <h3>Carte actuellement active</h3>
+        <article className="metric-card premium-stat-card">
+          <span className="meta-label">Visible</span>
           <p className="metric-value">{activeCard?.cardPlan?.name || 'Aucune'}</p>
-          <p className="muted">Les offres affichees dans l application suivent toujours votre carte active.</p>
+          <p className="muted">Presentee en caisse.</p>
         </article>
       </section>
 
-      <section className="panel content-card wallet-section">
-        <div className="section-heading-row">
+      <section className="panel content-card wallet-section premium-support-card">
+        <div className="section-heading-row premium-section-heading-row">
           <div>
-            <p className="eyebrow">Votre portefeuille</p>
+            <p className="eyebrow">Portefeuille</p>
             <h2>Toutes vos cartes</h2>
           </div>
-          <p className="muted">Activez une autre carte a tout moment pour changer instantanement les avantages accessibles, ou achetez une nouvelle formule pour elargir votre terrain de jeu.</p>
+          <p className="muted">Choisissez-en une.</p>
         </div>
         <OwnedCardGrid cards={cards} onActivate={(cardId) => activateMutation.mutate(cardId)} activatingCardId={activateMutation.variables} />
       </section>
