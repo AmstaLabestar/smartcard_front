@@ -4,6 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import { fetchMerchantOffers } from '../../offers/api/offers.api';
 import { fetchMerchantTransactions } from '../../transactions/api/transactions.api';
 import { EmptyState } from '../../../shared/components/states/EmptyState';
+import { PageIntro } from '../../../shared/ui/PageIntro';
 
 export function MerchantDashboardPage() {
   const { data: offersResponse } = useQuery({
@@ -24,32 +25,32 @@ export function MerchantDashboardPage() {
 
   return (
     <div className="merchant-dashboard-page premium-page-stack">
-      <section className="panel content-card premium-hero-card premium-hero-card-user">
-        <div className="premium-hero-copy">
-          <p className="eyebrow">Merchant</p>
-          <h1>Scannez. Validez. Encaissez.</h1>
-          <p className="muted premium-hero-lead">Votre espace caisse, sans detour.</p>
-          <div className="inline-actions premium-hero-actions premium-hero-actions-compact">
-            <Link className="primary-button link-button premium-inline-button" to="/merchant/scan">
-              Scanner
-            </Link>
-            <Link className="primary-button alt-button link-button premium-inline-button" to="/merchant/offers">
-              Mes offres
-            </Link>
-          </div>
-        </div>
-        <div className="premium-hero-aside">
-          <div className="premium-spotlight-card">
-            <span className="meta-label">Actives</span>
-            <strong>{activeOffers}</strong>
-            <p className="muted">Offres disponibles.</p>
-          </div>
-          <div className="premium-spotlight-card premium-spotlight-card-soft">
-            <span className="meta-label">Passages</span>
-            <strong>{transactions.length}</strong>
-            <p className="muted">Transactions validees.</p>
-          </div>
-        </div>
+      <section className="panel content-card premium-hero-card premium-hero-card-soft">
+        <PageIntro
+          kicker="Merchant"
+          title="Scannez. Validez. Encaissez."
+          description="Votre espace caisse, rapide et lisible."
+          actions={(
+            <>
+              <Link className="primary-button link-button premium-inline-button" to="/merchant/scan">Scanner</Link>
+              <Link className="primary-button alt-button link-button premium-inline-button" to="/merchant/offers">Mes offres</Link>
+            </>
+          )}
+          aside={(
+            <div className="premium-hero-aside merchant-hero-aside">
+              <div className="premium-spotlight-card">
+                <span className="meta-label">Actives</span>
+                <strong>{activeOffers}</strong>
+                <p className="muted">Offres disponibles.</p>
+              </div>
+              <div className="premium-spotlight-card premium-spotlight-card-soft">
+                <span className="meta-label">Passages</span>
+                <strong>{transactions.length}</strong>
+                <p className="muted">Transactions validees.</p>
+              </div>
+            </div>
+          )}
+        />
       </section>
 
       <section className="premium-summary-grid merchant-summary-grid">
@@ -72,20 +73,20 @@ export function MerchantDashboardPage() {
 
       <section className="merchant-dashboard-grid premium-dual-grid">
         <section className="content-card merchant-insight-card premium-support-card">
-          <p className="eyebrow">A faire</p>
-          <h2>Vos raccourcis</h2>
+          <p className="eyebrow">Raccourcis</p>
+          <h2>Le plus utile</h2>
           <div className="list-stack">
             <article className="list-item">
-              <strong>Scanner un client</strong>
-              <p className="muted">L action principale.</p>
+              <strong>Scanner</strong>
+              <p className="muted">Votre action principale.</p>
             </article>
             <article className="list-item">
-              <strong>Verifier vos offres</strong>
-              <p className="muted">Gardez-les actives.</p>
+              <strong>Offres actives</strong>
+              <p className="muted">Gardez-les visibles.</p>
             </article>
             <article className="list-item">
-              <strong>Suivre vos passages</strong>
-              <p className="muted">Vos derniers scans restent visibles ici.</p>
+              <strong>Suivi rapide</strong>
+              <p className="muted">Vos derniers passages restent ici.</p>
             </article>
           </div>
         </section>
