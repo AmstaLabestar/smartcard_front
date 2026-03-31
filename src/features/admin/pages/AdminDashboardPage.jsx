@@ -8,6 +8,7 @@ import {
   fetchAdminOffers,
   fetchAdminUsers,
 } from '../api/admin.api';
+import { PageIntro } from '../../../shared/ui/PageIntro';
 
 export function AdminDashboardPage() {
   const results = useQueries({
@@ -27,45 +28,49 @@ export function AdminDashboardPage() {
   const cardPlans = results[4].data?.data || [];
 
   return (
-    <>
-      <section className="panel content-card hero-card">
-        <p className="eyebrow">Pilotage</p>
-        <h1>Pilotez l'offre SmartCard depuis un seul espace</h1>
-        <p className="muted">Suivez l'activite de la plateforme, organisez les cartes commerciales et gardez la maitrise de vos avantages partenaires.</p>
-        <div className="inline-actions top-actions">
-          <Link className="primary-button link-button" to="/admin/users">
-            Voir les utilisateurs
-          </Link>
-          <Link className="primary-button link-button alt-button" to="/admin/card-plans">
-            Gerer les cartes
-          </Link>
-          <Link className="primary-button link-button alt-button" to="/admin/offers">
-            Explorer les offres
-          </Link>
-        </div>
+    <div className="premium-page-stack admin-dashboard-page">
+      <section className="panel content-card premium-hero-card premium-hero-card-soft">
+        <PageIntro
+          kicker="Admin"
+          title="Pilotez SmartCard"
+          description="Gardez une vue claire sur la plateforme, les cartes et les offres."
+          actions={(
+            <>
+              <Link className="primary-button link-button premium-inline-button" to="/admin/card-plans">Plans</Link>
+              <Link className="primary-button alt-button link-button premium-inline-button" to="/admin/offers">Offres</Link>
+              <Link className="primary-button alt-button link-button premium-inline-button" to="/admin/users">Users</Link>
+            </>
+          )}
+        />
       </section>
-      <section className="cards-grid">
-        <article className="metric-card highlight-card">
-          <h3>Clients</h3>
+
+      <section className="premium-summary-grid admin-summary-grid">
+        <article className="metric-card premium-stat-card premium-stat-card-dark">
+          <span className="meta-label">Clients</span>
           <p className="metric-value">{users.length}</p>
+          <p className="muted">Comptes users.</p>
         </article>
-        <article className="metric-card highlight-card">
-          <h3>Partenaires</h3>
+        <article className="metric-card premium-stat-card">
+          <span className="meta-label">Merchants</span>
           <p className="metric-value">{merchants.length}</p>
+          <p className="muted">Partenaires actifs.</p>
         </article>
-        <article className="metric-card highlight-card">
-          <h3>Cartes actives</h3>
+        <article className="metric-card premium-stat-card">
+          <span className="meta-label">Cartes</span>
           <p className="metric-value">{cards.length}</p>
+          <p className="muted">Cartes emises.</p>
         </article>
-        <article className="metric-card highlight-card">
-          <h3>Offres diffusees</h3>
+        <article className="metric-card premium-stat-card">
+          <span className="meta-label">Offres</span>
           <p className="metric-value">{offers.length}</p>
+          <p className="muted">Dans le reseau.</p>
         </article>
-        <article className="metric-card highlight-card">
-          <h3>Formules commerciales</h3>
+        <article className="metric-card premium-stat-card">
+          <span className="meta-label">Plans</span>
           <p className="metric-value">{cardPlans.length}</p>
+          <p className="muted">Cartes commerciales.</p>
         </article>
       </section>
-    </>
+    </div>
   );
 }
