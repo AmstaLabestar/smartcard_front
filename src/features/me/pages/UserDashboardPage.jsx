@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 
@@ -6,7 +7,7 @@ import { fetchCardPlans } from '../../card-plans/api/card-plans.api';
 import { CardOnboardingPanel } from '../components/CardOnboardingPanel';
 import { UserCardPanel } from '../components/UserCardPanel';
 import { TransactionPreviewList } from '../components/TransactionPreviewList';
-import { fetchMyCard, fetchMyTransactions } from '../api/me.api';
+import { fetchMyActiveCard, fetchMyCards, fetchMyTransactions } from '../api/me.api';
 import { EmptyState } from '../../../shared/components/states/EmptyState';
 import { LoadingState } from '../../../shared/components/states/LoadingState';
 import { getApiErrorMessage } from '../../../shared/lib/api-error';
@@ -21,13 +22,21 @@ export function UserDashboardPage() {
   const [purchasedCard, setPurchasedCard] = useState(null);
 
   const {
-    data: cardResponse,
-    isLoading: isCardLoading,
-    error: cardError,
+    data: activeCardResponse,
+    isLoading: isActiveCardLoading,
+    error: activeCardError,
   } = useQuery({
-    queryKey: ['me', 'card'],
-    queryFn: fetchMyCard,
+    queryKey: ['me', 'cards', 'active'],
+    queryFn: fetchMyActiveCard,
     retry: false,
+  });
+
+  const {
+    data: cardsResponse,
+    isLoading: isCardsLoading,
+  } = useQuery({
+    queryKey: ['me', 'cards'],
+    queryFn: fetchMyCards,
   });
 
   const {
@@ -51,7 +60,9 @@ export function UserDashboardPage() {
     onSuccess: (response) => {
       setPurchaseError('');
       setPurchasedCard(response.data);
-      toast.success('Votre carte est prete. Activez-la pour debloquer tous ses avantages.', 'Carte preparee');
+      toast.success('Votre nouvelle carte est prete. Activez-la depuis votre portefeuille pour debloquer ses avantages.', 'Carte ajoutee');
+      queryClient.invalidateQueries({ queryKey: ['me', 'cards'] });
+      queryClient.invalidateQueries({ queryKey: ['me', 'cards', 'active'] });
       queryClient.invalidateQueries({ queryKey: ['me', 'card'] });
     },
     onError: (error) => {
@@ -70,8 +81,12 @@ export function UserDashboardPage() {
       if (typeof context?.onSuccess === 'function') {
         context.onSuccess();
       }
-      await queryClient.invalidateQueries({ queryKey: ['me', 'card'] });
-      await queryClient.invalidateQueries({ queryKey: ['offers', 'active'] });
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: ['me', 'cards'] }),
+        queryClient.invalidateQueries({ queryKey: ['me', 'cards', 'active'] }),
+        queryClient.invalidateQueries({ queryKey: ['me', 'card'] }),
+        queryClient.invalidateQueries({ queryKey: ['offers', 'active'] }),
+      ]);
     },
     onError: (error) => {
       const message = getApiErrorMessage(error, 'Activation impossible');
@@ -81,23 +96,31 @@ export function UserDashboardPage() {
     },
   });
 
-  const card = cardResponse?.data;
+  const activeCard = activeCardResponse?.data;
+  const cards = cardsResponse?.data || [];
   const transactions = transactionsResponse?.data || [];
   const cardPlans = cardPlansResponse?.data || [];
+  const ownedPlanIds = new Set(cards.map((card) => card.cardPlan?.id).filter(Boolean));
+  const availablePlanCount = cardPlans.filter((cardPlan) => !ownedPlanIds.has(cardPlan.id)).length;
 
-  if (isCardLoading || isCardPlansLoading) {
-    return <LoadingState title="Bienvenue chez SmartCard" description="Nous preparons votre carte, vos avantages et vos dernieres activites." />;
+  if (isActiveCardLoading || isCardsLoading || isCardPlansLoading) {
+    return <LoadingState title="Bienvenue chez SmartCard" description="Nous preparons votre portefeuille, votre carte active et vos dernieres activites." />;
   }
 
-  const hasNoCard = cardError?.response?.status === 404 || (!card && !isCardLoading);
-  const showOnboarding = hasNoCard || card?.status === 'INACTIVE';
+  const hasWallet = cards.length > 0;
+  const showOnboarding = !hasWallet;
+  const shouldShowWalletAction = hasWallet && !activeCard && (activeCardError?.response?.status === 404 || (!activeCard && !isActiveCardLoading));
 
   return (
     <>
       <section className="panel content-card hero-card">
         <p className="eyebrow">Votre espace</p>
-        <h1>Retrouvez votre carte et tous vos avantages en un coup d'oeil</h1>
-        <p className="muted">Choisissez la carte qui vous ressemble, activez-la et profitez d'offres exclusives chez nos partenaires.</p>
+        <h1>Retrouvez la carte active qui ouvre vos meilleurs avantages</h1>
+        <p className="muted">Activez la formule qui vous correspond, gardez votre portefeuille sous la main et profitez d offres exclusives chez nos partenaires.</p>
+        <div className="inline-actions top-actions">
+          <Link className="primary-button link-button" to="/card-plans">Acheter une nouvelle carte</Link>
+          {hasWallet ? <Link className="primary-button alt-button link-button" to="/my-cards">Gerer mes cartes</Link> : null}
+        </div>
       </section>
 
       {showOnboarding ? (
@@ -116,41 +139,65 @@ export function UserDashboardPage() {
               onSuccess: () => {
                 done();
                 setPurchasedCard(null);
-                queryClient.invalidateQueries({ queryKey: ['me', 'card'] });
               },
             });
           }}
         />
-      ) : card ? (
-        <UserCardPanel card={card} />
-      ) : (
-        <EmptyState
-          title="Aucune carte active pour le moment"
-          description={cardError?.response?.data?.error?.message || 'Choisissez une carte et activez-la pour commencer a profiter de vos avantages.'}
-        />
-      )}
+      ) : activeCard ? (
+        <UserCardPanel card={activeCard} />
+      ) : shouldShowWalletAction ? (
+        <section className="content-card wallet-empty-card">
+          <EmptyState
+            title="Aucune carte active pour le moment"
+            description="Vous avez deja des cartes dans votre portefeuille. Activez celle de votre choix pour debloquer les offres correspondantes."
+          />
+          <div className="inline-actions">
+            <Link className="primary-button link-button" to="/my-cards">
+              Gerer mes cartes
+            </Link>
+            <Link className="primary-button alt-button link-button" to="/card-plans">
+              Acheter une nouvelle carte
+            </Link>
+          </div>
+        </section>
+      ) : null}
 
       <section className="cards-grid">
         <article className="metric-card highlight-card">
-          <h3>Statut de votre carte</h3>
-          <p className="metric-value">{card?.status || (showOnboarding ? 'En preparation' : 'Aucune')}</p>
-          <p className="muted">Une carte active vous ouvre l'acces a toutes les offres incluses dans votre plan.</p>
+          <h3>Cartes dans votre portefeuille</h3>
+          <p className="metric-value">{cards.length}</p>
+          <p className="muted">Gardez plusieurs formules a portee de main et activez celle qui correspond a votre prochain achat.</p>
         </article>
         <article className="metric-card highlight-card">
-          <h3>Votre formule</h3>
-          <p className="metric-value">{card?.cardPlan?.name || 'Aucune'}</p>
-          <p className="muted">Le plan choisi determine les avantages que vous pouvez utiliser chez nos partenaires.</p>
+          <h3>Votre formule active</h3>
+          <p className="metric-value">{activeCard?.cardPlan?.name || 'Aucune'}</p>
+          <p className="muted">C est elle qui determine les offres visibles et utilisables en ce moment.</p>
         </article>
         <article className="metric-card highlight-card">
-          <h3>Utilisations confirmees</h3>
-          <p className="metric-value">{transactions.length}</p>
-          <p className="muted">Retrouvez ici toutes vos utilisations validees en boutique.</p>
+          <h3>Autres cartes disponibles</h3>
+          <p className="metric-value">{availablePlanCount}</p>
+          <p className="muted">Explorez d autres formules pour acceder a de nouveaux reseaux de partenaires et enrichir votre portefeuille.</p>
         </article>
         <article className="metric-card highlight-card">
           <h3>Derniere economie</h3>
           <p className="metric-value">{transactions[0]?.discountAmount || '0'}</p>
           <p className="muted">Le montant economise lors de votre derniere utilisation de carte.</p>
         </article>
+      </section>
+
+      <section className="panel content-card dashboard-wallet-summary">
+        <div className="section-heading-row">
+          <div>
+            <p className="eyebrow">Portefeuille</p>
+            <h2>Votre collection SmartCard</h2>
+          </div>
+          <Link className="secondary-link" to="/my-cards">Voir toutes mes cartes</Link>
+        </div>
+        <p className="muted">
+          {hasWallet
+            ? 'Ajoutez une nouvelle carte quand vous voulez acceder a d autres avantages partenaires, puis activez celle qui correspond a votre prochain besoin.'
+            : 'Commencez par choisir votre premiere carte pour ouvrir votre portefeuille SmartCard.'}
+        </p>
       </section>
 
       <section className="panel content-card">

@@ -11,3 +11,8 @@ export async function activateCard(activationCode) {
   const { data } = await apiClient.post('/cards/activate', { activationCode });
   return data;
 }
+
+export async function activateOwnedCard(cardId) {
+  const { data } = await apiClient.post(`/cards/${cardId}/activate`);
+  return data;
+}

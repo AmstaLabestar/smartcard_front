@@ -14,7 +14,7 @@ export function OffersPage() {
   const offers = offersResponse?.data || [];
 
   if (isLoading) {
-    return <LoadingState title="Chargement de vos avantages" description="Nous preparons les offres disponibles avec votre carte." />;
+    return <LoadingState title="Chargement de vos avantages" description="Nous preparons les offres disponibles avec votre carte active." />;
   }
 
   return (
@@ -22,14 +22,14 @@ export function OffersPage() {
       <div className="offers-header">
         <div>
           <p className="eyebrow">Vos avantages</p>
-          <h1>Les meilleures offres accessibles avec votre carte</h1>
+          <h1>Les meilleures offres debloquees avec votre carte active</h1>
         </div>
-        <p className="muted">Cette selection est personnalisee selon la carte que vous avez activee.</p>
+        <p className="muted">Cette selection suit la carte actuellement active dans votre portefeuille SmartCard.</p>
       </div>
       {offers.length === 0 ? (
         <EmptyState
           title="Aucune offre debloquee pour le moment"
-          description="Activez votre carte ou choisissez une autre formule pour acceder a davantage d'avantages partenaires."
+          description="Activez la carte la plus adaptee a votre besoin ou choisissez une nouvelle formule pour acceder a davantage d avantages partenaires."
         />
       ) : (
         <OfferGrid offers={offers} />

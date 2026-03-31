@@ -10,6 +10,11 @@ export async function updateMerchantOfferStatus({ offerId, status }) {
   return data;
 }
 
+export async function previewMerchantScan(payload) {
+  const { data } = await apiClient.post('/transactions/scan/preview', payload);
+  return data;
+}
+
 export async function scanMerchantTransaction(payload) {
   const { data } = await apiClient.post('/transactions/scan', payload);
   return data;

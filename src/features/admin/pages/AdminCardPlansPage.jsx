@@ -22,6 +22,15 @@ const initialForm = {
   status: 'ACTIVE',
 };
 
+const toOptionalField = (value) => {
+  if (typeof value !== 'string') {
+    return value;
+  }
+
+  const trimmedValue = value.trim();
+  return trimmedValue === '' ? undefined : trimmedValue;
+};
+
 export function AdminCardPlansPage() {
   const queryClient = useQueryClient();
   const toast = useToast();
@@ -100,8 +109,12 @@ export function AdminCardPlansPage() {
           onSubmit={(event) => {
             event.preventDefault();
             createMutation.mutate({
-              ...form,
+              name: form.name.trim(),
+              slug: toOptionalField(form.slug),
+              description: toOptionalField(form.description),
+              marketingHighlights: toOptionalField(form.marketingHighlights),
               price: Number(form.price),
+              status: form.status,
             });
           }}
         >

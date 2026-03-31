@@ -10,6 +10,16 @@ export async function fetchMyCard() {
   return data;
 }
 
+export async function fetchMyCards() {
+  const { data } = await apiClient.get('/me/cards');
+  return data;
+}
+
+export async function fetchMyActiveCard() {
+  const { data } = await apiClient.get('/me/cards/active');
+  return data;
+}
+
 export async function fetchMyTransactions() {
   const { data } = await apiClient.get('/me/transactions');
   return data;
