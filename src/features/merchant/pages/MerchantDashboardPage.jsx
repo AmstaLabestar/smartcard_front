@@ -23,73 +23,80 @@ export function MerchantDashboardPage() {
   const totalDiscount = transactions.reduce((sum, transaction) => sum + Number(transaction.discountAmount || 0), 0);
 
   return (
-    <div className="merchant-dashboard-page">
-      <section className="panel content-card hero-card merchant-hero-card">
-        <div>
-          <p className="eyebrow">Espace partenaire</p>
-          <h1>Faites rayonner vos offres et suivez leur impact en temps reel</h1>
-          <p className="muted">Activez vos campagnes, validez les reductions en boutique et mesurez instantanement l'engagement de vos clients.</p>
+    <div className="merchant-dashboard-page premium-page-stack">
+      <section className="panel content-card premium-hero-card premium-hero-card-user">
+        <div className="premium-hero-copy">
+          <p className="eyebrow">Merchant</p>
+          <h1>Scannez. Validez. Encaissez.</h1>
+          <p className="muted premium-hero-lead">Votre espace caisse, sans detour.</p>
+          <div className="inline-actions premium-hero-actions premium-hero-actions-compact">
+            <Link className="primary-button link-button premium-inline-button" to="/merchant/scan">
+              Scanner
+            </Link>
+            <Link className="primary-button alt-button link-button premium-inline-button" to="/merchant/offers">
+              Mes offres
+            </Link>
+          </div>
         </div>
-        <div className="inline-actions top-actions">
-          <Link className="primary-button link-button" to="/merchant/offers">
-            Gerer mes offres
-          </Link>
-          <Link className="primary-button link-button alt-button" to="/merchant/scan">
-            Lancer un scan
-          </Link>
+        <div className="premium-hero-aside">
+          <div className="premium-spotlight-card">
+            <span className="meta-label">Actives</span>
+            <strong>{activeOffers}</strong>
+            <p className="muted">Offres disponibles.</p>
+          </div>
+          <div className="premium-spotlight-card premium-spotlight-card-soft">
+            <span className="meta-label">Passages</span>
+            <strong>{transactions.length}</strong>
+            <p className="muted">Transactions validees.</p>
+          </div>
         </div>
       </section>
 
-      <section className="cards-grid">
-        <article className="metric-card highlight-card">
-          <h3>Offres en vitrine</h3>
+      <section className="premium-summary-grid merchant-summary-grid">
+        <article className="metric-card premium-stat-card premium-stat-card-dark">
+          <span className="meta-label">Offres</span>
           <p className="metric-value">{activeOffers}</p>
-          <p className="muted">Les offres actuellement visibles et activables pour vos clients.</p>
+          <p className="muted">Actives maintenant.</p>
         </article>
-        <article className="metric-card highlight-card">
-          <h3>Passages en caisse</h3>
-          <p className="metric-value">{transactions.length}</p>
-          <p className="muted">Nombre total de reductions validees via SmartCard.</p>
-        </article>
-        <article className="metric-card highlight-card">
-          <h3>Chiffre final genere</h3>
+        <article className="metric-card premium-stat-card">
+          <span className="meta-label">Encaisse</span>
           <p className="metric-value">{totalRevenue.toFixed(2)}</p>
-          <p className="muted">Montant encaisse apres application des reductions.</p>
+          <p className="muted">Montant final.</p>
         </article>
-        <article className="metric-card highlight-card">
-          <h3>Economies accordees</h3>
+        <article className="metric-card premium-stat-card">
+          <span className="meta-label">Remises</span>
           <p className="metric-value">{totalDiscount.toFixed(2)}</p>
-          <p className="muted">Valeur totale offerte a vos clients pour les fideliser durablement.</p>
+          <p className="muted">Accordees aux clients.</p>
         </article>
       </section>
 
-      <section className="merchant-dashboard-grid">
-        <section className="content-card merchant-insight-card">
-          <p className="eyebrow">En pratique</p>
-          <h2>Les bons reflexes en boutique</h2>
+      <section className="merchant-dashboard-grid premium-dual-grid">
+        <section className="content-card merchant-insight-card premium-support-card">
+          <p className="eyebrow">A faire</p>
+          <h2>Vos raccourcis</h2>
           <div className="list-stack">
             <article className="list-item">
-              <strong>Gardez une offre active</strong>
-              <p className="muted">Une offre visible, c'est une occasion de plus de convertir un passage en caisse en client fidele.</p>
+              <strong>Scanner un client</strong>
+              <p className="muted">L action principale.</p>
             </article>
             <article className="list-item">
-              <strong>Saisissez le bon montant</strong>
-              <p className="muted">SmartCard applique automatiquement la bonne reduction et vous aide a eviter les erreurs au comptoir.</p>
+              <strong>Verifier vos offres</strong>
+              <p className="muted">Gardez-les actives.</p>
             </article>
             <article className="list-item">
-              <strong>Suivez vos performances</strong>
-              <p className="muted">Chaque transaction validee vous aide a mesurer l'attractivite reelle de vos offres.</p>
+              <strong>Suivre vos passages</strong>
+              <p className="muted">Vos derniers scans restent visibles ici.</p>
             </article>
           </div>
         </section>
 
-        <section className="content-card merchant-insight-card">
-          <p className="eyebrow">Vos offres</p>
-          <h2>Ce que vos clients peuvent activer aujourd'hui</h2>
+        <section className="content-card merchant-insight-card premium-support-card premium-support-card-accent">
+          <p className="eyebrow">Mes offres</p>
+          <h2>En vitrine</h2>
           {offers.length === 0 ? (
             <EmptyState
-              title="Aucune offre publiee pour le moment"
-              description="Creez votre premiere offre pour attirer l'attention et convertir davantage de clients en boutique."
+              title="Aucune offre pour le moment"
+              description="Creez votre premiere offre."
             />
           ) : (
             <div className="list-stack">
@@ -107,31 +114,31 @@ export function MerchantDashboardPage() {
         </section>
       </section>
 
-      <section className="panel content-card">
-        <div className="section-heading-row">
+      <section className="panel content-card premium-transaction-section">
+        <div className="section-heading-row premium-section-heading-row">
           <div>
-            <p className="eyebrow">Activite recente</p>
-            <h2>Vos dernieres reductions validees</h2>
+            <p className="eyebrow">Activite</p>
+            <h2>Dernieres validations</h2>
           </div>
           <Link className="link-button secondary-link" to="/merchant/scan">
             Nouveau scan
           </Link>
         </div>
         {transactions.length === 0 ? (
-          <p className="muted">Vos prochaines validations apparaitront ici des le premier passage client.</p>
+          <p className="muted">Vos prochains scans apparaitront ici.</p>
         ) : (
           <div className="list-stack">
             {transactions.slice(0, 6).map((transaction) => (
               <article key={transaction.id} className="list-item merchant-transaction-item">
                 <div>
                   <strong>{transaction.offer?.title || 'Offre SmartCard'}</strong>
-                  <p className="muted">Client : {transaction.user?.firstName} {transaction.user?.lastName}</p>
-                  <p className="muted">Reference : {transaction.reference}</p>
+                  <p className="muted">{transaction.user?.firstName} {transaction.user?.lastName}</p>
+                  <p className="muted">Ref. {transaction.reference}</p>
                 </div>
                 <div className="merchant-transaction-values">
-                  <span>Montant initial : {transaction.originalAmount}</span>
-                  <span>Economie client : {transaction.discountAmount}</span>
-                  <strong>Montant final : {transaction.amount}</strong>
+                  <span>Initial : {transaction.originalAmount}</span>
+                  <span>Remise : {transaction.discountAmount}</span>
+                  <strong>Final : {transaction.amount}</strong>
                 </div>
               </article>
             ))}

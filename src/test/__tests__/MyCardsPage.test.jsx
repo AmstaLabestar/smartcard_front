@@ -92,12 +92,12 @@ describe('MyCardsPage', () => {
 
     renderWithProviders(<MyCardsPage />);
 
-    expect(await screen.findByText('Gardez la bonne carte active au bon moment')).toBeInTheDocument();
+    expect(await screen.findByText('Une carte active, le reste a portee de main.')).toBeInTheDocument();
     expect(screen.getByText('Votre portefeuille')).toBeInTheDocument();
     expect(screen.getByText('Toutes vos cartes')).toBeInTheDocument();
     expect(screen.getByText('Carte Premium')).toBeInTheDocument();
 
-    await userEvent.click(screen.getByRole('button', { name: 'Activer cette carte' }));
+    await userEvent.click(screen.getByRole('button', { name: 'Activer' }));
 
     await waitFor(() => {
       expect(activateOwnedCard).toHaveBeenCalled();
