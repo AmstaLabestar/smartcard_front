@@ -5,8 +5,9 @@ export function PageIntro({
   actions = null,
   aside = null,
   className = '',
+  compact = false,
 }) {
-  const rootClassName = ['ui-page-intro', className].filter(Boolean).join(' ');
+  const rootClassName = ['ui-page-intro', compact ? 'ui-page-intro-compact' : '', className].filter(Boolean).join(' ');
 
   return (
     <section className={rootClassName}>
