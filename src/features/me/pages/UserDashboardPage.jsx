@@ -3,7 +3,6 @@ import { useQuery } from '@tanstack/react-query';
 
 import { fetchCardPlans } from '../../card-plans/api/card-plans.api';
 import { fetchMyActiveCard, fetchMyCards } from '../api/me.api';
-import { EmptyState } from '../../../shared/components/states/EmptyState';
 import { LoadingState } from '../../../shared/components/states/LoadingState';
 import { PageIntro } from '../../../shared/ui/PageIntro';
 
@@ -42,40 +41,49 @@ export function UserDashboardPage() {
   const activeOfferCount = activeCard?.eligibleOffers?.length || activeCard?.cardPlan?.offers?.length || 0;
 
   if (isActiveCardLoading || isCardsLoading || isCardPlansLoading) {
-    return <LoadingState title="Bienvenue chez SmartCard" description="Nous preparons votre accueil." />;
+    return <LoadingState title="Accueil SmartCard" description="Chargement..." />;
   }
 
   const hasWallet = cards.length > 0;
   const hasActiveCard = Boolean(activeCard);
   const needsActivation = hasWallet && !hasActiveCard && (activeCardError?.response?.status === 404 || !isActiveCardLoading);
 
-  let homeTitle = 'Vos avantages, en un instant';
-  let homeDescription = 'Choisissez une action pour continuer.';
+  let title = 'Vos avantages, sans detour';
+  let description = 'Choisissez une action.';
+  let primaryLabel = 'Ma carte';
+  let primaryTo = '/my-cards';
+  let secondaryLabel = 'Mes offres';
+  let secondaryTo = '/offers';
 
   if (!hasWallet) {
-    homeTitle = 'Commencez avec votre premiere carte';
-    homeDescription = 'Explorez les cartes disponibles et composez votre portefeuille.';
+    title = 'Commencez simplement';
+    description = 'Choisissez votre premiere carte.';
+    primaryLabel = 'Catalogue';
+    primaryTo = '/card-plans';
   } else if (needsActivation) {
-    homeTitle = 'Activez une carte pour commencer';
-    homeDescription = 'Choisissez la formule a utiliser maintenant.';
+    title = 'Activez une carte';
+    description = 'Choisissez celle a utiliser.';
+    primaryLabel = 'Activer';
+    primaryTo = '/my-cards';
   }
 
   return (
-    <div className="premium-page-stack">
-      <section className="panel content-card premium-hero-card premium-hero-card-soft">
+    <div className="premium-page-stack user-home-v2-page">
+      <section className="panel content-card premium-hero-card premium-hero-card-soft user-home-v2-hero">
         <PageIntro
           kicker="Accueil"
-          title={homeTitle}
-          description={homeDescription}
+          title={title}
+          description={description}
+          compact
           actions={(
             <>
-              <Link className="primary-button link-button premium-inline-button" to={hasWallet ? '/my-cards' : '/card-plans'}>
-                {hasWallet ? 'Mes cartes' : 'Explorer'}
+              <Link className="primary-button link-button premium-inline-button ui-quick-button" to={primaryTo}>
+                {primaryLabel}
               </Link>
-              <Link className="primary-button alt-button link-button premium-inline-button" to="/offers">
-                Mes avantages
+              <Link className="primary-button alt-button link-button premium-inline-button ui-quick-button" to={secondaryTo}>
+                {secondaryLabel}
               </Link>
-              <Link className="primary-button alt-button link-button premium-inline-button" to="/card-plans">
+              <Link className="primary-button alt-button link-button premium-inline-button ui-quick-button" to="/card-plans">
                 Catalogue
               </Link>
             </>
@@ -83,82 +91,76 @@ export function UserDashboardPage() {
         />
       </section>
 
-      <section className="premium-summary-grid premium-summary-grid-compact">
-        <article className="metric-card premium-stat-card premium-stat-card-dark">
-          <span className="meta-label">Portefeuille</span>
-          <p className="metric-value">{cards.length}</p>
-          <p className="muted">Cartes disponibles.</p>
+      <section className="ui-stat-strip user-home-v2-stats" aria-label="Resume du compte">
+        <article className="ui-stat-pill">
+          <span className="meta-label">Cartes</span>
+          <strong>{cards.length}</strong>
         </article>
-        <article className="metric-card premium-stat-card">
-          <span className="meta-label">Carte active</span>
-          <p className="metric-value">{hasActiveCard ? '1' : '0'}</p>
-          <p className="muted">{hasActiveCard ? 'Une formule active.' : 'Aucune pour le moment.'}</p>
+        <article className="ui-stat-pill">
+          <span className="meta-label">Active</span>
+          <strong>{hasActiveCard ? 'Oui' : 'Non'}</strong>
         </article>
-        <article className="metric-card premium-stat-card">
-          <span className="meta-label">Avantages</span>
-          <p className="metric-value">{activeOfferCount}</p>
-          <p className="muted">Disponibles maintenant.</p>
+        <article className="ui-stat-pill">
+          <span className="meta-label">Offres</span>
+          <strong>{activeOfferCount}</strong>
         </article>
       </section>
 
       {!hasWallet ? (
-        <section className="content-card premium-support-card">
-          <EmptyState
-            title="Votre portefeuille est vide"
-            description="Choisissez votre premiere carte pour commencer."
-          >
-            <div className="inline-actions premium-hero-actions premium-hero-actions-compact">
-              <Link className="primary-button link-button premium-inline-button" to="/card-plans">
-                Voir les cartes
-              </Link>
+        <section className="panel content-card premium-support-card ui-screen-block user-home-v2-section">
+          <div className="section-heading-row premium-section-heading-row">
+            <div>
+              <p className="eyebrow">Depart</p>
+              <h2>Votre premiere carte</h2>
             </div>
-          </EmptyState>
+          </div>
+          <p className="muted">Le catalogue vous attend.</p>
+        </section>
+      ) : needsActivation ? (
+        <section className="panel content-card premium-support-card ui-screen-block user-home-v2-section">
+          <div className="section-heading-row premium-section-heading-row">
+            <div>
+              <p className="eyebrow">Activation</p>
+              <h2>Choisissez la bonne carte</h2>
+            </div>
+          </div>
+          <p className="muted">Activez-la depuis votre page carte.</p>
         </section>
       ) : (
-        <section className="premium-dual-grid">
-          <article className="panel content-card premium-support-card">
+        <section className="premium-dual-grid user-home-v2-grid">
+          <article className="panel content-card premium-support-card ui-screen-block user-home-v2-card">
             <div className="section-heading-row premium-section-heading-row">
               <div>
-                <p className="eyebrow">Cartes</p>
-                <h2>Gerer mon portefeuille</h2>
+                <p className="eyebrow">Carte</p>
+                <h2>Presentez la bonne</h2>
               </div>
             </div>
-            <p className="muted">Activez, changez ou ajoutez une carte.</p>
-            <div className="premium-link-stack">
-              <Link className="secondary-link" to="/my-cards">Voir mes cartes</Link>
-              <Link className="secondary-link" to="/card-plans">Explorer le catalogue</Link>
-            </div>
+            <p className="muted">Votre carte active est prete.</p>
           </article>
 
-          <article className="panel content-card premium-support-card premium-support-card-accent">
+          <article className="panel content-card premium-support-card premium-support-card-accent ui-screen-block user-home-v2-card">
             <div className="section-heading-row premium-section-heading-row">
               <div>
-                <p className="eyebrow">Avantages</p>
-                <h2>Voir ce qui est disponible</h2>
+                <p className="eyebrow">Offres</p>
+                <h2>Utilisez vos avantages</h2>
               </div>
             </div>
-            <p className="muted">Accedez vite aux avantages de votre carte active.</p>
-            <div className="premium-link-stack">
-              <Link className="secondary-link" to="/offers">Mes avantages</Link>
-              {!hasActiveCard ? <Link className="secondary-link" to="/my-cards">Activer une carte</Link> : null}
-            </div>
+            <p className="muted">Consultez ce qui est disponible.</p>
           </article>
         </section>
       )}
 
-      <section className="panel content-card premium-support-card premium-support-card-soft">
-        <div className="section-heading-row premium-section-heading-row">
-          <div>
-            <p className="eyebrow">Raccourcis</p>
-            <h2>Actions utiles</h2>
+      {availablePlanCount > 0 ? (
+        <section className="panel content-card premium-support-card premium-support-card-soft ui-screen-block user-home-v2-section">
+          <div className="section-heading-row premium-section-heading-row">
+            <div>
+              <p className="eyebrow">Catalogue</p>
+              <h2>{availablePlanCount} carte{availablePlanCount > 1 ? 's' : ''} a decouvrir</h2>
+            </div>
           </div>
-        </div>
-        <div className="premium-link-stack premium-link-stack-wide">
-          <Link className="secondary-link" to="/my-cards">Gerer mes cartes</Link>
-          <Link className="secondary-link" to="/offers">Voir mes avantages</Link>
-          <Link className="secondary-link" to="/card-plans">Acheter une nouvelle carte</Link>
-        </div>
-      </section>
+          <p className="muted">De nouvelles formules sont disponibles.</p>
+        </section>
+      ) : null}
     </div>
   );
 }

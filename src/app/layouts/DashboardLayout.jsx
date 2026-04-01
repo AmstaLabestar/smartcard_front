@@ -41,8 +41,14 @@ export function DashboardLayout() {
               <h2>Bonjour</h2>
               <p className="muted mobile-header-user">{user?.firstName}</p>
             </div>
-            <button className="primary-button mobile-header-button mobile-header-button-v2" type="button" onClick={logout}>
-              Sortir
+            <button className="mobile-header-icon-button" type="button" onClick={logout} aria-label="Deconnexion">
+              <span className="mobile-header-button-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false">
+                  <path d="M10 4H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h4" />
+                  <path d="M14 16l4-4-4-4" />
+                  <path d="M18 12H9" />
+                </svg>
+              </span>
             </button>
           </header>
           <Outlet />
