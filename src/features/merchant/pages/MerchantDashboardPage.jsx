@@ -3,7 +3,6 @@ import { useQuery } from '@tanstack/react-query';
 
 import { fetchMerchantOffers } from '../../offers/api/offers.api';
 import { fetchMerchantTransactions } from '../../transactions/api/transactions.api';
-import { EmptyState } from '../../../shared/components/states/EmptyState';
 import { PageIntro } from '../../../shared/ui/PageIntro';
 
 export function MerchantDashboardPage() {
@@ -20,131 +19,81 @@ export function MerchantDashboardPage() {
   const offers = offersResponse?.data || [];
   const transactions = transactionsResponse?.data || [];
   const activeOffers = offers.filter((offer) => offer.status === 'ACTIVE').length;
-  const totalRevenue = transactions.reduce((sum, transaction) => sum + Number(transaction.amount || 0), 0);
+  const todayScans = transactions.length;
   const totalDiscount = transactions.reduce((sum, transaction) => sum + Number(transaction.discountAmount || 0), 0);
 
   return (
-    <div className="merchant-dashboard-page premium-page-stack">
-      <section className="panel content-card premium-hero-card premium-hero-card-soft">
+    <div className="merchant-dashboard-page premium-page-stack merchant-home-v2-page">
+      <section className="panel content-card premium-hero-card premium-hero-card-soft merchant-home-v2-hero">
         <PageIntro
-          kicker="Merchant"
-          title="Scannez. Validez. Encaissez."
-          description="Votre espace caisse, rapide et lisible."
+          kicker="Accueil"
+          title="Votre espace caisse"
+          description="Choisissez une action."
+          compact
           actions={(
             <>
-              <Link className="primary-button link-button premium-inline-button" to="/merchant/scan">Scanner</Link>
-              <Link className="primary-button alt-button link-button premium-inline-button" to="/merchant/offers">Mes offres</Link>
+              <Link className="primary-button link-button premium-inline-button ui-quick-button" to="/merchant/scan">Scanner</Link>
+              <Link className="primary-button alt-button link-button premium-inline-button ui-quick-button" to="/merchant/offers">Offres</Link>
             </>
           )}
           aside={(
-            <div className="premium-hero-aside merchant-hero-aside">
-              <div className="premium-spotlight-card">
-                <span className="meta-label">Actives</span>
-                <strong>{activeOffers}</strong>
-                <p className="muted">Offres disponibles.</p>
-              </div>
-              <div className="premium-spotlight-card premium-spotlight-card-soft">
-                <span className="meta-label">Passages</span>
-                <strong>{transactions.length}</strong>
-                <p className="muted">Transactions validees.</p>
-              </div>
+            <div className="premium-spotlight-card merchant-home-v2-spotlight">
+              <span className="meta-label">Aujourd'hui</span>
+              <strong>{todayScans}</strong>
+              <p className="muted">Scans valides.</p>
             </div>
           )}
         />
       </section>
 
-      <section className="premium-summary-grid merchant-summary-grid">
-        <article className="metric-card premium-stat-card premium-stat-card-dark">
+      <section className="ui-stat-strip merchant-home-v2-stats">
+        <article className="ui-stat-pill">
           <span className="meta-label">Offres</span>
           <p className="metric-value">{activeOffers}</p>
-          <p className="muted">Actives maintenant.</p>
+          <p className="muted">Actives</p>
         </article>
-        <article className="metric-card premium-stat-card">
-          <span className="meta-label">Encaisse</span>
-          <p className="metric-value">{totalRevenue.toFixed(2)}</p>
-          <p className="muted">Montant final.</p>
+        <article className="ui-stat-pill">
+          <span className="meta-label">Scans</span>
+          <p className="metric-value">{todayScans}</p>
+          <p className="muted">Valides</p>
         </article>
-        <article className="metric-card premium-stat-card">
+        <article className="ui-stat-pill">
           <span className="meta-label">Remises</span>
           <p className="metric-value">{totalDiscount.toFixed(2)}</p>
-          <p className="muted">Accordees aux clients.</p>
+          <p className="muted">Accordees</p>
         </article>
       </section>
 
-      <section className="merchant-dashboard-grid premium-dual-grid">
-        <section className="content-card merchant-insight-card premium-support-card">
-          <p className="eyebrow">Raccourcis</p>
-          <h2>Le plus utile</h2>
-          <div className="list-stack">
-            <article className="list-item">
-              <strong>Scanner</strong>
-              <p className="muted">Votre action principale.</p>
-            </article>
-            <article className="list-item">
-              <strong>Offres actives</strong>
-              <p className="muted">Gardez-les visibles.</p>
-            </article>
-            <article className="list-item">
-              <strong>Suivi rapide</strong>
-              <p className="muted">Vos derniers passages restent ici.</p>
-            </article>
-          </div>
+      <section className="merchant-home-v2-grid">
+        <section className="content-card premium-support-card merchant-home-v2-card">
+          <p className="eyebrow">Action</p>
+          <h2>Scanner un client</h2>
+          <p className="muted">Votre action principale.</p>
+          <Link className="primary-button link-button ui-quick-button merchant-home-v2-button" to="/merchant/scan">
+            Ouvrir le scan
+          </Link>
         </section>
 
-        <section className="content-card merchant-insight-card premium-support-card premium-support-card-accent">
-          <p className="eyebrow">Mes offres</p>
-          <h2>En vitrine</h2>
-          {offers.length === 0 ? (
-            <EmptyState
-              title="Aucune offre pour le moment"
-              description="Creez votre premiere offre."
-            />
-          ) : (
-            <div className="list-stack">
-              {offers.slice(0, 4).map((offer) => (
-                <article key={offer.id} className="list-item merchant-offer-summary">
-                  <div>
-                    <strong>{offer.title}</strong>
-                    <p className="muted">{offer.discountType} - {offer.discountValue}</p>
-                  </div>
-                  <span className={`status-pill status-${offer.status.toLowerCase()}`}>{offer.status}</span>
-                </article>
-              ))}
-            </div>
-          )}
+        <section className="content-card premium-support-card premium-support-card-accent merchant-home-v2-card">
+          <p className="eyebrow">Offres</p>
+          <h2>Gerer vos offres</h2>
+          <p className="muted">
+            {activeOffers > 0 ? `${activeOffers} actives maintenant.` : 'Creez votre premiere offre.'}
+          </p>
+          <Link className="primary-button alt-button link-button ui-quick-button merchant-home-v2-button" to="/merchant/offers">
+            Voir les offres
+          </Link>
         </section>
       </section>
 
-      <section className="panel content-card premium-transaction-section">
-        <div className="section-heading-row premium-section-heading-row">
+      <section className="panel content-card premium-support-card merchant-home-v2-note">
+        <div className="section-heading-row premium-section-heading-row merchant-home-v2-note-head">
           <div>
-            <p className="eyebrow">Activite</p>
-            <h2>Dernieres validations</h2>
+            <p className="eyebrow">Repere</p>
+            <h2>Rapide et simple</h2>
           </div>
-          <Link className="link-button secondary-link" to="/merchant/scan">
-            Nouveau scan
-          </Link>
         </div>
-        {transactions.length === 0 ? (
-          <p className="muted">Vos prochains scans apparaitront ici.</p>
-        ) : (
-          <div className="list-stack">
-            {transactions.slice(0, 6).map((transaction) => (
-              <article key={transaction.id} className="list-item merchant-transaction-item">
-                <div>
-                  <strong>{transaction.offer?.title || 'Offre SmartCard'}</strong>
-                  <p className="muted">{transaction.user?.firstName} {transaction.user?.lastName}</p>
-                  <p className="muted">Ref. {transaction.reference}</p>
-                </div>
-                <div className="merchant-transaction-values">
-                  <span>Initial : {transaction.originalAmount}</span>
-                  <span>Remise : {transaction.discountAmount}</span>
-                  <strong>Final : {transaction.amount}</strong>
-                </div>
-              </article>
-            ))}
-          </div>
-        )}
+        <p className="muted">Accueil pour orienter. Scan pour encaisser. Offres pour gerer.</p>
       </section>
     </div>
   );

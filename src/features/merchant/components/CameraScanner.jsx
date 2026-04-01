@@ -3,7 +3,7 @@ import { useEffect, useId, useMemo, useRef, useState } from 'react';
 export function CameraScanner({ active, onDetected, onStatusChange }) {
   const reactId = useId();
   const scannerId = useMemo(() => `smartcard-scanner-${reactId.replace(/[:]/g, '')}`, [reactId]);
-  const [status, setStatus] = useState('Pret a scanner');
+  const [status, setStatus] = useState('');
   const detectedRef = useRef(onDetected);
   const statusRef = useRef(onStatusChange);
 
@@ -26,12 +26,12 @@ export function CameraScanner({ active, onDetected, onStatusChange }) {
 
     const startScanner = async () => {
       if (!active) {
-        updateStatus('Scanner en pause');
+        updateStatus('');
         return;
       }
 
       try {
-        updateStatus('Demarrage de la camera...');
+        updateStatus('');
         const { Html5Qrcode } = await import('html5-qrcode');
         if (cancelled) {
           return;
@@ -46,7 +46,7 @@ export function CameraScanner({ active, onDetected, onStatusChange }) {
               return;
             }
 
-            updateStatus('Carte detectee. Verification en cours...');
+            updateStatus('');
             try {
               await html5QrCode.stop();
             } catch {
@@ -54,13 +54,14 @@ export function CameraScanner({ active, onDetected, onStatusChange }) {
             }
             await detectedRef.current?.(decodedText);
           },
-          () => {
-            if (!cancelled) {
-              updateStatus('Cadrez le QR code dans la zone de scan');
-            }
-          },
+          () => {},
         );
-        updateStatus('Cadrez le QR code dans la zone de scan');
+        const scannerRoot = document.getElementById(scannerId);
+        const dashboard = scannerRoot?.querySelector('[id$="__dashboard"]');
+        if (dashboard) {
+          dashboard.setAttribute('hidden', 'hidden');
+        }
+        updateStatus('');
       } catch {
         updateStatus('Impossible d acceder a la camera. Utilisez la saisie manuelle.');
       }
@@ -85,10 +86,12 @@ export function CameraScanner({ active, onDetected, onStatusChange }) {
     };
   }, [active, scannerId]);
 
+  const shouldShowStatus = Boolean(status && status.startsWith('Impossible'));
+
   return (
     <div className="camera-scanner-shell">
       <div id={scannerId} className="camera-scanner-view" />
-      <p className="muted camera-scanner-status">{status}</p>
+      {shouldShowStatus ? <p className="muted camera-scanner-status">{status}</p> : null}
     </div>
   );
 }

@@ -920,6 +920,12 @@ select {
   margin-bottom: 0;
 }
 
+.scan-tip-card-compact {
+  display: grid;
+  gap: 0.55rem;
+  align-content: start;
+}
+
 .scan-placeholder-card {
   min-height: 100%;
   align-content: start;
@@ -1419,6 +1425,11 @@ select {
 
 .camera-scanner-view section {
   border: none !important;
+}
+
+.camera-scanner-view [id$="__dashboard"],
+.camera-scanner-view [id*="__dashboard_section"] {
+  display: none !important;
 }
 
 .camera-scanner-view button {
@@ -2300,6 +2311,57 @@ body {
   border-radius: 24px;
 }
 
+.merchant-home-v2-page {
+  gap: 1rem;
+}
+
+.merchant-home-v2-hero {
+  padding-block: 1.1rem;
+}
+
+.merchant-home-v2-spotlight {
+  background: rgba(255, 253, 249, 0.9);
+}
+
+.merchant-home-v2-stats {
+  margin-top: -0.1rem;
+}
+
+.merchant-home-v2-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.8rem;
+}
+
+.merchant-home-v2-card {
+  display: grid;
+  gap: 0.55rem;
+  align-content: start;
+  border-radius: 22px;
+}
+
+.merchant-home-v2-card h2,
+.merchant-home-v2-note h2 {
+  margin-bottom: 0;
+}
+
+.merchant-home-v2-card .muted,
+.merchant-home-v2-note .muted {
+  margin-bottom: 0;
+}
+
+.merchant-home-v2-button {
+  width: fit-content;
+}
+
+.merchant-home-v2-note {
+  gap: 0.55rem;
+}
+
+.merchant-home-v2-note-head {
+  margin-bottom: 0;
+}
+
 .wallet-hero-card {
   align-items: start;
 }
@@ -2728,6 +2790,10 @@ body {
     gap: 0.7rem;
   }
 
+  .merchant-home-v2-grid {
+    grid-template-columns: 1fr;
+  }
+
   .user-card-qr-display .qr-display-frame {
     width: min(100%, 150px);
     padding: 0.6rem;
@@ -2766,6 +2832,18 @@ body {
     min-height: 32px;
     padding: 0.4rem 0.58rem;
     font-size: 0.7rem;
+  }
+
+  .merchant-home-v2-card,
+  .merchant-home-v2-note {
+    padding: 0.9rem;
+    border-radius: 18px;
+  }
+
+  .merchant-home-v2-button {
+    min-height: 32px;
+    padding: 0.38rem 0.54rem;
+    font-size: 0.68rem;
   }
 
   .user-catalog-v2-card {

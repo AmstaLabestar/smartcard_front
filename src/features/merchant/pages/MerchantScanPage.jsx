@@ -12,7 +12,6 @@ const DEFAULT_MAX_ALLOWED_AMOUNT = Number(import.meta.env.VITE_MAX_TRANSACTION_A
 export function MerchantScanPage() {
   const toast = useToast();
   const [scanMode, setScanMode] = useState('camera');
-  const [cameraStatus, setCameraStatus] = useState('');
   const [form, setForm] = useState({
     qrCode: '',
     offerId: '',
@@ -32,7 +31,7 @@ export function MerchantScanPage() {
       }));
 
       if ((response.data.eligibleOffers?.length || 0) > 0) {
-        toast.success('Carte verifiee.', 'Scan pret');
+        toast.success('Carte lue.', 'Scan pret');
       } else {
         toast.info('Aucune reduction disponible pour cette carte ici.', 'Aucune reduction');
       }
@@ -50,6 +49,10 @@ export function MerchantScanPage() {
     mutationFn: scanMerchantTransaction,
     onSuccess: (response) => {
       toast.success(`Montant final : ${response.data.amount}.`, 'Reduction appliquee');
+      setForm((current) => ({
+        ...current,
+        originalAmount: '',
+      }));
     },
     onError: (error) => {
       toast.error(getApiErrorMessage(error, 'Validation impossible'), 'Validation impossible');
@@ -72,6 +75,7 @@ export function MerchantScanPage() {
   const amountWarning = Number(form.originalAmount) > maxAllowedAmount
     ? `Le montant depasse ${maxAllowedAmount}.`
     : '';
+  const hasScanResult = Boolean(previewData || confirmMutation.data?.data);
 
   const launchPreview = async (qrCodeValue) => {
     const normalizedValue = qrCodeValue.trim();
@@ -102,6 +106,18 @@ export function MerchantScanPage() {
     });
   };
 
+  const handleResetScan = () => {
+    setPreviewData(null);
+    setPreviewError('');
+    setForm({
+      qrCode: '',
+      offerId: '',
+      originalAmount: 100,
+    });
+    previewMutation.reset();
+    confirmMutation.reset();
+  };
+
   return (
     <div className="merchant-grid merchant-scan-grid premium-page-stack merchant-scan-layout">
       <section className="content-card premium-support-card merchant-scan-main-card">
@@ -126,19 +142,18 @@ export function MerchantScanPage() {
           </button>
         </div>
 
-        {scanMode === 'camera' ? (
+        {scanMode === 'camera' && !hasScanResult ? (
           <div className="scan-camera-card">
             <div className="scan-tip-card">
               <strong>1. Scannez</strong>
-              <p className="muted">Cadrez le QR du client.</p>
+              <p className="muted">Cadrez le QR.</p>
             </div>
-            <CameraScanner active onDetected={handleDetected} onStatusChange={setCameraStatus} />
-            {cameraStatus ? <p className="muted">{cameraStatus}</p> : null}
+            <CameraScanner active onDetected={handleDetected} />
             <button className="primary-button alt-button merchant-secondary-button" type="button" onClick={() => setScanMode('manual')}>
               Passer en manuel
             </button>
           </div>
-        ) : (
+        ) : scanMode === 'manual' && !hasScanResult ? (
           <>
             <div className="scan-tip-card">
               <strong>1. Verifiez</strong>
@@ -157,13 +172,23 @@ export function MerchantScanPage() {
               </button>
             </form>
           </>
-        )}
+        ) : null}
+
+        {hasScanResult ? (
+          <div className="scan-tip-card scan-tip-card-compact">
+            <strong>Carte lue</strong>
+            <p className="muted">Passez a la validation.</p>
+            <button className="primary-button alt-button merchant-secondary-button" type="button" onClick={handleResetScan}>
+              Nouveau scan
+            </button>
+          </div>
+        ) : null}
 
         {previewData ? (
           <>
             <div className="scan-tip-card">
               <strong>2. Validez</strong>
-              <p className="muted">Choisissez l offre et confirmez.</p>
+              <p className="muted">Choisissez et confirmez.</p>
             </div>
 
             {eligibleOffers.length === 0 ? (
