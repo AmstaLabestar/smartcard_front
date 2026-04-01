@@ -2535,6 +2535,59 @@ body {
   font-size: 0.74rem;
 }
 
+.user-catalog-modal-backdrop,
+.user-offers-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1200;
+  display: grid;
+  place-items: end center;
+  padding: 1rem;
+  background: rgba(15, 23, 20, 0.42);
+}
+
+.user-catalog-modal,
+.user-offers-modal {
+  width: min(100%, 28rem);
+  display: grid;
+  gap: 0.7rem;
+  padding: 1rem;
+  border-radius: 24px;
+  background: #fffdf8;
+  box-shadow: 0 20px 60px rgba(15, 23, 20, 0.18);
+}
+
+.user-catalog-modal-head,
+.user-offers-modal-head {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.user-catalog-modal-head h3,
+.user-offers-modal-head h3,
+.user-catalog-modal-copy,
+.user-offers-modal-copy {
+  margin-bottom: 0;
+}
+
+.user-catalog-modal-close,
+.user-offers-modal-close {
+  border: 0;
+  background: transparent;
+  color: var(--text-main);
+  font-size: 1.4rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.user-catalog-modal-copy,
+.user-offers-modal-copy {
+  font-size: var(--text-xs);
+  line-height: 1.4;
+}
+
 .wallet-grid-section {
   gap: 1rem;
 }
@@ -2642,5 +2695,16 @@ body {
     min-height: 24px;
     padding: 0.16rem 0.42rem;
     font-size: 0.62rem;
+  }
+
+  .user-catalog-modal-backdrop,
+  .user-offers-modal-backdrop {
+    padding: 0.75rem;
+  }
+
+  .user-catalog-modal,
+  .user-offers-modal {
+    width: 100%;
+    border-radius: 20px;
   }
 }
