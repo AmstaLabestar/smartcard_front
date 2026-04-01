@@ -35,13 +35,13 @@ export function DashboardLayout() {
     return (
       <div className="dashboard-shell dashboard-shell-mobile">
         <main className="dashboard-content dashboard-content-mobile">
-          <header className="mobile-header-card ui-shell-card ui-mobile-header-card">
-            <div>
+          <header className="mobile-header-card ui-shell-card ui-mobile-header-card mobile-header-card-v2">
+            <div className="mobile-header-copy">
               <p className="eyebrow ui-page-kicker">SmartCard</p>
-              <h2>SmartCard</h2>
-              <p className="muted mobile-header-user">{user?.firstName} {user?.lastName}</p>
+              <h2>Bonjour</h2>
+              <p className="muted mobile-header-user">{user?.firstName}</p>
             </div>
-            <button className="primary-button mobile-header-button" type="button" onClick={logout}>
+            <button className="primary-button mobile-header-button mobile-header-button-v2" type="button" onClick={logout}>
               Sortir
             </button>
           </header>
