@@ -11,6 +11,7 @@ import { OffersPage } from '../../features/offers/pages/OffersPage';
 import { MerchantDashboardPage } from '../../features/merchant/pages/MerchantDashboardPage';
 import { MerchantOffersPage } from '../../features/merchant/pages/MerchantOffersPage';
 import { MerchantScanPage } from '../../features/merchant/pages/MerchantScanPage';
+import { MerchantStatsPage } from '../../features/merchant/pages/MerchantStatsPage';
 import { AdminDashboardPage } from '../../features/admin/pages/AdminDashboardPage';
 import { AdminUsersPage } from '../../features/admin/pages/AdminUsersPage';
 import { AdminMerchantsPage } from '../../features/admin/pages/AdminMerchantsPage';
@@ -115,6 +116,17 @@ export function AppRouter() {
           }
         >
           <Route index element={<MerchantScanPage />} />
+        </Route>
+
+        <Route
+          path="/merchant/stats"
+          element={
+            <ProtectedRoute allowedRoles={['MERCHANT']}>
+              <DashboardLayout />
+            </ProtectedRoute>
+          }
+        >
+          <Route index element={<MerchantStatsPage />} />
         </Route>
 
         <Route

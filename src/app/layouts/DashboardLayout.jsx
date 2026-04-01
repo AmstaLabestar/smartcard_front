@@ -15,6 +15,7 @@ const linksByRole = {
     { to: '/merchant/dashboard', label: 'Accueil' },
     { to: '/merchant/offers', label: 'Offres' },
     { to: '/merchant/scan', label: 'Scan' },
+    { to: '/merchant/stats', label: 'Stats' },
   ],
   ADMIN: [
     { to: '/admin/dashboard', label: 'Accueil' },
