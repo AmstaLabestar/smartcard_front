@@ -7,7 +7,7 @@ import { useIsMobile } from '../../shared/hooks/useIsMobile';
 const linksByRole = {
   USER: [
     { to: '/dashboard', label: 'Accueil' },
-    { to: '/my-cards', label: 'Cartes' },
+    { to: '/my-cards', label: 'Carte' },
     { to: '/card-plans', label: 'Catalogue' },
     { to: '/offers', label: 'Offres' },
   ],

@@ -46,7 +46,7 @@ describe('MyCardsPage', () => {
     vi.clearAllMocks();
   });
 
-  it('renders wallet metrics and activates another card', async () => {
+  it('renders the focused card screen and lets the user change the active card', async () => {
     fetchMyCards.mockResolvedValue({
       data: [
         {
@@ -92,12 +92,11 @@ describe('MyCardsPage', () => {
 
     renderWithProviders(<MyCardsPage />);
 
-    expect(await screen.findByText('Presentez-la, ou activez-en une autre en un geste.')).toBeInTheDocument();
-    expect(screen.getByText('Votre carte active, prete en caisse')).toBeInTheDocument();
-    expect(screen.getByText('Autres cartes')).toBeInTheDocument();
-    expect(screen.getByText('Carte Premium')).toBeInTheDocument();
+    expect(await screen.findByRole('heading', { name: 'Carte Food', level: 2 })).toBeInTheDocument();
+    expect(screen.getByText('SC-001')).toBeInTheDocument();
+    expect(screen.getByText('Active')).toBeInTheDocument();
 
-    await userEvent.click(screen.getByRole('button', { name: 'Activer' }));
+    await userEvent.click(screen.getByRole('tab', { name: 'Carte Premium' }));
 
     await waitFor(() => {
       expect(activateOwnedCard).toHaveBeenCalled();
