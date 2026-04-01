@@ -1154,7 +1154,7 @@ select {
   }
 
   .dashboard-content-mobile {
-    padding: 0.9rem 0.9rem 6.5rem;
+    padding: 0.9rem 0.9rem calc(7.6rem + env(safe-area-inset-bottom));
     gap: 0.9rem;
   }
 
@@ -2325,6 +2325,11 @@ body {
   gap: 1rem;
 }
 
+.user-card-v2-page:last-child,
+.user-card-v2-page {
+  padding-bottom: 0.35rem;
+}
+
 .user-card-v2-aside {
   align-content: center;
 }
@@ -2465,6 +2470,10 @@ body {
   .owned-card-grid-compact,
   .owned-card-meta-grid-compact {
     grid-template-columns: 1fr;
+  }
+
+  .user-card-v2-page {
+    padding-bottom: calc(1rem + env(safe-area-inset-bottom));
   }
 
   .user-card-shell-top-v2 {
