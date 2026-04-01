@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 import { purchaseCard } from '../../cards/api/cards.api';
@@ -13,6 +13,7 @@ import { PageIntro } from '../../../shared/ui/PageIntro';
 
 export function CardPlansPage() {
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
   const toast = useToast();
 
   const { data: cardPlansResponse, isLoading: isPlansLoading } = useQuery({
@@ -28,11 +29,14 @@ export function CardPlansPage() {
   const purchaseMutation = useMutation({
     mutationFn: purchaseCard,
     onSuccess: async (response) => {
-      toast.success(`Votre carte ${response.data.cardPlan?.name || ''} est ajoutee.`, 'Carte achetee');
+      toast.success(`Votre carte ${response.data.cardPlan?.name || ''} est ajoutee et activee.`, 'Carte prete');
       await Promise.all([
         queryClient.invalidateQueries({ queryKey: ['me', 'cards'] }),
         queryClient.invalidateQueries({ queryKey: ['me', 'cards', 'active'] }),
+        queryClient.invalidateQueries({ queryKey: ['me', 'card'] }),
+        queryClient.invalidateQueries({ queryKey: ['offers', 'active'] }),
       ]);
+      navigate('/my-cards');
     },
     onError: (error) => {
       toast.error(getApiErrorMessage(error, 'Impossible d acheter cette carte'), 'Achat impossible');
@@ -99,3 +103,4 @@ export function CardPlansPage() {
     </div>
   );
 }
+
