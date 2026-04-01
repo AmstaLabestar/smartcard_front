@@ -30,7 +30,7 @@ export function ScanResultCard({ preview, transaction }) {
   if (preview) {
     return (
       <section className="content-card result-card scan-success-card premium-support-card premium-support-card-accent">
-        <p className="eyebrow">Carte verifiee</p>
+        <p className="eyebrow">Carte lue</p>
         <h2>{preview.customer?.firstName} {preview.customer?.lastName}</h2>
         <div className="cards-grid">
           <article className="metric-card premium-stat-card">
