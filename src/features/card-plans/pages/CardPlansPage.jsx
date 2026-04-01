@@ -49,29 +49,24 @@ export function CardPlansPage() {
   }
 
   return (
-    <div className="premium-page-stack">
-      <section className="panel content-card premium-hero-card premium-hero-card-soft">
+    <div className="premium-page-stack user-catalog-v2-page">
+      <section className="panel content-card premium-hero-card premium-hero-card-soft user-catalog-v2-hero">
         <PageIntro
           kicker="Catalogue"
-          title="Choisissez votre prochaine carte"
-          description="Chaque carte ouvre un reseau d avantages different."
-          actions={(
-            <>
-              <Link className="primary-button link-button premium-inline-button" to="/my-cards">Mes cartes</Link>
-              <Link className="primary-button alt-button link-button premium-inline-button" to="/offers">Avantages</Link>
-            </>
-          )}
+          title="Choisissez une carte"
+          description="Simple et rapide."
+          compact
           aside={(
-            <div className="premium-spotlight-card premium-spotlight-card-soft">
+            <div className="premium-spotlight-card user-catalog-v2-spotlight">
               <span className="meta-label">Disponibles</span>
               <strong>{availableCount}</strong>
-              <p className="muted">Cartes a ajouter.</p>
+              <p className="muted">A ajouter.</p>
             </div>
           )}
         />
       </section>
 
-      <section className="panel content-card premium-support-card">
+      <section className="panel content-card premium-support-card user-catalog-v2-grid-shell">
         {cardPlans.length === 0 ? (
           <EmptyState
             title="Aucune carte disponible"
@@ -85,17 +80,15 @@ export function CardPlansPage() {
             ownedPlanIds={ownedPlanIds}
             selectionEnabled={false}
             actionRenderer={(cardPlan, { isOwned }) => (
-              isOwned ? (
-                <span className="status-pill status-active">Deja ajoutee</span>
-              ) : (
+              isOwned ? null : (
                 <button
-                  className="primary-button"
+                  className="primary-button ui-quick-button"
                   type="button"
                   disabled={purchaseMutation.isPending}
                   onClick={() => purchaseMutation.mutate({ cardPlanId: cardPlan.id })}
                 >
                   {purchaseMutation.isPending && purchaseMutation.variables?.cardPlanId === cardPlan.id
-                    ? 'Achat...'
+                    ? 'Ajout...'
                     : 'Ajouter'}
                 </button>
               )
