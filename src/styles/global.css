@@ -2627,6 +2627,7 @@ body {
   font-size: 0.72rem;
 }
 
+.user-catalog-modal-backdrop,
 .user-offers-modal-backdrop {
   position: fixed;
   inset: 0;
@@ -2637,6 +2638,7 @@ body {
   background: rgba(15, 23, 20, 0.42);
 }
 
+.user-catalog-modal,
 .user-offers-modal {
   width: min(100%, 28rem);
   display: grid;
@@ -2647,6 +2649,7 @@ body {
   box-shadow: 0 20px 60px rgba(15, 23, 20, 0.18);
 }
 
+.user-catalog-modal-head,
 .user-offers-modal-head {
   display: flex;
   align-items: start;
@@ -2654,14 +2657,17 @@ body {
   gap: 0.75rem;
 }
 
+.user-catalog-modal-head h3,
 .user-offers-modal-head h3,
 .user-offers-modal-head .offer-value,
+.user-catalog-modal-copy,
 .user-offers-modal-partner,
 .user-offers-modal-copy,
 .user-offers-modal-terms {
   margin-bottom: 0;
 }
 
+.user-catalog-modal-close,
 .user-offers-modal-close {
   border: 0;
   background: transparent;
@@ -2676,6 +2682,7 @@ body {
   font-weight: 700;
 }
 
+.user-catalog-modal-copy,
 .user-offers-modal-copy,
 .user-offers-modal-terms {
   font-size: var(--text-xs);
@@ -2818,6 +2825,17 @@ body {
     min-height: 24px;
     padding: 0.16rem 0.42rem;
     font-size: 0.62rem;
+  }
+
+  .user-catalog-modal-backdrop,
+  .user-offers-modal-backdrop {
+    padding: 0.75rem;
+  }
+
+  .user-catalog-modal,
+  .user-offers-modal {
+    width: 100%;
+    border-radius: 20px;
   }
 }
 
