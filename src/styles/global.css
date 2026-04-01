@@ -2362,6 +2362,75 @@ body {
   margin-bottom: 0;
 }
 
+.merchant-stats-page {
+  gap: 1rem;
+}
+
+.merchant-stats-hero {
+  padding-block: 1.05rem;
+}
+
+.merchant-stats-strip {
+  margin-top: -0.1rem;
+}
+
+.merchant-stats-strip .ui-stat-pill {
+  min-width: 0;
+  padding: 0.68rem 0.54rem;
+  border-radius: 14px;
+}
+
+.merchant-stats-strip .ui-stat-pill .meta-label,
+.merchant-stats-strip .ui-stat-pill .muted {
+  margin-bottom: 0;
+}
+
+.merchant-stats-strip .ui-stat-pill .metric-value {
+  font-size: clamp(0.88rem, 3vw, 1.05rem);
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+
+.merchant-stats-filters,
+.merchant-stats-history {
+  gap: 0.8rem;
+}
+
+.merchant-stats-heading .muted {
+  margin-bottom: 0;
+}
+
+.merchant-stats-list {
+  gap: 0.75rem;
+}
+
+.merchant-stats-item {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.8rem;
+  align-items: start;
+  border-radius: 18px;
+}
+
+.merchant-stats-item-main,
+.merchant-stats-item-values {
+  display: grid;
+  gap: 0.18rem;
+}
+
+.merchant-stats-item-main .muted,
+.merchant-stats-item-values .muted,
+.merchant-stats-item-values small {
+  margin-bottom: 0;
+}
+
+.merchant-stats-item-values {
+  justify-items: end;
+  text-align: right;
+}
+
 .wallet-hero-card {
   align-items: start;
 }
@@ -2794,6 +2863,20 @@ body {
     grid-template-columns: 1fr;
   }
 
+  .merchant-stats-strip {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.45rem;
+  }
+
+  .merchant-stats-item {
+    grid-template-columns: 1fr;
+  }
+
+  .merchant-stats-item-values {
+    justify-items: start;
+    text-align: left;
+  }
+
   .user-card-qr-display .qr-display-frame {
     width: min(100%, 150px);
     padding: 0.6rem;
@@ -2844,6 +2927,29 @@ body {
     min-height: 32px;
     padding: 0.38rem 0.54rem;
     font-size: 0.68rem;
+  }
+
+  .merchant-stats-strip .ui-stat-pill {
+    padding: 0.58rem 0.42rem;
+    border-radius: 12px;
+  }
+
+  .merchant-stats-strip .ui-stat-pill .meta-label {
+    font-size: 0.64rem;
+  }
+
+  .merchant-stats-strip .ui-stat-pill .metric-value {
+    font-size: 0.82rem;
+  }
+
+  .merchant-stats-strip .ui-stat-pill .muted {
+    font-size: 0.66rem;
+    line-height: 1.2;
+  }
+
+  .merchant-stats-item {
+    padding: 0.9rem;
+    border-radius: 16px;
   }
 
   .user-catalog-v2-card {
