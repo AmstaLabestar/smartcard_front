@@ -2319,47 +2319,73 @@ body {
   padding-block: 1.1rem;
 }
 
-.merchant-home-v2-spotlight {
-  background: rgba(255, 253, 249, 0.9);
+.merchant-home-v2-actions-shell {
+  padding-block: 1rem;
 }
 
-.merchant-home-v2-stats {
-  margin-top: -0.1rem;
-}
-
-.merchant-home-v2-grid {
+.merchant-home-v2-actions {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0.8rem;
+  gap: 0.75rem;
+  align-items: stretch;
 }
 
-.merchant-home-v2-card {
+.merchant-home-v2-action-button {
+  min-height: 50px;
+  padding: 0.7rem 0.9rem;
+  justify-content: center;
+  text-align: center;
+  font-size: var(--text-sm);
+}
+
+.merchant-home-v2-spotlight {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.9rem;
+  padding-block: 0.95rem;
+}
+
+.merchant-home-v2-spotlight-copy {
   display: grid;
-  gap: 0.55rem;
-  align-content: start;
-  border-radius: 22px;
+  gap: 0.2rem;
 }
 
-.merchant-home-v2-card h2,
-.merchant-home-v2-note h2 {
+.merchant-home-v2-spotlight-copy h2,
+.merchant-home-v2-spotlight-copy .muted {
   margin-bottom: 0;
 }
 
-.merchant-home-v2-card .muted,
-.merchant-home-v2-note .muted {
-  margin-bottom: 0;
+.merchant-home-v2-spotlight-copy h2 {
+  font-size: var(--text-base);
 }
 
-.merchant-home-v2-button {
-  width: fit-content;
+.merchant-home-v2-spotlight-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.45rem;
+  width: 100%;
 }
 
-.merchant-home-v2-note {
-  gap: 0.55rem;
+.merchant-home-v2-spotlight-stat {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 34px;
+  padding: 0.42rem 0.5rem;
+  border-radius: 999px;
+  background: rgba(23, 54, 44, 0.06);
+  border: 1px solid rgba(23, 54, 44, 0.08);
+  color: #17362c;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-align: center;
 }
 
-.merchant-home-v2-note-head {
-  margin-bottom: 0;
+.merchant-home-v2-spotlight-button {
+  min-height: 40px;
+  padding: 0.54rem 0.8rem;
+  font-size: var(--text-xs);
 }
 
 .merchant-stats-page {
@@ -2859,10 +2885,6 @@ body {
     gap: 0.7rem;
   }
 
-  .merchant-home-v2-grid {
-    grid-template-columns: 1fr;
-  }
-
   .merchant-stats-strip {
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 0.45rem;
@@ -2917,16 +2939,33 @@ body {
     font-size: 0.7rem;
   }
 
-  .merchant-home-v2-card,
-  .merchant-home-v2-note {
-    padding: 0.9rem;
-    border-radius: 18px;
+  .merchant-home-v2-actions {
+    gap: 0.6rem;
   }
 
-  .merchant-home-v2-button {
-    min-height: 32px;
-    padding: 0.38rem 0.54rem;
-    font-size: 0.68rem;
+  .merchant-home-v2-action-button {
+    min-height: 44px;
+    padding: 0.56rem 0.7rem;
+    font-size: 0.74rem;
+  }
+
+  .merchant-home-v2-spotlight {
+    display: grid;
+    gap: 0.7rem;
+  }
+
+  .merchant-home-v2-spotlight-stats {
+    gap: 0.38rem;
+  }
+
+  .merchant-home-v2-spotlight-stat {
+    min-height: 30px;
+    padding: 0.36rem 0.4rem;
+    font-size: 0.64rem;
+  }
+
+  .merchant-home-v2-spotlight-button {
+    justify-self: start;
   }
 
   .merchant-stats-strip .ui-stat-pill {
