@@ -32,18 +32,18 @@ export function OffersPage() {
         </div>
       </section>
 
-      <section className="panel content-card offers-page premium-support-card">
-        <div className="section-heading-row premium-section-heading-row">
+      <section className="panel content-card offers-page premium-support-card user-offers-focus-shell">
+        <div className="section-heading-row premium-section-heading-row user-offers-focus-heading">
           <div>
             <p className="eyebrow">Selection</p>
             <h2>Vos avantages</h2>
           </div>
-          <p className="muted">Actifs sur votre carte.</p>
+          <p className="muted">{offers.length} offre{offers.length > 1 ? 's' : ''}</p>
         </div>
         {offers.length === 0 ? (
           <EmptyState
-            title="Aucun avantage pour le moment"
-            description="Activez une autre carte ou ajoutez-en une nouvelle."
+            title="Aucune offre"
+            description="Activez une autre carte."
           />
         ) : (
           <OfferGrid offers={offers} />
