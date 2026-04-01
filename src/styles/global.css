@@ -2450,6 +2450,91 @@ body {
   color: white;
 }
 
+.user-catalog-v2-page {
+  gap: 1rem;
+}
+
+.user-catalog-v2-hero {
+  padding-block: 1.05rem;
+}
+
+.user-catalog-v2-spotlight {
+  background: rgba(255, 253, 249, 0.88);
+}
+
+.user-catalog-v2-grid-shell {
+  gap: 0.8rem;
+}
+
+.user-catalog-v2-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.user-catalog-v2-card {
+  min-height: 100%;
+  padding: 0.9rem;
+  gap: 0.5rem;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+.user-catalog-v2-card.card-plan-card-owned {
+  padding: 0.78rem;
+  border-color: rgba(23, 54, 44, 0.16);
+  box-shadow: 0 10px 18px rgba(24, 35, 15, 0.06);
+}
+
+.user-catalog-v2-card h3 {
+  margin-bottom: 0;
+  font-size: var(--text-sm);
+  line-height: 1.2;
+}
+
+.user-catalog-v2-summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.45rem;
+}
+
+.user-catalog-v2-detail-toggle {
+  min-height: 26px;
+  padding: 0.2rem 0.5rem;
+  border: 1px solid rgba(23, 54, 44, 0.1);
+  border-radius: 999px;
+  background: rgba(23, 54, 44, 0.04);
+  color: #17362c;
+  font-size: 0.68rem;
+  font-weight: 600;
+}
+
+.user-catalog-v2-detail {
+  padding-top: 0.1rem;
+}
+
+.user-catalog-v2-detail .muted {
+  margin-bottom: 0;
+  font-size: var(--text-xs);
+  line-height: 1.35;
+}
+
+.user-catalog-v2-card .status-pill {
+  min-height: 28px;
+  padding: 0.24rem 0.5rem;
+  font-size: 0.68rem;
+}
+
+.user-catalog-v2-card .card-plan-topline strong {
+  font-size: var(--text-sm);
+}
+
+.user-catalog-v2-card .card-plan-actions .primary-button {
+  min-height: 34px;
+  padding: 0.44rem 0.58rem;
+  font-size: 0.74rem;
+}
+
 .wallet-grid-section {
   gap: 1rem;
 }
@@ -2500,6 +2585,11 @@ body {
 }
 
 @media (max-width: 420px) {
+  .user-catalog-v2-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.55rem;
+  }
+
   .user-card-surface-v2-compact {
     width: min(100%, 286px);
     padding: 0.8rem;
@@ -2522,5 +2612,35 @@ body {
     min-height: 32px;
     padding: 0.4rem 0.58rem;
     font-size: 0.7rem;
+  }
+
+  .user-catalog-v2-card {
+    padding: 0.72rem;
+    border-radius: 16px;
+  }
+
+  .user-catalog-v2-card.card-plan-card-owned {
+    padding: 0.64rem;
+  }
+
+  .user-catalog-v2-card h3 {
+    font-size: 0.8rem;
+  }
+
+  .user-catalog-v2-card .card-plan-actions .primary-button {
+    min-height: 32px;
+    padding: 0.38rem 0.5rem;
+    font-size: 0.7rem;
+  }
+
+  .user-catalog-v2-card .status-pill {
+    min-height: 24px;
+    font-size: 0.62rem;
+  }
+
+  .user-catalog-v2-detail-toggle {
+    min-height: 24px;
+    padding: 0.16rem 0.42rem;
+    font-size: 0.62rem;
   }
 }
