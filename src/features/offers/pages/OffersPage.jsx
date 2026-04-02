@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom';
 
 import { fetchActiveOffers } from '../api/offers.api';
 import { OfferGrid } from '../components/OfferGrid';
+import { CardGridSkeleton } from '../../../shared/components/states/CardGridSkeleton';
 import { EmptyState } from '../../../shared/components/states/EmptyState';
-import { LoadingState } from '../../../shared/components/states/LoadingState';
 
 export function OffersPage() {
   const { data: offersResponse, isLoading } = useQuery({
@@ -15,7 +15,27 @@ export function OffersPage() {
   const offers = offersResponse?.data || [];
 
   if (isLoading) {
-    return <LoadingState title="Chargement de vos avantages" description="Nous preparons votre selection." />;
+    return (
+      <div className="premium-page-stack">
+        <section className="panel content-card premium-hero-card premium-hero-card-soft">
+          <div className="premium-hero-copy premium-hero-copy-wide">
+            <p className="eyebrow">Avantages</p>
+            <h1>Disponibles maintenant</h1>
+            <p className="muted premium-hero-lead">Seulement ce que votre carte active debloque.</p>
+          </div>
+        </section>
+
+        <section className="panel content-card offers-page premium-support-card user-offers-focus-shell">
+          <div className="section-heading-row premium-section-heading-row user-offers-focus-heading">
+            <div>
+              <p className="eyebrow">Selection</p>
+              <h2>Vos avantages</h2>
+            </div>
+          </div>
+          <CardGridSkeleton className="user-offers-focus-grid" />
+        </section>
+      </div>
+    );
   }
 
   return (

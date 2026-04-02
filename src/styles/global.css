@@ -387,6 +387,130 @@ input {
   animation: pulse 1.4s infinite ease-in-out;
 }
 
+.ui-card-grid-skeleton {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.ui-card-skeleton {
+  min-width: 0;
+  display: grid;
+  gap: 0.65rem;
+  padding: 0.9rem;
+  border-radius: 18px;
+  background: linear-gradient(180deg, rgba(255, 253, 249, 0.98) 0%, rgba(248, 242, 232, 0.98) 100%);
+  border: 1px solid rgba(23, 54, 44, 0.08);
+  box-shadow: 0 12px 24px rgba(24, 35, 15, 0.05);
+}
+
+.ui-card-skeleton-row,
+.ui-card-skeleton-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.55rem;
+}
+
+.ui-skeleton-block {
+  display: block;
+  width: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, rgba(23, 54, 44, 0.08) 0%, rgba(23, 54, 44, 0.16) 50%, rgba(23, 54, 44, 0.08) 100%);
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.15s linear infinite;
+}
+
+.ui-skeleton-discount {
+  height: 1rem;
+}
+
+.ui-skeleton-status {
+  height: 0.85rem;
+  width: 70%;
+  justify-self: end;
+}
+
+.ui-skeleton-copy {
+  height: 0.85rem;
+  width: 82%;
+  border-radius: 12px;
+}
+
+.ui-skeleton-button {
+  height: 2.1rem;
+}
+
+.merchant-stats-skeleton {
+  display: grid;
+  gap: 1rem;
+}
+
+.merchant-stats-skeleton-pill {
+  gap: 0.5rem;
+}
+
+.merchant-stats-skeleton-head {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.9rem;
+}
+
+.merchant-stats-skeleton-copy-group {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.merchant-stats-skeleton-label {
+  width: 4.5rem;
+  height: 0.7rem;
+}
+
+.merchant-stats-skeleton-title {
+  width: 8rem;
+  height: 1.05rem;
+  border-radius: 12px;
+}
+
+.merchant-stats-skeleton-value {
+  width: 3.8rem;
+  height: 1.2rem;
+  border-radius: 12px;
+}
+
+.merchant-stats-skeleton-copy,
+.merchant-stats-skeleton-subline {
+  width: 3.4rem;
+  height: 0.8rem;
+  border-radius: 10px;
+}
+
+.merchant-stats-skeleton-count {
+  width: 2.5rem;
+  height: 2.1rem;
+}
+
+.merchant-stats-skeleton-chip-row {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.merchant-stats-skeleton-chip {
+  height: 2.3rem;
+}
+
+.merchant-stats-skeleton-line {
+  width: 6rem;
+  height: 0.95rem;
+  border-radius: 12px;
+}
+
+.merchant-stats-skeleton-item {
+  border-radius: 18px;
+}
+
 .smart-card-panel {
   display: grid;
   grid-template-columns: 1.3fr 0.7fr;
@@ -537,6 +661,15 @@ input {
   }
 }
 
+@keyframes skeleton-shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
 @media (max-width: 860px) {
   .auth-panel,
   .smart-card-panel {
@@ -562,6 +695,23 @@ input {
 
   .transaction-values {
     justify-items: start;
+  }
+
+  .ui-card-grid-skeleton,
+  .ui-card-skeleton-row,
+  .ui-card-skeleton-actions,
+  .merchant-stats-skeleton-chip-row {
+    grid-template-columns: 1fr;
+  }
+
+  .ui-skeleton-status {
+    justify-self: start;
+    width: 44%;
+  }
+
+  .merchant-stats-skeleton-head {
+    align-items: start;
+    display: grid;
   }
 }
 

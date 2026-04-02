@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { memo, useMemo, useState } from 'react';
 
 function formatDiscount(offer) {
   return `REMISE ${offer.discountValue}${offer.discountType === 'PERCENTAGE' ? '%' : ''}`;
@@ -14,6 +14,43 @@ function getStatusActionLabel(status, isUpdating) {
   return status === 'ACTIVE' ? 'Pause' : 'Activer';
 }
 
+const MerchantOfferCard = memo(function MerchantOfferCard({ offer, isUpdating, onOpen, onStatusChange }) {
+  const nextStatus = getNextStatus(offer.status);
+
+  return (
+    <article className="merchant-offers-v2-card">
+      <div className="merchant-offers-v2-top">
+        <strong className="merchant-offers-v2-discount">{formatDiscount(offer)}</strong>
+        <span className="merchant-offers-v2-status">
+          {offer.status === 'ACTIVE' ? 'Active' : offer.status === 'DRAFT' ? 'Inactive' : 'Expiree'}
+        </span>
+      </div>
+
+      <div className="merchant-offers-v2-meta">
+        <small>{offer.terms || 'Conditions en caisse'}</small>
+      </div>
+
+      <div className="merchant-offers-v2-actions">
+        <button
+          type="button"
+          className="primary-button alt-button merchant-offers-v2-button"
+          onClick={() => onOpen(offer)}
+        >
+          Voir
+        </button>
+        <button
+          type="button"
+          className="primary-button merchant-offers-v2-button"
+          onClick={() => onStatusChange(offer.id, nextStatus)}
+          disabled={isUpdating}
+        >
+          {getStatusActionLabel(offer.status, isUpdating)}
+        </button>
+      </div>
+    </article>
+  );
+});
+
 export function MerchantOfferList({ offers, onStatusChange, isUpdating }) {
   const [selectedOffer, setSelectedOffer] = useState(null);
 
@@ -25,41 +62,15 @@ export function MerchantOfferList({ offers, onStatusChange, isUpdating }) {
   return (
     <>
       <div className="merchant-offers-v2-grid">
-        {orderedOffers.map((offer) => {
-          const nextStatus = getNextStatus(offer.status);
-          return (
-            <article key={offer.id} className="merchant-offers-v2-card">
-              <div className="merchant-offers-v2-top">
-                <strong className="merchant-offers-v2-discount">{formatDiscount(offer)}</strong>
-                <span className="merchant-offers-v2-status">
-                  {offer.status === 'ACTIVE' ? 'Active' : offer.status === 'DRAFT' ? 'Inactive' : 'Expiree'}
-                </span>
-              </div>
-
-              <div className="merchant-offers-v2-meta">
-                <small>{offer.terms || 'Conditions en caisse'}</small>
-              </div>
-
-              <div className="merchant-offers-v2-actions">
-                <button
-                  type="button"
-                  className="primary-button alt-button merchant-offers-v2-button"
-                  onClick={() => setSelectedOffer(offer)}
-                >
-                  Voir
-                </button>
-                <button
-                  type="button"
-                  className="primary-button merchant-offers-v2-button"
-                  onClick={() => onStatusChange(offer.id, nextStatus)}
-                  disabled={isUpdating}
-                >
-                  {getStatusActionLabel(offer.status, isUpdating)}
-                </button>
-              </div>
-            </article>
-          );
-        })}
+        {orderedOffers.map((offer) => (
+          <MerchantOfferCard
+            key={offer.id}
+            offer={offer}
+            isUpdating={isUpdating}
+            onOpen={setSelectedOffer}
+            onStatusChange={onStatusChange}
+          />
+        ))}
       </div>
 
       {selectedOffer ? (

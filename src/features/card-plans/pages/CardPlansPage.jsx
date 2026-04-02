@@ -5,8 +5,8 @@ import { purchaseCard } from '../../cards/api/cards.api';
 import { fetchCardPlans } from '../api/card-plans.api';
 import { fetchMyCards } from '../../me/api/me.api';
 import { CardPlanGrid } from '../components/CardPlanGrid';
+import { CardGridSkeleton } from '../../../shared/components/states/CardGridSkeleton';
 import { EmptyState } from '../../../shared/components/states/EmptyState';
-import { LoadingState } from '../../../shared/components/states/LoadingState';
 import { getApiErrorMessage } from '../../../shared/lib/api-error';
 import { useToast } from '../../../shared/components/feedback/ToastProvider';
 import { PageIntro } from '../../../shared/ui/PageIntro';
@@ -49,7 +49,22 @@ export function CardPlansPage() {
   const availableCount = cardPlans.filter((cardPlan) => !ownedPlanIds.has(cardPlan.id)).length;
 
   if (isPlansLoading || isCardsLoading) {
-    return <LoadingState title="Catalogue" description="Nous chargeons les cartes disponibles." />;
+    return (
+      <div className="premium-page-stack user-catalog-v2-page">
+        <section className="panel content-card premium-hero-card premium-hero-card-soft user-catalog-v2-hero">
+          <PageIntro
+            kicker="Catalogue"
+            title="Choisissez une carte"
+            description="Simple et rapide."
+            compact
+          />
+        </section>
+
+        <section className="panel content-card premium-support-card user-catalog-v2-grid-shell">
+          <CardGridSkeleton className="user-catalog-v2-grid" />
+        </section>
+      </div>
+    );
   }
 
   return (

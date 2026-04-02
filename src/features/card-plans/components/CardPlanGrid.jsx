@@ -1,4 +1,61 @@
-import { useState } from 'react';
+import { memo, useState } from 'react';
+
+const CardPlanCard = memo(function CardPlanCard({
+  cardPlan,
+  isSelected,
+  isOwned,
+  selectionEnabled,
+  onSelect,
+  onOpenDetail,
+  actionRenderer,
+}) {
+  const cardClassName = [
+    'card-plan-card',
+    'user-catalog-v2-card',
+    isSelected ? 'card-plan-card-active' : '',
+    isOwned ? 'card-plan-card-owned' : '',
+  ].filter(Boolean).join(' ');
+
+  const content = (
+    <>
+      <div className="card-plan-topline">
+        <p className="eyebrow">{isOwned ? 'Ajoutee' : 'Disponible'}</p>
+        <strong>{cardPlan.price}</strong>
+      </div>
+      <h3>{cardPlan.name}</h3>
+      <div className="user-catalog-v2-summary">
+        <span className={isOwned ? 'status-pill status-active' : 'status-pill status-inactive'}>
+          {isOwned ? 'Deja ajoutee' : 'A ajouter'}
+        </span>
+        <button
+          className="user-catalog-v2-detail-toggle"
+          type="button"
+          onClick={(event) => {
+            event.stopPropagation();
+            onOpenDetail(cardPlan);
+          }}
+        >
+          Voir
+        </button>
+      </div>
+      {actionRenderer ? <div className="card-plan-actions">{actionRenderer(cardPlan, { isOwned, isSelected })}</div> : null}
+    </>
+  );
+
+  if (!selectionEnabled) {
+    return <article className={cardClassName}>{content}</article>;
+  }
+
+  return (
+    <button
+      type="button"
+      className={cardClassName}
+      onClick={() => onSelect(cardPlan.id)}
+    >
+      {content}
+    </button>
+  );
+});
 
 export function CardPlanGrid({
   cardPlans,
@@ -16,56 +73,17 @@ export function CardPlanGrid({
         {cardPlans.map((cardPlan) => {
           const isSelected = selectedCardPlanId === cardPlan.id;
           const isOwned = ownedPlanIds.has(cardPlan.id);
-          const cardClassName = [
-            'card-plan-card',
-            'user-catalog-v2-card',
-            isSelected ? 'card-plan-card-active' : '',
-            isOwned ? 'card-plan-card-owned' : '',
-          ].filter(Boolean).join(' ');
-
-          const content = (
-            <>
-              <div className="card-plan-topline">
-                <p className="eyebrow">{isOwned ? 'Ajoutee' : 'Disponible'}</p>
-                <strong>{cardPlan.price}</strong>
-              </div>
-              <h3>{cardPlan.name}</h3>
-              <div className="user-catalog-v2-summary">
-                <span className={isOwned ? 'status-pill status-active' : 'status-pill status-inactive'}>
-                  {isOwned ? 'Deja ajoutee' : 'A ajouter'}
-                </span>
-                <button
-                  className="user-catalog-v2-detail-toggle"
-                  type="button"
-                  onClick={(event) => {
-                    event.stopPropagation();
-                    setSelectedCardPlan(cardPlan);
-                  }}
-                >
-                  Voir
-                </button>
-              </div>
-              {actionRenderer ? <div className="card-plan-actions">{actionRenderer(cardPlan, { isOwned, isSelected })}</div> : null}
-            </>
-          );
-
-          if (!selectionEnabled) {
-            return (
-              <article key={cardPlan.id} className={cardClassName}>
-                {content}
-              </article>
-            );
-          }
-
           return (
-            <button
+            <CardPlanCard
               key={cardPlan.id}
-              type="button"
-              className={cardClassName}
-              onClick={() => onSelect(cardPlan.id)}
-            >
-              {content}
-            </button>
+              cardPlan={cardPlan}
+              isSelected={isSelected}
+              isOwned={isOwned}
+              selectionEnabled={selectionEnabled}
+              onSelect={onSelect}
+              onOpenDetail={setSelectedCardPlan}
+              actionRenderer={actionRenderer}
+            />
           );
         })}
       </div>

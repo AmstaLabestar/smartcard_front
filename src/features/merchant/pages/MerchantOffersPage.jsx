@@ -6,6 +6,7 @@ import { MerchantOfferList } from '../components/MerchantOfferList';
 import { fetchMerchantOffers } from '../../offers/api/offers.api';
 import { getApiErrorMessage } from '../../../shared/lib/api-error';
 import { useToast } from '../../../shared/components/feedback/ToastProvider';
+import { CardGridSkeleton } from '../../../shared/components/states/CardGridSkeleton';
 import { PageIntro } from '../../../shared/ui/PageIntro';
 
 const FILTERS = [
@@ -131,7 +132,7 @@ export function MerchantOffersPage() {
         </div>
 
         {isLoading ? (
-          <p className="muted">Chargement...</p>
+          <CardGridSkeleton className="merchant-offers-v2-grid" />
         ) : visibleOffers.length === 0 ? (
           <div className="merchant-offers-v2-empty">
             <p className="muted">{activeFilter === 'ACTIVE' ? 'Aucune offre active.' : 'Aucune offre pour le moment.'}</p>

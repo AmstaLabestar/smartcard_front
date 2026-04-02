@@ -73,7 +73,7 @@ describe('MerchantScanPage', () => {
 
     renderWithProviders(<MerchantScanPage />);
 
-    await userEvent.click(screen.getByRole('button', { name: 'Fake camera scan' }));
+    await userEvent.click(await screen.findByRole('button', { name: 'Fake camera scan' }));
 
     await waitFor(() => {
       expect(previewMerchantScan).toHaveBeenCalled();
