@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 
 import { fetchMerchantTransactions } from '../../transactions/api/transactions.api';
-import { LoadingState } from '../../../shared/components/states/LoadingState';
+import { MerchantStatsSkeleton } from '../../../shared/components/states/MerchantStatsSkeleton';
 
 const FILTERS = {
   TODAY: "Aujourd'hui",
@@ -48,7 +48,19 @@ export function MerchantStatsPage() {
   );
 
   if (isLoading) {
-    return <LoadingState title="Statistiques" description="Nous preparons votre activite." />;
+    return (
+      <div className="premium-page-stack merchant-stats-page">
+        <section className="panel content-card premium-hero-card premium-hero-card-soft merchant-stats-hero">
+          <div className="premium-hero-copy premium-hero-copy-wide">
+            <p className="eyebrow">Statistiques</p>
+            <h1>Votre activite recente</h1>
+            <p className="muted premium-hero-lead">Chiffres et historique.</p>
+          </div>
+        </section>
+
+        <MerchantStatsSkeleton />
+      </div>
+    );
   }
 
   return (
