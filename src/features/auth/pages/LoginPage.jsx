@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 import { fetchCurrentUser, loginUser } from '../api/auth.api';
+import { prefetchSessionData } from '../lib/prefetchSessionData';
 import { loginSchema } from '../schemas/auth.schemas';
 import { getDefaultRoute, useAuthStore } from '../store/auth.store';
 import { getApiErrorMessage } from '../../../shared/lib/api-error';
@@ -42,6 +43,7 @@ export function LoginPage() {
       const user = meResponse.data;
 
       setSession({ token, user });
+      void prefetchSessionData(user.role);
       toast.success('Heureux de vous retrouver sur SmartCard.', 'Connexion reussie');
 
       const fallbackRoute = getDefaultRoute(user.role);
