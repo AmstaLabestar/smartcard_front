@@ -387,6 +387,59 @@ input {
   animation: pulse 1.4s infinite ease-in-out;
 }
 
+.ui-card-grid-skeleton {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.ui-card-skeleton {
+  min-width: 0;
+  display: grid;
+  gap: 0.65rem;
+  padding: 0.9rem;
+  border-radius: 18px;
+  background: linear-gradient(180deg, rgba(255, 253, 249, 0.98) 0%, rgba(248, 242, 232, 0.98) 100%);
+  border: 1px solid rgba(23, 54, 44, 0.08);
+  box-shadow: 0 12px 24px rgba(24, 35, 15, 0.05);
+}
+
+.ui-card-skeleton-row,
+.ui-card-skeleton-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.55rem;
+}
+
+.ui-skeleton-block {
+  display: block;
+  width: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, rgba(23, 54, 44, 0.08) 0%, rgba(23, 54, 44, 0.16) 50%, rgba(23, 54, 44, 0.08) 100%);
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.15s linear infinite;
+}
+
+.ui-skeleton-discount {
+  height: 1rem;
+}
+
+.ui-skeleton-status {
+  height: 0.85rem;
+  width: 70%;
+  justify-self: end;
+}
+
+.ui-skeleton-copy {
+  height: 0.85rem;
+  width: 82%;
+  border-radius: 12px;
+}
+
+.ui-skeleton-button {
+  height: 2.1rem;
+}
+
 .smart-card-panel {
   display: grid;
   grid-template-columns: 1.3fr 0.7fr;
@@ -537,6 +590,15 @@ input {
   }
 }
 
+@keyframes skeleton-shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
 @media (max-width: 860px) {
   .auth-panel,
   .smart-card-panel {
@@ -562,6 +624,17 @@ input {
 
   .transaction-values {
     justify-items: start;
+  }
+
+  .ui-card-grid-skeleton,
+  .ui-card-skeleton-row,
+  .ui-card-skeleton-actions {
+    grid-template-columns: 1fr;
+  }
+
+  .ui-skeleton-status {
+    justify-self: start;
+    width: 44%;
   }
 }
 
