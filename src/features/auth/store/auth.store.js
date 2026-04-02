@@ -1,5 +1,7 @@
 import { create } from 'zustand';
 
+import { queryClient } from '../../../app/providers/AppProviders';
+
 const TOKEN_KEY = 'smartcard_token';
 
 function getDefaultRoute(role) {
@@ -13,6 +15,8 @@ export const useAuthStore = create((set) => ({
   user: null,
   isBootstrapped: false,
   setSession: ({ token, user }) => {
+    queryClient.clear();
+
     if (token) {
       localStorage.setItem(TOKEN_KEY, token);
     }
@@ -22,6 +26,7 @@ export const useAuthStore = create((set) => ({
   setUser: (user) => set({ user, isBootstrapped: true }),
   bootstrapDone: () => set({ isBootstrapped: true }),
   logout: () => {
+    queryClient.clear();
     localStorage.removeItem(TOKEN_KEY);
     set({ token: null, user: null, isBootstrapped: true });
   },
