@@ -31,9 +31,10 @@ export function LoginPage() {
     setServerError('');
 
     try {
-      const payload = values.identifier.includes('@')
-        ? { email: values.identifier, password: values.password }
-        : { phoneNumber: values.identifier, password: values.password };
+      const identifier = values.identifier.trim();
+      const payload = identifier.includes('@')
+        ? { email: identifier, password: values.password }
+        : { phoneNumber: identifier, password: values.password };
 
       const authResponse = await loginUser(payload);
       const token = authResponse.data.accessToken;
