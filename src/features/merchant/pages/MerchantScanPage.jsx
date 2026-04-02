@@ -1,11 +1,13 @@
 import { useMutation } from '@tanstack/react-query';
-import { useEffect, useMemo, useState } from 'react';
+import { lazy, Suspense, useEffect, useMemo, useState } from 'react';
 
 import { previewMerchantScan, scanMerchantTransaction } from '../api/merchant.api';
-import { CameraScanner } from '../components/CameraScanner';
 import { ScanResultCard } from '../components/ScanResultCard';
 import { getApiErrorMessage } from '../../../shared/lib/api-error';
 import { useToast } from '../../../shared/components/feedback/ToastProvider';
+import { LoadingState } from '../../../shared/components/states/LoadingState';
+
+const CameraScanner = lazy(() => import('../components/CameraScanner').then((module) => ({ default: module.CameraScanner })));
 
 const DEFAULT_MAX_ALLOWED_AMOUNT = Number(import.meta.env.VITE_MAX_TRANSACTION_AMOUNT || 1000000);
 
@@ -148,7 +150,9 @@ export function MerchantScanPage() {
               <strong>1. Scannez</strong>
               <p className="muted">Cadrez le QR.</p>
             </div>
-            <CameraScanner active onDetected={handleDetected} />
+            <Suspense fallback={<LoadingState title="Camera" description="Nous preparons le scanner." />}>
+              <CameraScanner active onDetected={handleDetected} />
+            </Suspense>
             <button className="primary-button alt-button merchant-secondary-button" type="button" onClick={() => setScanMode('manual')}>
               Passer en manuel
             </button>

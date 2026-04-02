@@ -1,198 +1,205 @@
+import { lazy, Suspense } from 'react';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 
 import { AuthLayout } from '../layouts/AuthLayout';
 import { DashboardLayout } from '../layouts/DashboardLayout';
-import { LoginPage } from '../../features/auth/pages/LoginPage';
-import { RegisterPage } from '../../features/auth/pages/RegisterPage';
-import { CardPlansPage } from '../../features/card-plans/pages/CardPlansPage';
-import { MyCardsPage } from '../../features/cards/pages/MyCardsPage';
-import { UserDashboardPage } from '../../features/me/pages/UserDashboardPage';
-import { OffersPage } from '../../features/offers/pages/OffersPage';
-import { MerchantDashboardPage } from '../../features/merchant/pages/MerchantDashboardPage';
-import { MerchantOffersPage } from '../../features/merchant/pages/MerchantOffersPage';
-import { MerchantScanPage } from '../../features/merchant/pages/MerchantScanPage';
-import { MerchantStatsPage } from '../../features/merchant/pages/MerchantStatsPage';
-import { AdminDashboardPage } from '../../features/admin/pages/AdminDashboardPage';
-import { AdminUsersPage } from '../../features/admin/pages/AdminUsersPage';
-import { AdminMerchantsPage } from '../../features/admin/pages/AdminMerchantsPage';
-import { AdminCardsPage } from '../../features/admin/pages/AdminCardsPage';
-import { AdminOffersPage } from '../../features/admin/pages/AdminOffersPage';
-import { AdminCardPlansPage } from '../../features/admin/pages/AdminCardPlansPage';
-import { UserTransactionsPage } from '../../features/transactions/pages/UserTransactionsPage';
 import { ProtectedRoute } from '../../shared/components/ProtectedRoute';
+import { RouteLoadingState } from '../../shared/components/states/RouteLoadingState';
+
+const LoginPage = lazy(() => import('../../features/auth/pages/LoginPage').then((module) => ({ default: module.LoginPage })));
+const RegisterPage = lazy(() => import('../../features/auth/pages/RegisterPage').then((module) => ({ default: module.RegisterPage })));
+const CardPlansPage = lazy(() => import('../../features/card-plans/pages/CardPlansPage').then((module) => ({ default: module.CardPlansPage })));
+const MyCardsPage = lazy(() => import('../../features/cards/pages/MyCardsPage').then((module) => ({ default: module.MyCardsPage })));
+const UserDashboardPage = lazy(() => import('../../features/me/pages/UserDashboardPage').then((module) => ({ default: module.UserDashboardPage })));
+const OffersPage = lazy(() => import('../../features/offers/pages/OffersPage').then((module) => ({ default: module.OffersPage })));
+const MerchantDashboardPage = lazy(() => import('../../features/merchant/pages/MerchantDashboardPage').then((module) => ({ default: module.MerchantDashboardPage })));
+const MerchantOffersPage = lazy(() => import('../../features/merchant/pages/MerchantOffersPage').then((module) => ({ default: module.MerchantOffersPage })));
+const MerchantScanPage = lazy(() => import('../../features/merchant/pages/MerchantScanPage').then((module) => ({ default: module.MerchantScanPage })));
+const MerchantStatsPage = lazy(() => import('../../features/merchant/pages/MerchantStatsPage').then((module) => ({ default: module.MerchantStatsPage })));
+const AdminDashboardPage = lazy(() => import('../../features/admin/pages/AdminDashboardPage').then((module) => ({ default: module.AdminDashboardPage })));
+const AdminUsersPage = lazy(() => import('../../features/admin/pages/AdminUsersPage').then((module) => ({ default: module.AdminUsersPage })));
+const AdminMerchantsPage = lazy(() => import('../../features/admin/pages/AdminMerchantsPage').then((module) => ({ default: module.AdminMerchantsPage })));
+const AdminCardsPage = lazy(() => import('../../features/admin/pages/AdminCardsPage').then((module) => ({ default: module.AdminCardsPage })));
+const AdminOffersPage = lazy(() => import('../../features/admin/pages/AdminOffersPage').then((module) => ({ default: module.AdminOffersPage })));
+const AdminCardPlansPage = lazy(() => import('../../features/admin/pages/AdminCardPlansPage').then((module) => ({ default: module.AdminCardPlansPage })));
+const UserTransactionsPage = lazy(() => import('../../features/transactions/pages/UserTransactionsPage').then((module) => ({ default: module.UserTransactionsPage })));
+
+function withRouteLoader(element) {
+  return <Suspense fallback={<RouteLoadingState />}>{element}</Suspense>;
+}
 
 export function AppRouter() {
   return (
     <BrowserRouter>
       <Routes>
         <Route element={<AuthLayout />}>
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/register" element={<RegisterPage />} />
+          <Route path="/login" element={withRouteLoader(<LoginPage />)} />
+          <Route path="/register" element={withRouteLoader(<RegisterPage />)} />
         </Route>
 
         <Route
           path="/dashboard"
-          element={
+          element={(
             <ProtectedRoute allowedRoles={['USER']}>
               <DashboardLayout />
             </ProtectedRoute>
-          }
+          )}
         >
-          <Route index element={<UserDashboardPage />} />
+          <Route index element={withRouteLoader(<UserDashboardPage />)} />
         </Route>
 
         <Route
           path="/my-cards"
-          element={
+          element={(
             <ProtectedRoute allowedRoles={['USER']}>
               <DashboardLayout />
             </ProtectedRoute>
-          }
+          )}
         >
-          <Route index element={<MyCardsPage />} />
+          <Route index element={withRouteLoader(<MyCardsPage />)} />
         </Route>
 
         <Route
           path="/card-plans"
-          element={
+          element={(
             <ProtectedRoute allowedRoles={['USER']}>
               <DashboardLayout />
             </ProtectedRoute>
-          }
+          )}
         >
-          <Route index element={<CardPlansPage />} />
+          <Route index element={withRouteLoader(<CardPlansPage />)} />
         </Route>
 
         <Route
           path="/transactions"
-          element={
+          element={(
             <ProtectedRoute allowedRoles={['USER']}>
               <DashboardLayout />
             </ProtectedRoute>
-          }
+          )}
         >
-          <Route index element={<UserTransactionsPage />} />
+          <Route index element={withRouteLoader(<UserTransactionsPage />)} />
         </Route>
 
         <Route
           path="/offers"
-          element={
+          element={(
             <ProtectedRoute allowedRoles={['USER', 'MERCHANT', 'ADMIN']}>
               <DashboardLayout />
             </ProtectedRoute>
-          }
+          )}
         >
-          <Route index element={<OffersPage />} />
+          <Route index element={withRouteLoader(<OffersPage />)} />
         </Route>
 
         <Route
           path="/merchant/dashboard"
-          element={
+          element={(
             <ProtectedRoute allowedRoles={['MERCHANT']}>
               <DashboardLayout />
             </ProtectedRoute>
-          }
+          )}
         >
-          <Route index element={<MerchantDashboardPage />} />
+          <Route index element={withRouteLoader(<MerchantDashboardPage />)} />
         </Route>
 
         <Route
           path="/merchant/offers"
-          element={
+          element={(
             <ProtectedRoute allowedRoles={['MERCHANT']}>
               <DashboardLayout />
             </ProtectedRoute>
-          }
+          )}
         >
-          <Route index element={<MerchantOffersPage />} />
+          <Route index element={withRouteLoader(<MerchantOffersPage />)} />
         </Route>
 
         <Route
           path="/merchant/scan"
-          element={
+          element={(
             <ProtectedRoute allowedRoles={['MERCHANT']}>
               <DashboardLayout />
             </ProtectedRoute>
-          }
+          )}
         >
-          <Route index element={<MerchantScanPage />} />
+          <Route index element={withRouteLoader(<MerchantScanPage />)} />
         </Route>
 
         <Route
           path="/merchant/stats"
-          element={
+          element={(
             <ProtectedRoute allowedRoles={['MERCHANT']}>
               <DashboardLayout />
             </ProtectedRoute>
-          }
+          )}
         >
-          <Route index element={<MerchantStatsPage />} />
+          <Route index element={withRouteLoader(<MerchantStatsPage />)} />
         </Route>
 
         <Route
           path="/admin/dashboard"
-          element={
+          element={(
             <ProtectedRoute allowedRoles={['ADMIN']}>
               <DashboardLayout />
             </ProtectedRoute>
-          }
+          )}
         >
-          <Route index element={<AdminDashboardPage />} />
+          <Route index element={withRouteLoader(<AdminDashboardPage />)} />
         </Route>
 
         <Route
           path="/admin/users"
-          element={
+          element={(
             <ProtectedRoute allowedRoles={['ADMIN']}>
               <DashboardLayout />
             </ProtectedRoute>
-          }
+          )}
         >
-          <Route index element={<AdminUsersPage />} />
+          <Route index element={withRouteLoader(<AdminUsersPage />)} />
         </Route>
 
         <Route
           path="/admin/merchants"
-          element={
+          element={(
             <ProtectedRoute allowedRoles={['ADMIN']}>
               <DashboardLayout />
             </ProtectedRoute>
-          }
+          )}
         >
-          <Route index element={<AdminMerchantsPage />} />
+          <Route index element={withRouteLoader(<AdminMerchantsPage />)} />
         </Route>
 
         <Route
           path="/admin/cards"
-          element={
+          element={(
             <ProtectedRoute allowedRoles={['ADMIN']}>
               <DashboardLayout />
             </ProtectedRoute>
-          }
+          )}
         >
-          <Route index element={<AdminCardsPage />} />
+          <Route index element={withRouteLoader(<AdminCardsPage />)} />
         </Route>
 
         <Route
           path="/admin/offers"
-          element={
+          element={(
             <ProtectedRoute allowedRoles={['ADMIN']}>
               <DashboardLayout />
             </ProtectedRoute>
-          }
+          )}
         >
-          <Route index element={<AdminOffersPage />} />
+          <Route index element={withRouteLoader(<AdminOffersPage />)} />
         </Route>
 
         <Route
           path="/admin/card-plans"
-          element={
+          element={(
             <ProtectedRoute allowedRoles={['ADMIN']}>
               <DashboardLayout />
             </ProtectedRoute>
-          }
+          )}
         >
-          <Route index element={<AdminCardPlansPage />} />
+          <Route index element={withRouteLoader(<AdminCardPlansPage />)} />
         </Route>
 
         <Route path="*" element={<Navigate to="/login" replace />} />
