@@ -1,4 +1,28 @@
-import { useState } from 'react';
+import { memo, useState } from 'react';
+
+const OfferCard = memo(function OfferCard({ offer, onOpen }) {
+  return (
+    <article className="offer-card user-offers-focus-card">
+      <div className="user-offers-focus-top">
+        <p className="user-offers-focus-discount">
+          <span className="user-offers-focus-discount-label">REMISE</span>{' '}
+          <span className="offer-value">{offer.discountValue}{offer.discountType === 'PERCENTAGE' ? '%' : ''}</span>
+        </p>
+        <span className="user-offers-focus-status">Active</span>
+      </div>
+      <div className="user-offers-focus-main">
+        <h3>{offer.creator?.firstName} {offer.creator?.lastName}</h3>
+      </div>
+      <button
+        type="button"
+        className="primary-button alt-button user-offers-focus-button"
+        onClick={() => onOpen(offer)}
+      >
+        Voir avantage
+      </button>
+    </article>
+  );
+});
 
 export function OfferGrid({ offers }) {
   const [selectedOffer, setSelectedOffer] = useState(null);
@@ -9,25 +33,7 @@ export function OfferGrid({ offers }) {
     <>
       <div className="offer-grid user-offers-focus-grid">
         {offers.map((offer) => (
-          <article key={offer.id} className="offer-card user-offers-focus-card">
-            <div className="user-offers-focus-top">
-              <p className="user-offers-focus-discount">
-                <span className="user-offers-focus-discount-label">REMISE</span>{' '}
-                <span className="offer-value">{offer.discountValue}{offer.discountType === 'PERCENTAGE' ? '%' : ''}</span>
-              </p>
-              <span className="user-offers-focus-status">Active</span>
-            </div>
-            <div className="user-offers-focus-main">
-              <h3>{offer.creator?.firstName} {offer.creator?.lastName}</h3>
-            </div>
-            <button
-              type="button"
-              className="primary-button alt-button user-offers-focus-button"
-              onClick={() => setSelectedOffer(offer)}
-            >
-              Voir avantage
-            </button>
-          </article>
+          <OfferCard key={offer.id} offer={offer} onOpen={setSelectedOffer} />
         ))}
       </div>
 
