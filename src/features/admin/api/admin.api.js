@@ -10,6 +10,11 @@ export async function fetchAdminMerchants() {
   return data;
 }
 
+export async function createAdminMerchant(payload) {
+  const { data } = await apiClient.post('/users/admin/merchants', payload);
+  return data;
+}
+
 export async function fetchAdminCards() {
   const { data } = await apiClient.get('/cards/admin/all');
   return data;

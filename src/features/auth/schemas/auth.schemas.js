@@ -11,7 +11,6 @@ export const registerSchema = z.object({
   email: z.string().email('Email invalide').optional().or(z.literal('')),
   phoneNumber: z.string().optional().or(z.literal('')),
   password: z.string().min(8, 'Minimum 8 caracteres'),
-  role: z.enum(['USER', 'MERCHANT']).default('USER'),
 }).superRefine((data, ctx) => {
   if (!data.email && !data.phoneNumber) {
     ctx.addIssue({

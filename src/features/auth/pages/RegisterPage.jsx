@@ -17,7 +17,6 @@ export function RegisterPage() {
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors, isSubmitting },
   } = useForm({
     resolver: zodResolver(registerSchema),
@@ -27,11 +26,8 @@ export function RegisterPage() {
       email: '',
       phoneNumber: '',
       password: '',
-      role: 'USER',
     },
   });
-
-  const selectedRole = watch('role');
 
   const onSubmit = async (values) => {
     setServerError('');
@@ -41,7 +37,6 @@ export function RegisterPage() {
         firstName: values.firstName,
         lastName: values.lastName,
         password: values.password,
-        role: values.role,
         ...(values.email ? { email: values.email } : {}),
         ...(values.phoneNumber ? { phoneNumber: values.phoneNumber } : {}),
       };
@@ -64,18 +59,8 @@ export function RegisterPage() {
   return (
     <section className="form-card">
       <h2>Creer un compte</h2>
-      <p className="muted">Rejoignez SmartCard et accedez rapidement a des reductions reservees a votre profil.</p>
+      <p className="muted">Rejoignez SmartCard et accedez rapidement a vos avantages.</p>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="segmented-control">
-          <label>
-            <input type="radio" value="USER" {...register('role')} />
-            <span>Client</span>
-          </label>
-          <label>
-            <input type="radio" value="MERCHANT" {...register('role')} />
-            <span>Partenaire</span>
-          </label>
-        </div>
         <div>
           <input type="text" placeholder="Prenom" {...register('firstName')} />
           {errors.firstName ? <small className="error-text">{errors.firstName.message}</small> : null}
@@ -89,7 +74,7 @@ export function RegisterPage() {
           {errors.email ? <small className="error-text">{errors.email.message}</small> : null}
         </div>
         <div>
-          <input type="text" placeholder={selectedRole === 'MERCHANT' ? 'Numero professionnel ou mobile' : 'Numero de telephone'} {...register('phoneNumber')} />
+          <input type="text" placeholder="Numero de telephone" {...register('phoneNumber')} />
           {errors.phoneNumber ? <small className="error-text">{errors.phoneNumber.message}</small> : null}
         </div>
         <div>
@@ -101,6 +86,7 @@ export function RegisterPage() {
           {isSubmitting ? 'Creation du compte...' : 'Commencer avec SmartCard'}
         </button>
       </form>
+      <p className="muted">Vous etes commercant ? Contactez l'administration.</p>
       <p>
         Vous avez deja un compte ? <Link to="/login">Se connecter</Link>
       </p>

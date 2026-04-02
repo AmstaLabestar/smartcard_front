@@ -1,18 +1,69 @@
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useState } from 'react';
 
-import { fetchAdminUsers } from '../api/admin.api';
+import { createAdminMerchant, fetchAdminUsers } from '../api/admin.api';
 import { AdminDataTable } from '../components/AdminDataTable';
 import { PageIntro } from '../../../shared/ui/PageIntro';
+import { getApiErrorMessage } from '../../../shared/lib/api-error';
+import { useToast } from '../../../shared/components/feedback/ToastProvider';
+
+const initialForm = {
+  firstName: '',
+  lastName: '',
+  email: '',
+  phoneNumber: '',
+  password: '',
+};
 
 export function AdminUsersPage() {
+  const queryClient = useQueryClient();
+  const toast = useToast();
+  const [isCreateOpen, setIsCreateOpen] = useState(false);
+  const [form, setForm] = useState(initialForm);
+  const [feedback, setFeedback] = useState('');
   const { data } = useQuery({ queryKey: ['admin', 'users'], queryFn: fetchAdminUsers });
   const rows = data?.data || [];
+
+  const createMerchantMutation = useMutation({
+    mutationFn: createAdminMerchant,
+    onSuccess: () => {
+      setFeedback('Merchant cree.');
+      setForm(initialForm);
+      setIsCreateOpen(false);
+      toast.success('Merchant cree.', 'Nouveau merchant');
+      queryClient.invalidateQueries({ queryKey: ['admin', 'users'] });
+    },
+    onError: (error) => {
+      const message = getApiErrorMessage(error, 'Creation impossible');
+      setFeedback(message);
+      toast.error(message, 'Creation impossible');
+    },
+  });
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    setFeedback('');
+    createMerchantMutation.mutate({
+      firstName: form.firstName,
+      lastName: form.lastName,
+      password: form.password,
+      ...(form.email ? { email: form.email } : {}),
+      ...(form.phoneNumber ? { phoneNumber: form.phoneNumber } : {}),
+    });
+  };
 
   return (
     <div className="premium-page-stack">
       <section className="panel content-card premium-hero-card premium-hero-card-soft">
         <PageIntro kicker="Admin" title="Utilisateurs" description="Retrouvez tous les comptes de la plateforme." />
       </section>
+
+      <section className="content-card premium-support-card admin-users-toolbar">
+        <button type="button" className="primary-button admin-users-toolbar-button" onClick={() => setIsCreateOpen(true)}>
+          Nouveau merchant
+        </button>
+      </section>
+
       <AdminDataTable
         eyebrow="Users"
         title="Tous les utilisateurs"
@@ -26,6 +77,59 @@ export function AdminUsersPage() {
           { key: 'role', label: 'Role' },
         ]}
       />
+
+      {isCreateOpen ? (
+        <div className="admin-users-modal-backdrop" role="presentation" onClick={() => setIsCreateOpen(false)}>
+          <section
+            className="admin-users-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="admin-create-merchant-title"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <div className="admin-users-modal-head">
+              <div>
+                <p className="eyebrow">Merchant</p>
+                <h2 id="admin-create-merchant-title">Nouveau merchant</h2>
+              </div>
+              <button
+                type="button"
+                className="admin-users-modal-close"
+                onClick={() => setIsCreateOpen(false)}
+                aria-label="Fermer"
+              >
+                ×
+              </button>
+            </div>
+
+            <form className="stack-form admin-users-form" onSubmit={handleSubmit}>
+              <div className="admin-users-form-row">
+                <input placeholder="Prenom" value={form.firstName} onChange={(e) => setForm({ ...form, firstName: e.target.value })} />
+                <input placeholder="Nom" value={form.lastName} onChange={(e) => setForm({ ...form, lastName: e.target.value })} />
+              </div>
+              <input placeholder="Email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} />
+              <input placeholder="Telephone" value={form.phoneNumber} onChange={(e) => setForm({ ...form, phoneNumber: e.target.value })} />
+              <input
+                type="password"
+                placeholder="Mot de passe initial"
+                value={form.password}
+                onChange={(e) => setForm({ ...form, password: e.target.value })}
+              />
+
+              {feedback ? <p className={createMerchantMutation.isError ? 'error-banner' : 'success-banner'}>{feedback}</p> : null}
+
+              <div className="admin-users-form-actions">
+                <button type="button" className="primary-button alt-button" onClick={() => setIsCreateOpen(false)}>
+                  Annuler
+                </button>
+                <button type="submit" className="primary-button" disabled={createMerchantMutation.isPending}>
+                  {createMerchantMutation.isPending ? 'Creation...' : 'Creer'}
+                </button>
+              </div>
+            </form>
+          </section>
+        </div>
+      ) : null}
     </div>
   );
 }
