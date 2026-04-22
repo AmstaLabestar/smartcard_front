@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 
 import { queryClient } from '../../../app/providers/AppProviders';
+import { registerInvalidTokenHandler } from '../../../shared/lib/api-client';
 
 const TOKEN_KEY = 'smartcard_token';
 
@@ -32,5 +33,9 @@ export const useAuthStore = create((set) => ({
   },
   getDefaultRoute,
 }));
+
+registerInvalidTokenHandler(() => {
+  useAuthStore.getState().logout();
+});
 
 export { TOKEN_KEY, getDefaultRoute };
