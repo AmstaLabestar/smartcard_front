@@ -3558,6 +3558,17 @@ body {
   font-size: var(--text-sm);
 }
 
+.admin-users-actions {
+  display: flex;
+  justify-content: center;
+}
+
+.admin-users-action-button {
+  min-height: 34px;
+  padding: 0.42rem 0.72rem;
+  font-size: 0.72rem;
+}
+
 .admin-users-modal-backdrop {
   position: fixed;
   inset: 0;
