@@ -15,6 +15,11 @@ export async function createAdminMerchant(payload) {
   return data;
 }
 
+export async function updateAdminUserStatus({ userId, status }) {
+  const { data } = await apiClient.patch(`/users/admin/${userId}/status`, { status });
+  return data;
+}
+
 export async function fetchAdminCards() {
   const { data } = await apiClient.get('/cards/admin/all');
   return data;

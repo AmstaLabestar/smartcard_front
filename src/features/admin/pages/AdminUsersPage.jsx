@@ -1,11 +1,12 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 
-import { createAdminMerchant, fetchAdminUsers } from '../api/admin.api';
+import { createAdminMerchant, fetchAdminUsers, updateAdminUserStatus } from '../api/admin.api';
 import { AdminDataTable } from '../components/AdminDataTable';
 import { PageIntro } from '../../../shared/ui/PageIntro';
 import { getApiErrorMessage } from '../../../shared/lib/api-error';
 import { useToast } from '../../../shared/components/feedback/ToastProvider';
+import { useAuthStore } from '../../auth/store/auth.store';
 
 const initialForm = {
   firstName: '',
@@ -18,6 +19,7 @@ const initialForm = {
 export function AdminUsersPage() {
   const queryClient = useQueryClient();
   const toast = useToast();
+  const currentUser = useAuthStore((state) => state.user);
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [form, setForm] = useState(initialForm);
   const [feedback, setFeedback] = useState('');
@@ -40,6 +42,20 @@ export function AdminUsersPage() {
     },
   });
 
+  const updateUserStatusMutation = useMutation({
+    mutationFn: updateAdminUserStatus,
+    onSuccess: (response) => {
+      const updatedUser = response.data;
+      const nextLabel = updatedUser.status === 'DISABLED' ? 'Compte desactive.' : 'Compte reactive.';
+      toast.success(nextLabel, 'Utilisateurs');
+      queryClient.invalidateQueries({ queryKey: ['admin', 'users'] });
+    },
+    onError: (error) => {
+      const message = getApiErrorMessage(error, 'Mise a jour impossible');
+      toast.error(message, 'Utilisateurs');
+    },
+  });
+
   const handleSubmit = (event) => {
     event.preventDefault();
     setFeedback('');
@@ -49,6 +65,20 @@ export function AdminUsersPage() {
       password: form.password,
       ...(form.email ? { email: form.email } : {}),
       ...(form.phoneNumber ? { phoneNumber: form.phoneNumber } : {}),
+    });
+  };
+
+  const handleStatusChange = (user) => {
+    const nextStatus = user.status === 'DISABLED' ? 'ACTIVE' : 'DISABLED';
+    const actionLabel = nextStatus === 'DISABLED' ? 'desactiver' : 'reactiver';
+
+    if (!window.confirm(`Voulez-vous ${actionLabel} ce compte ?`)) {
+      return;
+    }
+
+    updateUserStatusMutation.mutate({
+      userId: user.id,
+      status: nextStatus,
     });
   };
 
@@ -75,6 +105,38 @@ export function AdminUsersPage() {
           { key: 'email', label: 'Email' },
           { key: 'phoneNumber', label: 'Telephone' },
           { key: 'role', label: 'Role' },
+          {
+            key: 'status',
+            label: 'Statut',
+            render: (row) => (
+              <span className={`status-pill ${row.status === 'DISABLED' ? 'status-inactive' : 'status-active'}`}>
+                {row.status === 'DISABLED' ? 'Desactive' : 'Actif'}
+              </span>
+            ),
+          },
+          {
+            key: 'actions',
+            label: 'Actions',
+            render: (row) => {
+              const isSelf = currentUser?.id === row.id;
+              const isPending = updateUserStatusMutation.isPending && updateUserStatusMutation.variables?.userId === row.id;
+              const nextActionLabel = row.status === 'DISABLED' ? 'Reactiver' : 'Desactiver';
+
+              return (
+                <div className="admin-users-actions">
+                  <button
+                    type="button"
+                    className="primary-button admin-users-action-button"
+                    onClick={() => handleStatusChange(row)}
+                    disabled={isPending || isSelf}
+                    title={isSelf ? 'Vous ne pouvez pas modifier votre propre statut ici.' : undefined}
+                  >
+                    {isPending ? 'Mise a jour...' : nextActionLabel}
+                  </button>
+                </div>
+              );
+            },
+          },
         ]}
       />
 
