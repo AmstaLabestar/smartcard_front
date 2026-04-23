@@ -22,3 +22,8 @@ export async function fetchCurrentUser(token) {
   const { data } = await apiClient.get('/me', config);
   return data;
 }
+
+export async function changeMyPassword(payload) {
+  const { data } = await apiClient.patch('/me/password', payload);
+  return data;
+}

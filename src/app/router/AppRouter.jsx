@@ -8,6 +8,7 @@ import { RouteLoadingState } from '../../shared/components/states/RouteLoadingSt
 
 const LoginPage = lazy(() => import('../../features/auth/pages/LoginPage').then((module) => ({ default: module.LoginPage })));
 const RegisterPage = lazy(() => import('../../features/auth/pages/RegisterPage').then((module) => ({ default: module.RegisterPage })));
+const ChangePasswordPage = lazy(() => import('../../features/auth/pages/ChangePasswordPage').then((module) => ({ default: module.ChangePasswordPage })));
 const CardPlansPage = lazy(() => import('../../features/card-plans/pages/CardPlansPage').then((module) => ({ default: module.CardPlansPage })));
 const MyCardsPage = lazy(() => import('../../features/cards/pages/MyCardsPage').then((module) => ({ default: module.MyCardsPage })));
 const UserDashboardPage = lazy(() => import('../../features/me/pages/UserDashboardPage').then((module) => ({ default: module.UserDashboardPage })));
@@ -79,6 +80,17 @@ export function AppRouter() {
           )}
         >
           <Route index element={withRouteLoader(<UserTransactionsPage />)} />
+        </Route>
+
+        <Route
+          path="/password"
+          element={(
+            <ProtectedRoute allowedRoles={['USER', 'MERCHANT', 'ADMIN']}>
+              <DashboardLayout />
+            </ProtectedRoute>
+          )}
+        >
+          <Route index element={withRouteLoader(<ChangePasswordPage />)} />
         </Route>
 
         <Route

@@ -1,7 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 
-import { createAdminMerchant, fetchAdminUsers, updateAdminUserStatus } from '../api/admin.api';
+import { createAdminMerchant, fetchAdminUsers, resetAdminUserPassword, updateAdminUserStatus } from '../api/admin.api';
 import { AdminDataTable } from '../components/AdminDataTable';
 import { PageIntro } from '../../../shared/ui/PageIntro';
 import { getApiErrorMessage } from '../../../shared/lib/api-error';
@@ -21,7 +21,9 @@ export function AdminUsersPage() {
   const toast = useToast();
   const currentUser = useAuthStore((state) => state.user);
   const [isCreateOpen, setIsCreateOpen] = useState(false);
+  const [passwordResetTarget, setPasswordResetTarget] = useState(null);
   const [form, setForm] = useState(initialForm);
+  const [passwordResetValue, setPasswordResetValue] = useState('');
   const [feedback, setFeedback] = useState('');
   const { data } = useQuery({ queryKey: ['admin', 'users'], queryFn: fetchAdminUsers });
   const rows = data?.data || [];
@@ -56,6 +58,19 @@ export function AdminUsersPage() {
     },
   });
 
+  const resetPasswordMutation = useMutation({
+    mutationFn: resetAdminUserPassword,
+    onSuccess: () => {
+      setPasswordResetValue('');
+      setPasswordResetTarget(null);
+      toast.success('Mot de passe reinitialise.', 'Utilisateurs');
+    },
+    onError: (error) => {
+      const message = getApiErrorMessage(error, 'Reinitialisation impossible');
+      toast.error(message, 'Utilisateurs');
+    },
+  });
+
   const handleSubmit = (event) => {
     event.preventDefault();
     setFeedback('');
@@ -79,6 +94,19 @@ export function AdminUsersPage() {
     updateUserStatusMutation.mutate({
       userId: user.id,
       status: nextStatus,
+    });
+  };
+
+  const handlePasswordResetSubmit = (event) => {
+    event.preventDefault();
+
+    if (!passwordResetTarget) {
+      return;
+    }
+
+    resetPasswordMutation.mutate({
+      userId: passwordResetTarget.id,
+      newPassword: passwordResetValue,
     });
   };
 
@@ -123,7 +151,7 @@ export function AdminUsersPage() {
               const nextActionLabel = row.status === 'DISABLED' ? 'Reactiver' : 'Desactiver';
 
               return (
-                <div className="admin-users-actions">
+                <div className="admin-users-actions admin-users-actions-stack">
                   <button
                     type="button"
                     className="primary-button admin-users-action-button"
@@ -132,6 +160,16 @@ export function AdminUsersPage() {
                     title={isSelf ? 'Vous ne pouvez pas modifier votre propre statut ici.' : undefined}
                   >
                     {isPending ? 'Mise a jour...' : nextActionLabel}
+                  </button>
+                  <button
+                    type="button"
+                    className="primary-button alt-button admin-users-action-button"
+                    onClick={() => {
+                      setPasswordResetTarget(row);
+                      setPasswordResetValue('');
+                    }}
+                  >
+                    Reset MDP
                   </button>
                 </div>
               );
@@ -186,6 +224,61 @@ export function AdminUsersPage() {
                 </button>
                 <button type="submit" className="primary-button" disabled={createMerchantMutation.isPending}>
                   {createMerchantMutation.isPending ? 'Creation...' : 'Creer'}
+                </button>
+              </div>
+            </form>
+          </section>
+        </div>
+      ) : null}
+
+      {passwordResetTarget ? (
+        <div className="admin-users-modal-backdrop" role="presentation" onClick={() => setPasswordResetTarget(null)}>
+          <section
+            className="admin-users-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="admin-reset-password-title"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <div className="admin-users-modal-head">
+              <div>
+                <p className="eyebrow">Securite</p>
+                <h2 id="admin-reset-password-title">Reset mot de passe</h2>
+              </div>
+              <button
+                type="button"
+                className="admin-users-modal-close"
+                onClick={() => setPasswordResetTarget(null)}
+                aria-label="Fermer"
+              >
+                ×
+              </button>
+            </div>
+
+            <form className="stack-form admin-users-form" onSubmit={handlePasswordResetSubmit}>
+              <p className="muted">
+                Nouveau mot de passe pour {passwordResetTarget.firstName || passwordResetTarget.email || 'cet utilisateur'}.
+              </p>
+
+              <input
+                type="password"
+                placeholder="Nouveau mot de passe"
+                value={passwordResetValue}
+                minLength={8}
+                onChange={(event) => setPasswordResetValue(event.target.value)}
+                required
+              />
+
+              <div className="admin-users-form-actions">
+                <button type="button" className="primary-button alt-button" onClick={() => setPasswordResetTarget(null)}>
+                  Annuler
+                </button>
+                <button
+                  type="submit"
+                  className="primary-button"
+                  disabled={resetPasswordMutation.isPending || passwordResetValue.trim().length < 8}
+                >
+                  {resetPasswordMutation.isPending ? 'Reinitialisation...' : 'Reinitialiser'}
                 </button>
               </div>
             </form>

@@ -20,3 +20,25 @@ export const registerSchema = z.object({
     });
   }
 });
+
+export const changePasswordSchema = z.object({
+  currentPassword: z.string().min(8, 'Minimum 8 caracteres'),
+  newPassword: z.string().min(8, 'Minimum 8 caracteres'),
+  confirmPassword: z.string().min(8, 'Minimum 8 caracteres'),
+}).superRefine((data, ctx) => {
+  if (data.currentPassword === data.newPassword) {
+    ctx.addIssue({
+      code: 'custom',
+      message: 'Le nouveau mot de passe doit etre different',
+      path: ['newPassword'],
+    });
+  }
+
+  if (data.newPassword !== data.confirmPassword) {
+    ctx.addIssue({
+      code: 'custom',
+      message: 'Les mots de passe ne correspondent pas',
+      path: ['confirmPassword'],
+    });
+  }
+});
