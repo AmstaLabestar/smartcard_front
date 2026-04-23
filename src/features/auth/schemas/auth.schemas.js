@@ -42,3 +42,20 @@ export const changePasswordSchema = z.object({
     });
   }
 });
+
+export const forgotPasswordSchema = z.object({
+  email: z.string().trim().email('Email invalide'),
+});
+
+export const resetPasswordSchema = z.object({
+  newPassword: z.string().min(8, 'Minimum 8 caracteres'),
+  confirmPassword: z.string().min(8, 'Minimum 8 caracteres'),
+}).superRefine((data, ctx) => {
+  if (data.newPassword !== data.confirmPassword) {
+    ctx.addIssue({
+      code: 'custom',
+      message: 'Les mots de passe ne correspondent pas',
+      path: ['confirmPassword'],
+    });
+  }
+});

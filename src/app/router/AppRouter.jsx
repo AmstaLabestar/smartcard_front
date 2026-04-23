@@ -8,6 +8,8 @@ import { RouteLoadingState } from '../../shared/components/states/RouteLoadingSt
 
 const LoginPage = lazy(() => import('../../features/auth/pages/LoginPage').then((module) => ({ default: module.LoginPage })));
 const RegisterPage = lazy(() => import('../../features/auth/pages/RegisterPage').then((module) => ({ default: module.RegisterPage })));
+const ForgotPasswordPage = lazy(() => import('../../features/auth/pages/ForgotPasswordPage').then((module) => ({ default: module.ForgotPasswordPage })));
+const ResetPasswordPage = lazy(() => import('../../features/auth/pages/ResetPasswordPage').then((module) => ({ default: module.ResetPasswordPage })));
 const ChangePasswordPage = lazy(() => import('../../features/auth/pages/ChangePasswordPage').then((module) => ({ default: module.ChangePasswordPage })));
 const CardPlansPage = lazy(() => import('../../features/card-plans/pages/CardPlansPage').then((module) => ({ default: module.CardPlansPage })));
 const MyCardsPage = lazy(() => import('../../features/cards/pages/MyCardsPage').then((module) => ({ default: module.MyCardsPage })));
@@ -36,6 +38,8 @@ export function AppRouter() {
         <Route element={<AuthLayout />}>
           <Route path="/login" element={withRouteLoader(<LoginPage />)} />
           <Route path="/register" element={withRouteLoader(<RegisterPage />)} />
+          <Route path="/forgot-password" element={withRouteLoader(<ForgotPasswordPage />)} />
+          <Route path="/reset-password" element={withRouteLoader(<ResetPasswordPage />)} />
         </Route>
 
         <Route

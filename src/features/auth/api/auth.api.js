@@ -27,3 +27,13 @@ export async function changeMyPassword(payload) {
   const { data } = await apiClient.patch('/me/password', payload);
   return data;
 }
+
+export async function requestPasswordReset(payload) {
+  const { data } = await apiClient.post('/auth/forgot-password', payload);
+  return data;
+}
+
+export async function resetPassword(payload) {
+  const { data } = await apiClient.post('/auth/reset-password', payload);
+  return data;
+}

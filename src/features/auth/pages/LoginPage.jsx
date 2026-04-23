@@ -75,6 +75,9 @@ export function LoginPage() {
         </button>
       </form>
       <p>
+        <Link to="/forgot-password">Mot de passe oublie ?</Link>
+      </p>
+      <p>
         Nouveau sur SmartCard ? <Link to="/register">Creer mon compte</Link>
       </p>
     </section>
