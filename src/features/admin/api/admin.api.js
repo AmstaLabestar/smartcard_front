@@ -20,6 +20,11 @@ export async function updateAdminUserStatus({ userId, status }) {
   return data;
 }
 
+export async function resetAdminUserPassword({ userId, newPassword }) {
+  const { data } = await apiClient.patch(`/users/admin/${userId}/password`, { newPassword });
+  return data;
+}
+
 export async function fetchAdminCards() {
   const { data } = await apiClient.get('/cards/admin/all');
   return data;

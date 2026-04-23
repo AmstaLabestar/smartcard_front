@@ -42,15 +42,20 @@ export function DashboardLayout() {
               <h2>Bonjour</h2>
               <p className="muted mobile-header-user">{user?.firstName}</p>
             </div>
-            <button className="mobile-header-icon-button" type="button" onClick={logout} aria-label="Deconnexion">
-              <span className="mobile-header-button-icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24" focusable="false">
-                  <path d="M10 4H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h4" />
-                  <path d="M14 16l4-4-4-4" />
-                  <path d="M18 12H9" />
-                </svg>
-              </span>
-            </button>
+            <div className="mobile-header-actions">
+              <NavLink className="mobile-header-text-button" to="/password">
+                Mot de passe
+              </NavLink>
+              <button className="mobile-header-icon-button" type="button" onClick={logout} aria-label="Deconnexion">
+                <span className="mobile-header-button-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" focusable="false">
+                    <path d="M10 4H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h4" />
+                    <path d="M14 16l4-4-4-4" />
+                    <path d="M18 12H9" />
+                  </svg>
+                </span>
+              </button>
+            </div>
           </header>
           <Outlet />
         </main>
@@ -78,6 +83,12 @@ export function DashboardLayout() {
             </NavLink>
           ))}
         </nav>
+        <NavLink
+          to="/password"
+          className={({ isActive }) => (isActive ? 'sidebar-link sidebar-link-active' : 'sidebar-link')}
+        >
+          Mot de passe
+        </NavLink>
         <button className="primary-button sidebar-button" type="button" onClick={logout}>
           Deconnexion
         </button>
