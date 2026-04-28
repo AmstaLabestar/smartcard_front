@@ -6,6 +6,7 @@ import {
   fetchAdminCards,
   fetchAdminMerchants,
   fetchAdminOffers,
+  fetchAdminPurchaseRequests,
   fetchAdminUsers,
 } from '../api/admin.api';
 import { PageIntro } from '../../../shared/ui/PageIntro';
@@ -18,6 +19,10 @@ export function AdminDashboardPage() {
       { queryKey: ['admin', 'cards'], queryFn: fetchAdminCards },
       { queryKey: ['admin', 'offers'], queryFn: fetchAdminOffers },
       { queryKey: ['admin', 'card-plans'], queryFn: fetchAdminCardPlans },
+      {
+        queryKey: ['admin', 'purchase-requests', 'pending'],
+        queryFn: () => fetchAdminPurchaseRequests({ page: 1, limit: 20, status: 'PENDING' }),
+      },
     ],
   });
 
@@ -26,6 +31,7 @@ export function AdminDashboardPage() {
   const cards = results[2].data?.data || [];
   const offers = results[3].data?.data || [];
   const cardPlans = results[4].data?.data || [];
+  const pendingPurchaseRequests = results[5].data?.data || [];
 
   return (
     <div className="premium-page-stack admin-dashboard-page">
@@ -36,6 +42,7 @@ export function AdminDashboardPage() {
           description="Gardez une vue claire sur la plateforme, les cartes et les offres."
           actions={(
             <>
+              <Link className="primary-button link-button premium-inline-button" to="/admin/purchase-requests">Demandes</Link>
               <Link className="primary-button link-button premium-inline-button" to="/admin/card-plans">Plans</Link>
               <Link className="primary-button alt-button link-button premium-inline-button" to="/admin/offers">Offres</Link>
               <Link className="primary-button alt-button link-button premium-inline-button" to="/admin/users">Users</Link>
@@ -64,6 +71,11 @@ export function AdminDashboardPage() {
           <span className="meta-label">Offres</span>
           <p className="metric-value">{offers.length}</p>
           <p className="muted">Dans le reseau.</p>
+        </article>
+        <article className="metric-card premium-stat-card">
+          <span className="meta-label">Demandes</span>
+          <p className="metric-value">{pendingPurchaseRequests.length}</p>
+          <p className="muted">En attente cash.</p>
         </article>
         <article className="metric-card premium-stat-card">
           <span className="meta-label">Plans</span>

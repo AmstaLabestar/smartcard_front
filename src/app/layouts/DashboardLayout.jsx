@@ -19,6 +19,7 @@ const linksByRole = {
   ],
   ADMIN: [
     { to: '/admin/dashboard', label: 'Accueil' },
+    { to: '/admin/purchase-requests', label: 'Demandes' },
     { to: '/admin/card-plans', label: 'Plans' },
     { to: '/admin/users', label: 'Users' },
     { to: '/admin/offers', label: 'Offres' },

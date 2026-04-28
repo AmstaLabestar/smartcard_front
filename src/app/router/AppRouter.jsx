@@ -18,6 +18,7 @@ const MerchantOffersPage = lazy(() => import('../../features/merchant/pages/Merc
 const MerchantScanPage = lazy(() => import('../../features/merchant/pages/MerchantScanPage').then((module) => ({ default: module.MerchantScanPage })));
 const MerchantStatsPage = lazy(() => import('../../features/merchant/pages/MerchantStatsPage').then((module) => ({ default: module.MerchantStatsPage })));
 const AdminDashboardPage = lazy(() => import('../../features/admin/pages/AdminDashboardPage').then((module) => ({ default: module.AdminDashboardPage })));
+const AdminPurchaseRequestsPage = lazy(() => import('../../features/admin/pages/AdminPurchaseRequestsPage').then((module) => ({ default: module.AdminPurchaseRequestsPage })));
 const AdminUsersPage = lazy(() => import('../../features/admin/pages/AdminUsersPage').then((module) => ({ default: module.AdminUsersPage })));
 const AdminMerchantsPage = lazy(() => import('../../features/admin/pages/AdminMerchantsPage').then((module) => ({ default: module.AdminMerchantsPage })));
 const AdminCardsPage = lazy(() => import('../../features/admin/pages/AdminCardsPage').then((module) => ({ default: module.AdminCardsPage })));
@@ -157,6 +158,17 @@ export function AppRouter() {
           )}
         >
           <Route index element={withRouteLoader(<AdminDashboardPage />)} />
+        </Route>
+
+        <Route
+          path="/admin/purchase-requests"
+          element={(
+            <ProtectedRoute allowedRoles={['ADMIN']}>
+              <DashboardLayout />
+            </ProtectedRoute>
+          )}
+        >
+          <Route index element={withRouteLoader(<AdminPurchaseRequestsPage />)} />
         </Route>
 
         <Route

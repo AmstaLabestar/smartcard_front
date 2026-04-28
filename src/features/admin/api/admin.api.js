@@ -40,6 +40,23 @@ export async function fetchAdminCardPlans() {
   return data;
 }
 
+export async function fetchAdminPurchaseRequests(params = {}) {
+  const { data } = await apiClient.get('/purchase-requests/admin/all', { params });
+  return data;
+}
+
+export async function approveAdminPurchaseRequest(purchaseRequestId) {
+  const { data } = await apiClient.patch(`/purchase-requests/admin/${purchaseRequestId}/approve`);
+  return data;
+}
+
+export async function rejectAdminPurchaseRequest({ purchaseRequestId, rejectionReason }) {
+  const { data } = await apiClient.patch(`/purchase-requests/admin/${purchaseRequestId}/reject`, {
+    rejectionReason,
+  });
+  return data;
+}
+
 export async function createAdminCardPlan(payload) {
   const { data } = await apiClient.post('/card-plans', payload);
   return data;
