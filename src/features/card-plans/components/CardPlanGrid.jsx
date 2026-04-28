@@ -4,6 +4,7 @@ const CardPlanCard = memo(function CardPlanCard({
   cardPlan,
   isSelected,
   isOwned,
+  requestStatus,
   selectionEnabled,
   onSelect,
   onOpenDetail,
@@ -24,8 +25,25 @@ const CardPlanCard = memo(function CardPlanCard({
       </div>
       <h3>{cardPlan.name}</h3>
       <div className="user-catalog-v2-summary">
-        <span className={isOwned ? 'status-pill status-active' : 'status-pill status-inactive'}>
-          {isOwned ? 'Deja ajoutee' : 'A ajouter'}
+        <span
+          className={[
+            'status-pill',
+            isOwned || requestStatus === 'APPROVED'
+              ? 'status-active'
+              : requestStatus === 'PENDING'
+                ? 'status-pending'
+                : 'status-inactive',
+          ].join(' ')}
+        >
+          {isOwned
+            ? 'Deja ajoutee'
+            : requestStatus === 'PENDING'
+              ? 'En attente'
+              : requestStatus === 'APPROVED'
+                ? 'Acceptee'
+                : requestStatus === 'REJECTED'
+                  ? 'Refusee'
+                  : 'A demander'}
         </span>
         <button
           className="user-catalog-v2-detail-toggle"
@@ -62,6 +80,7 @@ export function CardPlanGrid({
   selectedCardPlanId,
   onSelect,
   ownedPlanIds = new Set(),
+  purchaseRequestStatusByPlanId = new Map(),
   actionRenderer = null,
   selectionEnabled = true,
 }) {
@@ -73,12 +92,14 @@ export function CardPlanGrid({
         {cardPlans.map((cardPlan) => {
           const isSelected = selectedCardPlanId === cardPlan.id;
           const isOwned = ownedPlanIds.has(cardPlan.id);
+
           return (
             <CardPlanCard
               key={cardPlan.id}
               cardPlan={cardPlan}
               isSelected={isSelected}
               isOwned={isOwned}
+              requestStatus={purchaseRequestStatusByPlanId.get(cardPlan.id) || null}
               selectionEnabled={selectionEnabled}
               onSelect={onSelect}
               onOpenDetail={setSelectedCardPlan}
@@ -108,7 +129,7 @@ export function CardPlanGrid({
                 onClick={() => setSelectedCardPlan(null)}
                 aria-label="Fermer"
               >
-                ×
+                x
               </button>
             </div>
             <p className="user-catalog-modal-copy">

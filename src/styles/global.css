@@ -214,6 +214,21 @@ input {
   box-shadow: 0 16px 28px rgba(24, 35, 15, 0.22);
 }
 
+.secondary-button {
+  border: 1px solid rgba(24, 35, 15, 0.12);
+  border-radius: 999px;
+  padding: 0.64rem 0.8rem;
+  background: rgba(255, 255, 255, 0.92);
+  color: #18230f;
+  box-shadow: 0 10px 22px rgba(24, 35, 15, 0.08);
+  white-space: nowrap;
+  font-size: var(--text-sm);
+}
+
+.secondary-button:hover:not(:disabled) {
+  box-shadow: 0 14px 24px rgba(24, 35, 15, 0.12);
+}
+
 .sidebar-button {
   margin-top: auto;
 }
@@ -585,6 +600,11 @@ input {
 .status-inactive {
   background: rgba(255, 220, 107, 0.2);
   color: #9a6300;
+}
+
+.status-pending {
+  background: rgba(111, 132, 81, 0.14);
+  color: #55624b;
 }
 
 .offer-grid {
